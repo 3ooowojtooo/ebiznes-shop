@@ -95,8 +95,8 @@ class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider, cat
 
   def delete(id: Long): Future[Unit] = db.run(product.filter(_.id === id).delete).map(_ => ())
 
-  def update(id: Long, new_product: Product): Future[Unit] = {
-    val productToUpdate: Product = new_product.copy(id)
+  def update(id: Long, name: String, description: String, category: Int): Future[Unit] = {
+    val productToUpdate: Product = Product(id, name, description, category)
     db.run(product.filter(_.id === id).update(productToUpdate)).map(_ => ())
   }
 

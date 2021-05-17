@@ -13,7 +13,14 @@ CREATE TABLE "product" (
  FOREIGN KEY(category) references category(id)
 );
 
+CREATE TABLE "user" (
+ "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+ "name" VARCHAR NOT NULL,
+ "age" INT NOT NULL
+);
+
 # --- !Downs
 
-DROP TABLE "category"
-DROP TABLE "product"
+DROP TABLE "user";
+DROP TABLE "product";
+DROP TABLE "category";
