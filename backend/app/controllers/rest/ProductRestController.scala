@@ -8,11 +8,8 @@ import play.api.mvc._
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ProductController @Inject()(cc: ControllerComponents, productRepository: ProductRepository)(implicit val executionContext : ExecutionContext)
+class ProductRestController @Inject()(cc: ControllerComponents, productRepository: ProductRepository)(implicit val executionContext : ExecutionContext)
   extends AbstractController(cc) {
-
-  // GET /product/test
-  def test = Action {Ok("ja jebie")}
 
   // GET /product
   def getAll = Action.async {implicit request =>
