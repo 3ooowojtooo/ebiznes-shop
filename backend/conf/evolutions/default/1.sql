@@ -10,6 +10,7 @@ CREATE TABLE "product" (
  "name" VARCHAR NOT NULL,
  "description" TEXT NOT NULL,
  "category" INT NOT NULL,
+ "price" DOUBLE NOT NULL,
  FOREIGN KEY(category) references category(id)
 );
 

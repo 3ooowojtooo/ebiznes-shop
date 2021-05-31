@@ -1,9 +1,10 @@
 package controllers.rest
 
 import javax.inject.{Inject, Singleton}
-import models.{Product, ProductRepository}
+import models.Product
 import play.api.libs.json.{Json, OFormat, __}
 import play.api.mvc._
+import repository.ProductRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -13,7 +14,7 @@ class ProductRestController @Inject()(cc: ControllerComponents, productRepositor
 
   // GET /product
   def getAll = Action.async {implicit request =>
-    val products = productRepository.list()
+    val products = productRepository.list
     products.map(p => Ok(Json.toJson(p)))
   }
 
@@ -34,7 +35,7 @@ class ProductRestController @Inject()(cc: ControllerComponents, productRepositor
     val requestBody = requestBodyJson.flatMap(Json.fromJson[CreateProduct](_).asOpt)
     requestBody match {
       case Some(newItem) =>
-        productRepository.create(newItem.name, newItem.description, newItem.category)
+        productRepository.create(newItem.name, newItem.description, newItem.category, newItem.price)
         .map(p => Created(Json.toJson(p)))
       case None =>
         Future(BadRequest)
@@ -55,12 +56,12 @@ class ProductRestController @Inject()(cc: ControllerComponents, productRepositor
     val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdateProduct](_).asOpt)
     requestBody match {
       case Some(itemToUpdate) =>
-        productRepository.update(id, itemToUpdate.name, itemToUpdate.description, itemToUpdate.category)
+        productRepository.update(id, itemToUpdate.name, itemToUpdate.description, itemToUpdate.category, itemToUpdate.price)
           .map(_ => Ok)
       case None => Future(BadRequest)
     }
   }
 }
 
-case class CreateProduct(name : String, description : String, category : Int)
-case class UpdateProduct(name : String, description : String, category : Int)
+case class CreateProduct(name : String, description : String, category : Long, price : Double)
+case class UpdateProduct(name : String, description : String, category : Long, price : Double)

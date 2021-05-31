@@ -1,8 +1,5 @@
-# An example controller showing a sample home page
-GET           /                    controllers.HomeController.index
-
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET           /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)
 
 # Product REST routes
 GET           /rest/product             controllers.rest.ProductRestController.getAll
@@ -12,5 +9,68 @@ DELETE        /rest/product/:id         controllers.rest.ProductRestController.d
 PUT           /rest/product/:id         controllers.rest.ProductRestController.update(id : Long)
 
 # Product VIEW routes
-GET           /product             controllers.view.ProductViewController.getAll
-GET           /product/:id         controllers.view.ProductViewController.findOne(id : Long)
+GET           /product                  controllers.view.ProductViewController.getAll
+GET           /product/:id              controllers.view.ProductViewController.findOne(id : Long)
+
+# Category REST routes
+GET           /rest/category            controllers.rest.CategoryRestController.getAll
+GET           /rest/category/:id        controllers.rest.CategoryRestController.findOne(id : Long)
+POST          /rest/category            controllers.rest.CategoryRestController.create
+DELETE        /rest/category/:id        controllers.rest.CategoryRestController.delete(id : Long)
+PUT           /rest/category/:id        controllers.rest.CategoryRestController.update(id : Long)
+
+# User REST routes
+GET           /rest/user                controllers.rest.UserRestController.getAll
+GET           /rest/user/:id            controllers.rest.UserRestController.findOne(id : Long)
+POST          /rest/user                controllers.rest.UserRestController.create
+DELETE        /rest/user/:id            controllers.rest.UserRestController.delete(id : Long)
+PUT           /rest/user/:id            controllers.rest.UserRestController.update(id : Long)
+
+# Stock REST routes
+GET           /rest/stock               controllers.rest.StockRestController.getAll
+GET           /rest/stock/:id           controllers.rest.StockRestController.findOne(id : Long)
+POST          /rest/stock               controllers.rest.StockRestController.create
+DELETE        /rest/stock/:id           controllers.rest.StockRestController.delete(id : Long)
+PUT           /rest/stock/:id           controllers.rest.StockRestController.update(id : Long)
+
+# User address REST routes
+GET           /rest/address             controllers.rest.UserAddressRestController.getAll
+GET           /rest/address/:id         controllers.rest.UserAddressRestController.findOne(id : Long)
+POST          /rest/address             controllers.rest.UserAddressRestController.create
+DELETE        /rest/address/:id         controllers.rest.UserAddressRestController.delete(id : Long)
+PUT           /rest/address/:id         controllers.rest.UserAddressRestController.update(id : Long)
+
+# Cart REST routes
+GET           /rest/cart                controllers.rest.CartRestController.getAll
+GET           /rest/cart/:id            controllers.rest.CartRestController.findOne(id : Long)
+POST          /rest/cart                controllers.rest.CartRestController.create
+DELETE        /rest/cart/:id            controllers.rest.CartRestController.delete(id : Long)
+PUT           /rest/cart/:id            controllers.rest.CartRestController.update(id : Long)
+
+# Cart item REST routes
+GET           /rest/cartitem            controllers.rest.CartItemRestController.getAll
+GET           /rest/cartitem/:id        controllers.rest.CartItemRestController.findOne(id : Long)
+POST          /rest/cartitem            controllers.rest.CartItemRestController.create
+DELETE        /rest/cartitem/:id        controllers.rest.CartItemRestController.delete(id : Long)
+PUT           /rest/cartitem/:id        controllers.rest.CartItemRestController.update(id : Long)
+
+# Delivery REST routes
+GET           /rest/delivery            controllers.rest.DeliveryRestController.getAll
+GET           /rest/delivery/:id        controllers.rest.DeliveryRestController.findOne(id : Long)
+POST          /rest/delivery            controllers.rest.DeliveryRestController.create
+DELETE        /rest/delivery/:id        controllers.rest.DeliveryRestController.delete(id : Long)
+PUT           /rest/delivery/:id        controllers.rest.DeliveryRestController.update(id : Long)
+
+# Payment method REST routes
+GET           /rest/paymentmethod            controllers.rest.PaymentMethodRestController.getAll
+GET           /rest/paymentmethod/:id        controllers.rest.PaymentMethodRestController.findOne(id : Long)
+POST          /rest/paymentmethod            controllers.rest.PaymentMethodRestController.create
+DELETE        /rest/paymentmethod/:id        controllers.rest.PaymentMethodRestController.delete(id : Long)
+PUT           /rest/paymentmethod/:id        controllers.rest.PaymentMethodRestController.update(id : Long)
+
+# Purchase history REST routes
+GET           /rest/purchasehistory            controllers.rest.PurchaseHistoryRestController.getAll
+GET           /rest/purchasehistory/:id        controllers.rest.PurchaseHistoryRestController.findOne(id : Long)
+POST          /rest/purchasehistory            controllers.rest.PurchaseHistoryRestController.create
+DELETE        /rest/purchasehistory/:id        controllers.rest.PurchaseHistoryRestController.delete(id : Long)
+PUT           /rest/purchasehistory/:id        controllers.rest.PurchaseHistoryRestController.update(id : Long)

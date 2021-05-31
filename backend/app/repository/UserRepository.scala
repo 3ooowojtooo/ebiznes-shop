@@ -1,26 +1,23 @@
-package models
+package repository
 
 import javax.inject.{Inject, Singleton}
+import models.User
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
-  private val dbConfig = dbConfigProvider.get[JdbcProfile]
+class UserRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
   import profile.api._
 
-  private class UserTable(tag: Tag) extends Table[User](tag, "user") {
-
+  class UserTable(tag: Tag) extends Table[User](tag, "user") {
     def id = column[Long]("id")
-
     def name = column[String]("name")
-
     def age = column[Int]("age")
-
     override def * = (id, name, age) <> ((User.apply _).tupled, User.unapply)
   }
 
@@ -47,5 +44,10 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
   def delete(id : Long) : Future[Unit] = db.run {
     user.filter(_.id === id).delete.map(_ => ())
+  }
+
+  def update(id : Long, name : String, age : Int) : Future[Unit] = {
+    val updatedUser = User(id, name, age)
+    db.run(user.filter(_.id === id).update(updatedUser).map(_ => ()))
   }
 }
