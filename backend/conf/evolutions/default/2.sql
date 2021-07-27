@@ -5,22 +5,22 @@ INSERT INTO "category"(name) VALUES ('garden');
 INSERT INTO "category"(name) VALUES ('electronics');
 INSERT INTO "category"(name) VALUES ('games');
 
-INSERT INTO "product"(name, description, category) VALUES ('sofa', 'A comfortable piece of furniture for long meetings',
-                                                           (SELECT id FROM category WHERE name = 'furniture'));
-INSERT INTO "product"(name, description, category) VALUES ('armchair', 'The perfect gift for your grandparents',
-                                                           (SELECT id FROM category WHERE name = 'furniture'));
-INSERT INTO "product"(name, description, category) VALUES ('swing', 'A toy for your kids',
-                                                           (SELECT id FROM category WHERE name = 'garden'));
-INSERT INTO "product"(name, description, category) VALUES ('grill', 'A way to make delicious sausages',
-                                                           (SELECT id FROM category WHERE name = 'garden'));
-INSERT INTO "product"(name, description, category) VALUES ('screen', 'High resolution screen with excellent quality',
-                                                           (SELECT id FROM category WHERE name = 'electronics'));
-INSERT INTO "product"(name, description, category) VALUES ('smartphone', 'IPhone with bunch of brand new features',
-                                                           (SELECT id FROM category WHERE name = 'electronics'));
-INSERT INTO "product"(name, description, category) VALUES ('Subnautica', 'Amazing survival game settled in an underwater world',
-                                                           (SELECT id FROM category WHERE name = 'games'));
-INSERT INTO "product"(name, description, category) VALUES ('Subnautica: Below Zero', 'Brand new addition to Subnautica',
-                                                           (SELECT id FROM category WHERE name = 'games'));
+INSERT INTO "product"(name, description, category, price) VALUES ('sofa', 'A comfortable piece of furniture for long meetings',
+                                                           (SELECT id FROM category WHERE name = 'furniture'), 999.99);
+INSERT INTO "product"(name, description, category, price) VALUES ('armchair', 'The perfect gift for your grandparents',
+                                                           (SELECT id FROM category WHERE name = 'furniture'), 499.99);
+INSERT INTO "product"(name, description, category, price) VALUES ('swing', 'A toy for your kids',
+                                                           (SELECT id FROM category WHERE name = 'garden'), 1500.0);
+INSERT INTO "product"(name, description, category, price) VALUES ('grill', 'A way to make delicious sausages',
+                                                           (SELECT id FROM category WHERE name = 'garden'), 310.50);
+INSERT INTO "product"(name, description, category, price) VALUES ('screen', 'High resolution screen with excellent quality',
+                                                           (SELECT id FROM category WHERE name = 'electronics'), 2000.0);
+INSERT INTO "product"(name, description, category, price) VALUES ('smartphone', 'IPhone with bunch of brand new features',
+                                                           (SELECT id FROM category WHERE name = 'electronics'), 535.10);
+INSERT INTO "product"(name, description, category, price) VALUES ('Subnautica', 'Amazing survival game settled in an underwater world',
+                                                           (SELECT id FROM category WHERE name = 'games'), 199.99);
+INSERT INTO "product"(name, description, category, price) VALUES ('Subnautica: Below Zero', 'Brand new addition to Subnautica',
+                                                           (SELECT id FROM category WHERE name = 'games'), 199.99);
 
 INSERT INTO "user"(name, age) VALUES ('Anthony Rach', 32);
 

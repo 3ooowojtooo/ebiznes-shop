@@ -1,23 +1,23 @@
 package controllers.view
 
 import javax.inject.{Inject, Singleton}
-import models.{CategoryRepository, ProductRepository}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc._
 import play.api.mvc.{AnyContent, MessagesControllerComponents}
+import repository.{CategoryRepository, ProductRepository}
 
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class ProductViewController @Inject()(cc: MessagesControllerComponents, productRepository: ProductRepository, categoryRepository: CategoryRepository)
+class ProductViewController @Inject()(cc: MessagesControllerComponents, productRepository: ProductRepository)
                                      (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   val productForm: Form[CreateProductForm] = Form {
     mapping(
       "name" -> nonEmptyText,
       "description" -> nonEmptyText,
-      "category" -> number,
+      "category" -> longNumber,
     )(CreateProductForm.apply)(CreateProductForm.unapply)
   }
 
@@ -26,12 +26,12 @@ class ProductViewController @Inject()(cc: MessagesControllerComponents, productR
       "id" -> longNumber,
       "name" -> nonEmptyText,
       "description" -> nonEmptyText,
-      "category" -> number
+      "category" -> longNumber
     )(UpdateProductForm.apply)(UpdateProductForm.unapply)
   }
 
   def getAll: Action[AnyContent] = Action.async { implicit request =>
-    val products = productRepository.list()
+    val products = productRepository.list
     products.map(p => Ok(views.html.products(p)))
   }
 
@@ -45,5 +45,5 @@ class ProductViewController @Inject()(cc: MessagesControllerComponents, productR
 
 }
 
-case class CreateProductForm(name: String, description: String, category: Int)
-case class UpdateProductForm(id: Long, name: String, description: String, category: Int)
+case class CreateProductForm(name: String, description: String, category: Long)
+case class UpdateProductForm(id: Long, name: String, description: String, category: Long)
