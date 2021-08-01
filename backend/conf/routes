@@ -41,6 +41,15 @@ POST          /rest/user                       controllers.rest.UserRestControll
 DELETE        /rest/user/:id                   controllers.rest.UserRestController.delete(id : Long)
 PUT           /rest/user/:id                   controllers.rest.UserRestController.update(id : Long)
 
+# User VIEW routes
+GET           /user                         controllers.view.UserViewController.getAll
+GET           /user/details/:id             controllers.view.UserViewController.findOne(id : Long)
+GET           /user/add                     controllers.view.UserViewController.add
+POST          /user/addhandle               controllers.view.UserViewController.addHandle
+GET           /user/delete/:id              controllers.view.UserViewController.delete(id : Long)
+GET           /user/update/:id              controllers.view.UserViewController.update(id : Long)
+POST          /user/updatehandle            controllers.view.UserViewController.updateHandle
+
 # Stock REST routes
 GET           /rest/stock                      controllers.rest.StockRestController.getAll
 GET           /rest/stock/:id                  controllers.rest.StockRestController.findOne(id : Long)

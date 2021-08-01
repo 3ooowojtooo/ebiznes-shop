@@ -1,0 +1,23 @@
+@(users: Seq[User])
+
+<table style="width: 100%">
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    @for(user <- users) {
+        <tr>
+            <td>@user.name</td>
+            <td>@user.age</td>
+            <td><a href="@controllers.view.routes.UserViewController.findOne(user.id)">Details</a></td>
+            <td><a href="@controllers.view.routes.UserViewController.update(user.id)">Edit</a></td>
+            <td><a href="@controllers.view.routes.UserViewController.delete(user.id)">Delete</a></td>
+        </tr>
+    }
+    </table> <br>
+
+<a href="@controllers.view.routes.UserViewController.add">Add new user</a><br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a>

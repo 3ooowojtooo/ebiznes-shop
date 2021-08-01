@@ -15,15 +15,15 @@ class UserRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)(imp
   import profile.api._
 
   class UserTable(tag: Tag) extends Table[User](tag, "user") {
-    def id = column[Long]("id")
+    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
-    def age = column[Int]("age")
+    def age = column[Long]("age")
     override def * = (id, name, age) <> ((User.apply _).tupled, User.unapply)
   }
 
   private val user = TableQuery[UserTable]
 
-  def create(name: String, age: Int): Future[User] = db.run {
+  def create(name: String, age: Long): Future[User] = db.run {
     (user.map(u => (u.name, u.age))
       returning user.map(_.id)
       into { case ((name, age), id) => User(id, name, age) }
@@ -46,7 +46,7 @@ class UserRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)(imp
     user.filter(_.id === id).delete.map(_ => ())
   }
 
-  def update(id : Long, name : String, age : Int) : Future[Unit] = {
+  def update(id : Long, name : String, age : Long) : Future[Unit] = {
     val updatedUser = User(id, name, age)
     db.run(user.filter(_.id === id).update(updatedUser).map(_ => ()))
   }

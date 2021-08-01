@@ -63,5 +63,5 @@ class UserRestController @Inject()(cc: ControllerComponents, userRepository: Use
   }
 }
 
-case class CreateUser(name : String, age : Int)
-case class UpdateUser(name : String, age : Int)
+case class CreateUser(name : String, age : Long)
+case class UpdateUser(name : String, age : Long)
