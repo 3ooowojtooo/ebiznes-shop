@@ -73,6 +73,15 @@ POST          /rest/stock                      controllers.rest.StockRestControl
 DELETE        /rest/stock/:id                  controllers.rest.StockRestController.delete(id : Long)
 PUT           /rest/stock/:id                  controllers.rest.StockRestController.update(id : Long)
 
+# Stock VIEW routes
+GET           /stock                         controllers.view.StockViewController.getAll
+GET           /stock/details/:id             controllers.view.StockViewController.findOne(id : Long)
+GET           /stock/add                     controllers.view.StockViewController.add
+POST          /stock/addhandle               controllers.view.StockViewController.addHandle
+GET           /stock/delete/:id              controllers.view.StockViewController.delete(id : Long)
+GET           /stock/update/:id              controllers.view.StockViewController.update(id : Long)
+POST          /stock/updatehandle            controllers.view.StockViewController.updateHandle
+
 # Cart REST routes
 GET           /rest/cart                       controllers.rest.CartRestController.getAll
 GET           /rest/cart/:id                   controllers.rest.CartRestController.findOne(id : Long)

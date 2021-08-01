@@ -38,6 +38,10 @@ class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
     stockTable.result
   }
 
+  def getById(id : Long) : Future[Stock] = db.run {
+    stockTable.filter(_.id === id).result.head
+  }
+
   def getByIdOption(id : Long) : Future[Option[Stock]] = db.run {
     stockTable.filter(_.id === id).result.headOption
   }

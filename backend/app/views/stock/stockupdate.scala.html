@@ -1,0 +1,28 @@
+@import controllers.view.UpdateStockForm
+@(stock: Form[UpdateStockForm],products: Seq[Product])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.StockViewController.updateHandle) {
+    @helper.CSRF.formField
+    <input name="id" id="id" value="@stock("id").value" type="hidden" />
+    @inputText(stock("amount"))
+
+    <select name="product" id="product">
+    @for(product <- products){
+        @if(product.id.toString==stock("product").value.getOrElse(0)) {
+            <option value="@product.id" selected>@product.name</option>
+        }else{
+            <option value="@product.id">@product.name</option>
+        }
+    }
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Update Stock"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+    <a href="@controllers.view.routes.StockViewController.getAll">Stocks</a>

@@ -1,0 +1,23 @@
+@import controllers.view.CreateStockForm
+@(stock: Form[CreateStockForm],products: Seq[Product])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.StockViewController.addHandle) {
+    @helper.CSRF.formField
+    @inputText(stock("amount"))
+
+    <select name="product" id="product">
+    @for(product <- products){
+        <option value="@product.id">@product.name</option>
+    }
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Add Stock"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.StockViewController.getAll">Stocks</a>
