@@ -1,0 +1,20 @@
+@(categories: Seq[Category])
+
+<table style="width:100%">
+    <tr>
+        <th>Name</th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+@for(category <- categories) {
+    <tr>
+    <td>@category.name</td>
+        <td><a href="@controllers.view.routes.CategoryViewController.findOne(category.id)">Details</a></td>
+        <td><a href="@controllers.view.routes.CategoryViewController.update(category.id)">Edit</a></td>
+        <td><a href="@controllers.view.routes.CategoryViewController.delete(category.id)">Delete</a></td>
+    </tr>
+}
+</table><br>
+
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>

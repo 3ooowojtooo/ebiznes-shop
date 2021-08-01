@@ -33,6 +33,10 @@ class CategoryRepository @Inject() (val dbConfigProvider: DatabaseConfigProvider
     category.result
   }
 
+  def getById(id : Long) : Future[Category] = db.run {
+    category.filter(_.id === id).result.head
+  }
+
   def getByIdOption(id : Long) : Future[Option[Category]] = db.run {
     category.filter(_.id === id).result.headOption
   }

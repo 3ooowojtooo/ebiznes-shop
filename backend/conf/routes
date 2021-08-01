@@ -25,6 +25,15 @@ POST          /rest/category                   controllers.rest.CategoryRestCont
 DELETE        /rest/category/:id               controllers.rest.CategoryRestController.delete(id : Long)
 PUT           /rest/category/:id               controllers.rest.CategoryRestController.update(id : Long)
 
+# Category VIEW routes
+GET           /category                         controllers.view.CategoryViewController.getAll
+GET           /category/details/:id             controllers.view.CategoryViewController.findOne(id : Long)
+GET           /category/add                     controllers.view.CategoryViewController.add
+POST          /category/addhandle               controllers.view.CategoryViewController.addHandle
+GET           /category/delete/:id              controllers.view.CategoryViewController.delete(id : Long)
+GET           /category/update/:id              controllers.view.CategoryViewController.update(id : Long)
+POST          /category/updatehandle            controllers.view.CategoryViewController.updateHandle
+
 # User REST routes
 GET           /rest/user                       controllers.rest.UserRestController.getAll
 GET           /rest/user/:id                   controllers.rest.UserRestController.findOne(id : Long)
