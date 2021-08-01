@@ -1,0 +1,21 @@
+@(cart: Cart)
+
+<table style="width:100%">
+    <tr>
+        <th>Created at</th>
+        <th>User</th>
+        <th>Purchased</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <tr>
+    <td>@cart.createdTime</td>
+    <td>@cart.user</td>
+    <td>@cart.purchased</td>
+        <td><a href="@controllers.view.routes.CartViewController.update(cart.id)">Edit</a></td>
+        <td><a href="@controllers.view.routes.CartViewController.delete(cart.id)">Delete</a></td>
+    </tr>
+</table><br>
+
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.CartViewController.getAll">Carts</a>

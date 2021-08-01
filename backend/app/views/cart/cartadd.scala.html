@@ -1,0 +1,28 @@
+@import controllers.view.CreateCartForm
+@(cart: Form[CreateCartForm],users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.CartViewController.addHandle) {
+    @helper.CSRF.formField
+    @inputDate(cart("createdTime"))
+
+    <select name="user" id="user">
+    @for(user <- users){
+        <option value="@user.id">@user.name</option>
+    }
+    </select><br>
+
+    <select name="purchased" id="purchased">
+        <option value="true">true</option>
+        <option value="false">false</option>
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Add Cart"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.CartViewController.getAll">Carts</a>

@@ -1,7 +1,5 @@
 package repository
 
-import java.text.SimpleDateFormat
-
 import javax.inject.{Inject, Singleton}
 import models.Cart
 import play.api.db.slick.DatabaseConfigProvider
@@ -39,6 +37,10 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
 
   def list: Future[Seq[Cart]] = db.run {
     cartTable.result
+  }
+
+  def getById(id : Long) : Future[Cart] = db.run {
+    cartTable.filter(_.id === id).result.head
   }
 
   def getByIdOption(id : Long) : Future[Option[Cart]] = db.run {
