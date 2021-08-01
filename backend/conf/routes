@@ -50,19 +50,28 @@ GET           /user/delete/:id              controllers.view.UserViewController.
 GET           /user/update/:id              controllers.view.UserViewController.update(id : Long)
 POST          /user/updatehandle            controllers.view.UserViewController.updateHandle
 
-# Stock REST routes
-GET           /rest/stock                      controllers.rest.StockRestController.getAll
-GET           /rest/stock/:id                  controllers.rest.StockRestController.findOne(id : Long)
-POST          /rest/stock                      controllers.rest.StockRestController.create
-DELETE        /rest/stock/:id                  controllers.rest.StockRestController.delete(id : Long)
-PUT           /rest/stock/:id                  controllers.rest.StockRestController.update(id : Long)
-
 # User address REST routes
 GET           /rest/address                    controllers.rest.UserAddressRestController.getAll
 GET           /rest/address/:id                controllers.rest.UserAddressRestController.findOne(id : Long)
 POST          /rest/address                    controllers.rest.UserAddressRestController.create
 DELETE        /rest/address/:id                controllers.rest.UserAddressRestController.delete(id : Long)
 PUT           /rest/address/:id                controllers.rest.UserAddressRestController.update(id : Long)
+
+# User addresses VIEW routes
+GET           /address                         controllers.view.UserAddressViewController.getAll
+GET           /address/details/:id             controllers.view.UserAddressViewController.findOne(id : Long)
+GET           /address/add                     controllers.view.UserAddressViewController.add
+POST          /address/addhandle               controllers.view.UserAddressViewController.addHandle
+GET           /address/delete/:id              controllers.view.UserAddressViewController.delete(id : Long)
+GET           /address/update/:id              controllers.view.UserAddressViewController.update(id : Long)
+POST          /address/updatehandle            controllers.view.UserAddressViewController.updateHandle
+
+# Stock REST routes
+GET           /rest/stock                      controllers.rest.StockRestController.getAll
+GET           /rest/stock/:id                  controllers.rest.StockRestController.findOne(id : Long)
+POST          /rest/stock                      controllers.rest.StockRestController.create
+DELETE        /rest/stock/:id                  controllers.rest.StockRestController.delete(id : Long)
+PUT           /rest/stock/:id                  controllers.rest.StockRestController.update(id : Long)
 
 # Cart REST routes
 GET           /rest/cart                       controllers.rest.CartRestController.getAll

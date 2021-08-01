@@ -1,0 +1,30 @@
+@import controllers.view.UpdateUserAddressForm
+@(userAddress: Form[UpdateUserAddressForm],users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.UserAddressViewController.updateHandle) {
+    @helper.CSRF.formField
+    <input name="id" id="id" value="@userAddress("id").value" type="hidden" />
+    @inputText(userAddress("street"))
+    @inputText(userAddress("city"))
+    @inputText(userAddress("zipcode"))
+
+    <select name="user" id="user">
+    @for(user <- users){
+        @if(user.id.toString==userAddress("user").value.getOrElse(0)) {
+            <option value="@user.id" selected>@user.name</option>
+        }else{
+            <option value="@user.id">@user.name</option>
+        }
+    }
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Update User Address"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+    <a href="@controllers.view.routes.UserAddressViewController.getAll">User addresses</a>

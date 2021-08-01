@@ -40,6 +40,10 @@ class UserAddressRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
     userAddressTable.result
   }
 
+  def getById(id : Long) : Future[UserAddress] = db.run {
+    userAddressTable.filter(_.id === id).result.head
+  }
+
   def getByIdOption(id : Long) : Future[Option[UserAddress]] = db.run {
     userAddressTable.filter(_.id === id).result.headOption
   }

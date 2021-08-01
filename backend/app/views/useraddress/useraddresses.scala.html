@@ -1,0 +1,26 @@
+@(userAddresses: Seq[UserAddress])
+
+<table style="width:100%">
+    <tr>
+        <th>Street</th>
+        <th>City</th>
+        <th>Zip code</th>
+        <th>User</th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+@for(userAddress <- userAddresses) {
+    <tr>
+    <td>@userAddress.street</td>
+    <td>@userAddress.city</td>
+    <td>@userAddress.zipcode</td>
+    <td>@userAddress.user</td>
+        <td><a href="@controllers.view.routes.UserAddressViewController.findOne(userAddress.id)">Details</a></td>
+        <td><a href="@controllers.view.routes.UserAddressViewController.update(userAddress.id)">Edit</a></td>
+        <td><a href="@controllers.view.routes.UserAddressViewController.delete(userAddress.id)">Delete</a></td>
+    </tr>
+}
+</table><br>
+<a href="@controllers.view.routes.UserAddressViewController.add">Add new user address</a><br>
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>
