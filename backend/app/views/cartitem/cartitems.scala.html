@@ -1,0 +1,24 @@
+@(items: Seq[CartItem])
+
+<table style="width:100%">
+    <tr>
+        <th>Cart</th>
+        <th>Product</th>
+        <th>Amount</th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+@for(item <- items) {
+    <tr>
+        <td>@item.cart</td>
+        <td>@item.product</td>
+        <td>@item.amount</td>
+        <td><a href="@controllers.view.routes.CartItemViewController.findOne(item.id)">Details</a></td>
+        <td><a href="@controllers.view.routes.CartItemViewController.update(item.id)">Edit</a></td>
+        <td><a href="@controllers.view.routes.CartItemViewController.delete(item.id)">Delete</a></td>
+    </tr>
+}
+</table><br>
+<a href="@controllers.view.routes.CartItemViewController.add">Add new cart item</a><br>
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>

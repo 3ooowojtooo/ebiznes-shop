@@ -1,0 +1,29 @@
+@import controllers.view.CreateCartItemForm
+@(item: Form[CreateCartItemForm],products: Seq[Product],carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.CartItemViewController.addHandle) {
+    @helper.CSRF.formField
+    @inputText(item("amount"))
+
+    <select name="product" id="product">
+    @for(product <- products){
+        <option value="@product.id">@product.name</option>
+    }
+    </select><br>
+
+    <select name="cart" id="cart">
+    @for(cart <- carts){
+        <option value="@cart.id">@cart.id</option>
+    }
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Add Cart Item"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.CartItemViewController.getAll">Cart items</a>

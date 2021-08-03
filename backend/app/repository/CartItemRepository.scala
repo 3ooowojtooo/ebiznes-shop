@@ -22,7 +22,7 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
     def cart = column[Long]("cart")
     def fk_product = foreignKey("fk_product", product, productTable)(_.id)
     def fk_cart = foreignKey("fk_cart", cart, cartTable)(_.id)
-    def * = (id, product, amount, cart) <> ((CartItem.apply _).tupled, CartItem.unapply)
+    def * = (id, cart, product, amount) <> ((CartItem.apply _).tupled, CartItem.unapply)
   }
 
   import productRepository.ProductTable
@@ -41,6 +41,10 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
 
   def list : Future[Seq[CartItem]] = db.run {
     cartItemTable.result
+  }
+
+  def getById(id : Long) : Future[CartItem] = db.run {
+    cartItemTable.filter(_.id === id).result.head
   }
 
   def getByIdOption(id : Long) : Future[Option[CartItem]] = db.run {

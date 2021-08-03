@@ -105,6 +105,15 @@ POST          /rest/cartitem                   controllers.rest.CartItemRestCont
 DELETE        /rest/cartitem/:id               controllers.rest.CartItemRestController.delete(id : Long)
 PUT           /rest/cartitem/:id               controllers.rest.CartItemRestController.update(id : Long)
 
+# Cart VIEW routes
+GET           /cartitem                         controllers.view.CartItemViewController.getAll
+GET           /cartitem/details/:id             controllers.view.CartItemViewController.findOne(id : Long)
+GET           /cartitem/add                     controllers.view.CartItemViewController.add
+POST          /cartitem/addhandle               controllers.view.CartItemViewController.addHandle
+GET           /cartitem/delete/:id              controllers.view.CartItemViewController.delete(id : Long)
+GET           /cartitem/update/:id              controllers.view.CartItemViewController.update(id : Long)
+POST          /cartitem/updatehandle            controllers.view.CartItemViewController.updateHandle
+
 # Delivery REST routes
 GET           /rest/delivery                   controllers.rest.DeliveryRestController.getAll
 GET           /rest/delivery/:id               controllers.rest.DeliveryRestController.findOne(id : Long)

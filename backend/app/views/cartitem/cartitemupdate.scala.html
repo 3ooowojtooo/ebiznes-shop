@@ -1,0 +1,38 @@
+@import controllers.view.UpdateCartItemForm
+@(item: Form[UpdateCartItemForm],products: Seq[Product],carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.CartItemViewController.updateHandle) {
+    @helper.CSRF.formField
+    <input name="id" id="id" value="@item("id").value" type="hidden" />
+    @inputText(item("amount"))
+
+    <select name="product" id="product">
+    @for(product <- products){
+        @if(product.id.toString==item("product").value.getOrElse(0)) {
+            <option value="@product.id" selected>@product.name</option>
+        }else{
+            <option value="@product.id">@product.name</option>
+        }
+    }
+    </select><br>
+
+    <select name="cart" id="cart">
+    @for(cart <- carts){
+        @if(cart.id.toString==item("cart").value.getOrElse(0)) {
+            <option value="@cart.id" selected>@cart.id</option>
+        }else{
+            <option value="@cart.id">@cart.id</option>
+        }
+    }
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Update Cart Item"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+    <a href="@controllers.view.routes.CartItemViewController.getAll">Cart items</a>
