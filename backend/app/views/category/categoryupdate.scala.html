@@ -1,18 +1,19 @@
 @import controllers.view.UpdateCategoryForm
 @(category: Form[UpdateCategoryForm])(implicit request: MessagesRequestHeader, flash: Flash)
 
-@import helper._
+    @import helper._
 
-@flash.get("success").getOrElse("")
+    @flash.get("success").getOrElse("")
 
-@form(controllers.view.routes.CategoryViewController.updateHandle) {
-    @helper.CSRF.formField
-    <input name="id" id="id" value="@category("id").value" type="hidden" />
-    @inputText(category("name"))
+    @form(controllers.view.routes.CategoryViewController.updateHandle) {
+        @helper.CSRF.formField
+        <input name="id" id="id" value="@category("id").value" type="hidden" />
+        @inputText(category("name"))
 
-    <div class="buttons">
-        <input type="submit" value="Update Category"/>
-    </div>
-}<br>
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+        <div class="buttons">
+            <input type="submit" value="Update Category"/>
+        </div>
+    } <br>
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>
+    <br>
     <a href="@controllers.view.routes.CategoryViewController.getAll">Categories</a>

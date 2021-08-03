@@ -4,13 +4,13 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.{AnyContent, MessagesControllerComponents, _}
-import repository.{CategoryRepository, UserRepository}
+import repository.UserRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class UserViewController @Inject()(cc: MessagesControllerComponents, userRepository: UserRepository)
-                                      (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
+                                  (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   val userForm: Form[CreateUserForm] = Form {
     mapping(
@@ -74,6 +74,6 @@ class UserViewController @Inject()(cc: MessagesControllerComponents, userReposit
 
 }
 
-case class CreateUserForm(name: String, age : Long)
+case class CreateUserForm(name: String, age: Long)
 
-case class UpdateUserForm(id: Long, name: String, age : Long)
+case class UpdateUserForm(id: Long, name: String, age: Long)

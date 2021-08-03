@@ -1,0 +1,21 @@
+@(history: PurchaseHistory)
+
+<table style="width: 100%">
+    <tr>
+        <th>Cart</th>
+        <th>Total price</th>
+        <th>Purchased On</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <tr>
+        <td>@history.cart</td>
+        <td>@history.totalPrice</td>
+        <td>@history.purchaseTimestamp</td>
+        <td><a href="@controllers.view.routes.PurchaseHistoryViewController.update(history.id)">Edit</a></td>
+        <td><a href="@controllers.view.routes.PurchaseHistoryViewController.delete(history.id)">Delete</a></td>
+    </tr>
+</table> <br>
+
+<a href="@controllers.view.routes.IndexViewController.index">Index</a> <br>
+<a href="@controllers.view.routes.PurchaseHistoryViewController.getAll">Purchase histories</a>

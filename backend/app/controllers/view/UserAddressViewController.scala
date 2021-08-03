@@ -1,19 +1,16 @@
 package controllers.view
 
 import javax.inject.{Inject, Singleton}
-import models.Product
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.mvc.Results.Ok
-import play.api.mvc._
-import play.api.mvc.{AnyContent, MessagesControllerComponents}
-import repository.{CategoryRepository, ProductRepository, UserAddressRepository, UserRepository}
+import play.api.mvc.{AnyContent, MessagesControllerComponents, _}
+import repository.{UserAddressRepository, UserRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class UserAddressViewController @Inject()(cc: MessagesControllerComponents, userAddressRepository: UserAddressRepository, userRepository: UserRepository)
-                                     (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
+                                         (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   val userAddressForm: Form[CreateUserAddressForm] = Form {
     mapping(
@@ -39,7 +36,7 @@ class UserAddressViewController @Inject()(cc: MessagesControllerComponents, user
     userAddresses.map(p => Ok(views.html.useraddress.useraddresses(p)))
   }
 
-  def findOne(id : Long) : Action[AnyContent] = Action.async {implicit request =>
+  def findOne(id: Long): Action[AnyContent] = Action.async { implicit request =>
     userAddressRepository.getByIdOption(id)
       .map {
         case Some(value) => Ok(views.html.useraddress.useraddress(value))
@@ -47,7 +44,7 @@ class UserAddressViewController @Inject()(cc: MessagesControllerComponents, user
       }
   }
 
-  def add : Action[AnyContent] = Action.async {implicit request : MessagesRequest[AnyContent] =>
+  def add: Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.map(users =>
       Ok(views.html.useraddress.useraddressadd(userAddressForm, users))
     )
@@ -63,12 +60,12 @@ class UserAddressViewController @Inject()(cc: MessagesControllerComponents, user
     })
   }
 
-  def delete(id : Long) : Action[AnyContent] = Action.async {
+  def delete(id: Long): Action[AnyContent] = Action.async {
     userAddressRepository.delete(id)
       .map(_ => Redirect(controllers.view.routes.UserAddressViewController.getAll))
   }
 
-  def update(id: Long) : Action[AnyContent] = Action.async {implicit request: MessagesRequest[AnyContent] =>
+  def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.flatMap(users => {
       userAddressRepository.getById(id).map(userAddress => {
         val userAddressForm = updateUserAddressForm.fill(UpdateUserAddressForm(id, userAddress.street, userAddress.city, userAddress.zipcode, userAddress.user))
@@ -77,7 +74,7 @@ class UserAddressViewController @Inject()(cc: MessagesControllerComponents, user
     })
   }
 
-  def updateHandle = Action.async {implicit request =>
+  def updateHandle = Action.async { implicit request =>
     userRepository.list.flatMap(users => {
       updateUserAddressForm.bindFromRequest.fold(
         errorForm => Future.successful(BadRequest(views.html.useraddress.useraddressupdate(errorForm, users))),
@@ -89,5 +86,6 @@ class UserAddressViewController @Inject()(cc: MessagesControllerComponents, user
 
 }
 
-case class CreateUserAddressForm(street : String, city : String, zipcode : String, user : Long)
-case class UpdateUserAddressForm(id: Long, street : String, city : String, zipcode : String, user : Long)
+case class CreateUserAddressForm(street: String, city: String, zipcode: String, user: Long)
+
+case class UpdateUserAddressForm(id: Long, street: String, city: String, zipcode: String, user: Long)

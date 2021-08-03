@@ -1,25 +1,26 @@
 @import controllers.view.CreateUserAddressForm
-@(userAddress: Form[CreateUserAddressForm],users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+@(userAddress: Form[CreateUserAddressForm], users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
 
-@import helper._
+    @import helper._
 
-@flash.get("success").getOrElse("")
+    @flash.get("success").getOrElse("")
 
-@form(controllers.view.routes.UserAddressViewController.addHandle) {
-    @helper.CSRF.formField
-    @inputText(userAddress("street"))
-    @inputText(userAddress("city"))
-    @inputText(userAddress("zipcode"))
+    @form(controllers.view.routes.UserAddressViewController.addHandle) {
+        @helper.CSRF.formField
+        @inputText(userAddress("street"))
+        @inputText(userAddress("city"))
+        @inputText(userAddress("zipcode"))
 
-    <select name="user" id="user">
-    @for(user <- users){
-        <option value="@user.id">@user.name</option>
-    }
-    </select>
+        <select name="user" id="user">
+        @for(user <- users) {
+            <option value="@user.id">@user.name</option>
+        }
+        </select>
 
-    <div class="buttons">
-        <input type="submit" value="Add User Address"/>
-    </div>
-}<br>
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
-<a href="@controllers.view.routes.UserAddressViewController.getAll">User addresses</a>
+        <div class="buttons">
+            <input type="submit" value="Add User Address"/>
+        </div>
+    } <br>
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>
+    <br>
+    <a href="@controllers.view.routes.UserAddressViewController.getAll">User addresses</a>

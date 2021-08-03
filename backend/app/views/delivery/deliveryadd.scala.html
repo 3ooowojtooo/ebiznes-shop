@@ -1,5 +1,5 @@
 @import controllers.view.CreateDeliveryForm
-@(delivery: Form[CreateDeliveryForm],carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+@(delivery: Form[CreateDeliveryForm], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 
@@ -10,10 +10,11 @@
     @inputDate(delivery("deliveryTimestamp"))
 
     <select name="cart" id="cart">
-    @for(cart <- carts){
+    @for(cart <- carts) {
         <option value="@cart.id">@cart.id</option>
     }
-    </select><br>
+    </select>
+    <br>
 
     <select name="isDelivered" id="isDelivered">
         <option value="true">true</option>

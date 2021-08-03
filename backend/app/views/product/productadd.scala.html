@@ -1,25 +1,26 @@
 @import controllers.view.CreateProductForm
-@(product: Form[CreateProductForm],category: Seq[Category])(implicit request: MessagesRequestHeader, flash: Flash)
+@(product: Form[CreateProductForm], category: Seq[Category])(implicit request: MessagesRequestHeader, flash: Flash)
 
-@import helper._
+    @import helper._
 
-@flash.get("success").getOrElse("")
+    @flash.get("success").getOrElse("")
 
-@form(controllers.view.routes.ProductViewController.addHandle) {
-    @helper.CSRF.formField
-    @inputText(product("name"))
-    @inputText(product("description"))
-    @inputText(product("price"))
+    @form(controllers.view.routes.ProductViewController.addHandle) {
+        @helper.CSRF.formField
+        @inputText(product("name"))
+        @inputText(product("description"))
+        @inputText(product("price"))
 
-    <select name="category" id="category">
-    @for(cat <- category){
-        <option value="@cat.id">@cat.name</option>
-    }
-    </select>
+        <select name="category" id="category">
+        @for(cat <- category) {
+            <option value="@cat.id">@cat.name</option>
+        }
+        </select>
 
-    <div class="buttons">
-        <input type="submit" value="Add Product"/>
-    </div>
-}<br>
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
-<a href="@controllers.view.routes.ProductViewController.getAll">Products</a>
+        <div class="buttons">
+            <input type="submit" value="Add Product"/>
+        </div>
+    } <br>
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>
+    <br>
+    <a href="@controllers.view.routes.ProductViewController.getAll">Products</a>

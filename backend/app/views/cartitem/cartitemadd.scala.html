@@ -1,5 +1,5 @@
 @import controllers.view.CreateCartItemForm
-@(item: Form[CreateCartItemForm],products: Seq[Product],carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+@(item: Form[CreateCartItemForm], products: Seq[Product], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 
@@ -10,13 +10,14 @@
     @inputText(item("amount"))
 
     <select name="product" id="product">
-    @for(product <- products){
+    @for(product <- products) {
         <option value="@product.id">@product.name</option>
     }
-    </select><br>
+    </select>
+    <br>
 
     <select name="cart" id="cart">
-    @for(cart <- carts){
+    @for(cart <- carts) {
         <option value="@cart.id">@cart.id</option>
     }
     </select>

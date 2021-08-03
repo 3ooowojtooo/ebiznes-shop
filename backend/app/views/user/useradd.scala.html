@@ -1,18 +1,19 @@
 @import controllers.view.CreateUserForm
 @(user: Form[CreateUserForm])(implicit request: MessagesRequestHeader, flash: Flash)
 
-@import helper._
+    @import helper._
 
-@flash.get("success").getOrElse("")
+    @flash.get("success").getOrElse("")
 
-@form(controllers.view.routes.UserViewController.addHandle) {
-    @helper.CSRF.formField
-    @inputText(user("name"))
-    @inputText(user("age"))
+    @form(controllers.view.routes.UserViewController.addHandle) {
+        @helper.CSRF.formField
+        @inputText(user("name"))
+        @inputText(user("age"))
 
-    <div class="buttons">
-        <input type="submit" value="Add User"/>
-    </div>
-}<br>
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
-<a href="@controllers.view.routes.UserViewController.getAll">Users</a>
+        <div class="buttons">
+            <input type="submit" value="Add User"/>
+        </div>
+    } <br>
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>
+    <br>
+    <a href="@controllers.view.routes.UserViewController.getAll">Users</a>

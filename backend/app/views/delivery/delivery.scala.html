@@ -1,6 +1,6 @@
 @(delivery: Delivery)
 
-<table style="width:100%">
+<table style="width: 100%">
     <tr>
         <th>Cart</th>
         <th>Delivered On</th>
@@ -9,13 +9,13 @@
         <th>Delete</th>
     </tr>
     <tr>
-    <td>@delivery.cart</td>
-    <td>@delivery.deliveryTimestamp</td>
-    <td>@delivery.isDelivered</td>
+        <td>@delivery.cart</td>
+        <td>@delivery.deliveryTimestamp</td>
+        <td>@delivery.isDelivered</td>
         <td><a href="@controllers.view.routes.DeliveryViewController.update(delivery.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.DeliveryViewController.delete(delivery.id)">Delete</a></td>
     </tr>
-</table><br>
+</table> <br>
 
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a> <br>
 <a href="@controllers.view.routes.DeliveryViewController.getAll">Deliveries</a>

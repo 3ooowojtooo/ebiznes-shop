@@ -1,6 +1,6 @@
 @(userAddress: UserAddress)
 
-<table style="width:100%">
+<table style="width: 100%">
     <tr>
         <th>Street</th>
         <th>City</th>
@@ -10,14 +10,14 @@
         <th>Delete</th>
     </tr>
     <tr>
-    <td>@userAddress.street</td>
-    <td>@userAddress.city</td>
-    <td>@userAddress.zipcode</td>
-    <td>@userAddress.user</td>
+        <td>@userAddress.street</td>
+        <td>@userAddress.city</td>
+        <td>@userAddress.zipcode</td>
+        <td>@userAddress.user</td>
         <td><a href="@controllers.view.routes.UserAddressViewController.update(userAddress.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.UserAddressViewController.delete(userAddress.id)">Delete</a></td>
     </tr>
-</table><br>
+</table> <br>
 
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a> <br>
 <a href="@controllers.view.routes.UserAddressViewController.getAll">User addresses</a>

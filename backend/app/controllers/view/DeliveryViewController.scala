@@ -4,18 +4,16 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import javax.inject.{Inject, Singleton}
-import models.Product
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.mvc._
-import play.api.mvc.{AnyContent, MessagesControllerComponents}
-import repository.{CartRepository, CategoryRepository, DeliveryRepository, ProductRepository}
+import play.api.mvc.{AnyContent, MessagesControllerComponents, _}
+import repository.{CartRepository, DeliveryRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class DeliveryViewController @Inject()(cc: MessagesControllerComponents, deliveryRepository: DeliveryRepository, cartRepository: CartRepository)
-                                     (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
+                                      (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   val deliveryForm: Form[CreateDeliveryForm] = Form {
     mapping(
@@ -41,7 +39,7 @@ class DeliveryViewController @Inject()(cc: MessagesControllerComponents, deliver
     deliveries.map(p => Ok(views.html.delivery.deliveries(p)))
   }
 
-  def findOne(id : Long) : Action[AnyContent] = Action.async {implicit request =>
+  def findOne(id: Long): Action[AnyContent] = Action.async { implicit request =>
     deliveryRepository.getByIdOption(id)
       .map {
         case Some(value) => Ok(views.html.delivery.delivery(value))
@@ -49,7 +47,7 @@ class DeliveryViewController @Inject()(cc: MessagesControllerComponents, deliver
       }
   }
 
-  def add : Action[AnyContent] = Action.async {implicit request : MessagesRequest[AnyContent] =>
+  def add: Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     cartRepository.list.map(carts =>
       Ok(views.html.delivery.deliveryadd(deliveryForm, carts))
     )
@@ -65,12 +63,12 @@ class DeliveryViewController @Inject()(cc: MessagesControllerComponents, deliver
     })
   }
 
-  def delete(id : Long) : Action[AnyContent] = Action.async {
+  def delete(id: Long): Action[AnyContent] = Action.async {
     deliveryRepository.delete(id)
       .map(_ => Redirect(controllers.view.routes.DeliveryViewController.getAll))
   }
 
-  def update(id: Long) : Action[AnyContent] = Action.async {implicit request: MessagesRequest[AnyContent] =>
+  def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     cartRepository.list.flatMap(carts => {
       deliveryRepository.getById(id).map(delivery => {
         val deliveryForm = updateDeliveryForm.fill(UpdateDeliveryForm(id, delivery.cart, dateFormat.parse(delivery.deliveryTimestamp), delivery.isDelivered))
@@ -79,7 +77,7 @@ class DeliveryViewController @Inject()(cc: MessagesControllerComponents, deliver
     })
   }
 
-  def updateHandle = Action.async {implicit request =>
+  def updateHandle = Action.async { implicit request =>
     cartRepository.list.flatMap(carts => {
       updateDeliveryForm.bindFromRequest.fold(
         errorForm => Future.successful(BadRequest(views.html.delivery.deliveryupdate(errorForm, carts))),
@@ -91,5 +89,6 @@ class DeliveryViewController @Inject()(cc: MessagesControllerComponents, deliver
 
 }
 
-case class CreateDeliveryForm(cart: Long, deliveryTimestamp: Date, isDelivered : Boolean)
-case class UpdateDeliveryForm(id: Long, cart: Long, deliveryTimestamp: Date, isDelivered : Boolean)
+case class CreateDeliveryForm(cart: Long, deliveryTimestamp: Date, isDelivered: Boolean)
+
+case class UpdateDeliveryForm(id: Long, cart: Long, deliveryTimestamp: Date, isDelivered: Boolean)

@@ -1,0 +1,24 @@
+@import controllers.view.CreatePurchaseHistoryForm
+@(history: Form[CreatePurchaseHistoryForm], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.PurchaseHistoryViewController.addHandle) {
+    @helper.CSRF.formField
+    @inputText(history("totalPrice"))
+    @inputDate(history("purchaseTimestamp"))
+
+    <select name="cart" id="cart">
+    @for(cart <- carts) {
+        <option value="@cart.id">@cart.id</option>
+    }
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Add Purchase History"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.PurchaseHistoryViewController.getAll">Purchase histories</a>

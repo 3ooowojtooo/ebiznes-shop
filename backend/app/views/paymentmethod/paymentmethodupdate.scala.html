@@ -1,5 +1,5 @@
 @import controllers.view.UpdatePaymentMethodForm
-@(method: Form[UpdatePaymentMethodForm],users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+@(method: Form[UpdatePaymentMethodForm], users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 
@@ -11,10 +11,10 @@
     @inputText(method("name"))
 
     <select name="user" id="user">
-    @for(user <- users){
-        @if(user.id.toString==method("user").value.getOrElse(0)) {
+    @for(user <- users) {
+        @if(user.id.toString == method("user").value.getOrElse(0)) {
             <option value="@user.id" selected>@user.name</option>
-        }else{
+        } else {
             <option value="@user.id">@user.name</option>
         }
     }
@@ -25,4 +25,4 @@
     </div>
 }<br>
 <a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
-    <a href="@controllers.view.routes.PaymentMethodViewController.getAll">Payment Methods</a>
+<a href="@controllers.view.routes.PaymentMethodViewController.getAll">Payment Methods</a>

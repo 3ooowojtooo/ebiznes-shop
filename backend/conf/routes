@@ -1,154 +1,163 @@
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
-GET           /                                controllers.view.IndexViewController.index
+GET           /assets/*file                        controllers.Assets.versioned(path="/public", file: Asset)
+GET           /                                    controllers.view.IndexViewController.index
 
 # Product REST routes
-GET           /rest/product                    controllers.rest.ProductRestController.getAll
-GET           /rest/product/:id                controllers.rest.ProductRestController.findOne(id : Long)
-POST          /rest/product                    controllers.rest.ProductRestController.create
-DELETE        /rest/product/:id                controllers.rest.ProductRestController.delete(id : Long)
-PUT           /rest/product/:id                controllers.rest.ProductRestController.update(id : Long)
+GET           /rest/product                        controllers.rest.ProductRestController.getAll
+GET           /rest/product/:id                    controllers.rest.ProductRestController.findOne(id : Long)
+POST          /rest/product                        controllers.rest.ProductRestController.create
+DELETE        /rest/product/:id                    controllers.rest.ProductRestController.delete(id : Long)
+PUT           /rest/product/:id                    controllers.rest.ProductRestController.update(id : Long)
 
 # Product VIEW routes
-GET           /product                         controllers.view.ProductViewController.getAll
-GET           /product/details/:id             controllers.view.ProductViewController.findOne(id : Long)
-GET           /product/add                     controllers.view.ProductViewController.add
-POST          /product/addhandle               controllers.view.ProductViewController.addHandle
-GET           /product/delete/:id              controllers.view.ProductViewController.delete(id : Long)
-GET           /product/update/:id              controllers.view.ProductViewController.update(id : Long)
-POST          /product/updatehandle            controllers.view.ProductViewController.updateHandle
+GET           /product                             controllers.view.ProductViewController.getAll
+GET           /product/details/:id                 controllers.view.ProductViewController.findOne(id : Long)
+GET           /product/add                         controllers.view.ProductViewController.add
+POST          /product/addhandle                   controllers.view.ProductViewController.addHandle
+GET           /product/delete/:id                  controllers.view.ProductViewController.delete(id : Long)
+GET           /product/update/:id                  controllers.view.ProductViewController.update(id : Long)
+POST          /product/updatehandle                controllers.view.ProductViewController.updateHandle
 
 # Category REST routes
-GET           /rest/category                   controllers.rest.CategoryRestController.getAll
-GET           /rest/category/:id               controllers.rest.CategoryRestController.findOne(id : Long)
-POST          /rest/category                   controllers.rest.CategoryRestController.create
-DELETE        /rest/category/:id               controllers.rest.CategoryRestController.delete(id : Long)
-PUT           /rest/category/:id               controllers.rest.CategoryRestController.update(id : Long)
+GET           /rest/category                       controllers.rest.CategoryRestController.getAll
+GET           /rest/category/:id                   controllers.rest.CategoryRestController.findOne(id : Long)
+POST          /rest/category                       controllers.rest.CategoryRestController.create
+DELETE        /rest/category/:id                   controllers.rest.CategoryRestController.delete(id : Long)
+PUT           /rest/category/:id                   controllers.rest.CategoryRestController.update(id : Long)
 
 # Category VIEW routes
-GET           /category                         controllers.view.CategoryViewController.getAll
-GET           /category/details/:id             controllers.view.CategoryViewController.findOne(id : Long)
-GET           /category/add                     controllers.view.CategoryViewController.add
-POST          /category/addhandle               controllers.view.CategoryViewController.addHandle
-GET           /category/delete/:id              controllers.view.CategoryViewController.delete(id : Long)
-GET           /category/update/:id              controllers.view.CategoryViewController.update(id : Long)
-POST          /category/updatehandle            controllers.view.CategoryViewController.updateHandle
+GET           /category                            controllers.view.CategoryViewController.getAll
+GET           /category/details/:id                controllers.view.CategoryViewController.findOne(id : Long)
+GET           /category/add                        controllers.view.CategoryViewController.add
+POST          /category/addhandle                  controllers.view.CategoryViewController.addHandle
+GET           /category/delete/:id                 controllers.view.CategoryViewController.delete(id : Long)
+GET           /category/update/:id                 controllers.view.CategoryViewController.update(id : Long)
+POST          /category/updatehandle               controllers.view.CategoryViewController.updateHandle
 
 # User REST routes
-GET           /rest/user                       controllers.rest.UserRestController.getAll
-GET           /rest/user/:id                   controllers.rest.UserRestController.findOne(id : Long)
-POST          /rest/user                       controllers.rest.UserRestController.create
-DELETE        /rest/user/:id                   controllers.rest.UserRestController.delete(id : Long)
-PUT           /rest/user/:id                   controllers.rest.UserRestController.update(id : Long)
+GET           /rest/user                           controllers.rest.UserRestController.getAll
+GET           /rest/user/:id                       controllers.rest.UserRestController.findOne(id : Long)
+POST          /rest/user                           controllers.rest.UserRestController.create
+DELETE        /rest/user/:id                       controllers.rest.UserRestController.delete(id : Long)
+PUT           /rest/user/:id                       controllers.rest.UserRestController.update(id : Long)
 
 # User VIEW routes
-GET           /user                         controllers.view.UserViewController.getAll
-GET           /user/details/:id             controllers.view.UserViewController.findOne(id : Long)
-GET           /user/add                     controllers.view.UserViewController.add
-POST          /user/addhandle               controllers.view.UserViewController.addHandle
-GET           /user/delete/:id              controllers.view.UserViewController.delete(id : Long)
-GET           /user/update/:id              controllers.view.UserViewController.update(id : Long)
-POST          /user/updatehandle            controllers.view.UserViewController.updateHandle
+GET           /user                                controllers.view.UserViewController.getAll
+GET           /user/details/:id                    controllers.view.UserViewController.findOne(id : Long)
+GET           /user/add                            controllers.view.UserViewController.add
+POST          /user/addhandle                      controllers.view.UserViewController.addHandle
+GET           /user/delete/:id                     controllers.view.UserViewController.delete(id : Long)
+GET           /user/update/:id                     controllers.view.UserViewController.update(id : Long)
+POST          /user/updatehandle                   controllers.view.UserViewController.updateHandle
 
 # User address REST routes
-GET           /rest/address                    controllers.rest.UserAddressRestController.getAll
-GET           /rest/address/:id                controllers.rest.UserAddressRestController.findOne(id : Long)
-POST          /rest/address                    controllers.rest.UserAddressRestController.create
-DELETE        /rest/address/:id                controllers.rest.UserAddressRestController.delete(id : Long)
-PUT           /rest/address/:id                controllers.rest.UserAddressRestController.update(id : Long)
+GET           /rest/address                        controllers.rest.UserAddressRestController.getAll
+GET           /rest/address/:id                    controllers.rest.UserAddressRestController.findOne(id : Long)
+POST          /rest/address                        controllers.rest.UserAddressRestController.create
+DELETE        /rest/address/:id                    controllers.rest.UserAddressRestController.delete(id : Long)
+PUT           /rest/address/:id                    controllers.rest.UserAddressRestController.update(id : Long)
 
 # User addresses VIEW routes
-GET           /address                         controllers.view.UserAddressViewController.getAll
-GET           /address/details/:id             controllers.view.UserAddressViewController.findOne(id : Long)
-GET           /address/add                     controllers.view.UserAddressViewController.add
-POST          /address/addhandle               controllers.view.UserAddressViewController.addHandle
-GET           /address/delete/:id              controllers.view.UserAddressViewController.delete(id : Long)
-GET           /address/update/:id              controllers.view.UserAddressViewController.update(id : Long)
-POST          /address/updatehandle            controllers.view.UserAddressViewController.updateHandle
+GET           /address                             controllers.view.UserAddressViewController.getAll
+GET           /address/details/:id                 controllers.view.UserAddressViewController.findOne(id : Long)
+GET           /address/add                         controllers.view.UserAddressViewController.add
+POST          /address/addhandle                   controllers.view.UserAddressViewController.addHandle
+GET           /address/delete/:id                  controllers.view.UserAddressViewController.delete(id : Long)
+GET           /address/update/:id                  controllers.view.UserAddressViewController.update(id : Long)
+POST          /address/updatehandle                controllers.view.UserAddressViewController.updateHandle
 
 # Stock REST routes
-GET           /rest/stock                      controllers.rest.StockRestController.getAll
-GET           /rest/stock/:id                  controllers.rest.StockRestController.findOne(id : Long)
-POST          /rest/stock                      controllers.rest.StockRestController.create
-DELETE        /rest/stock/:id                  controllers.rest.StockRestController.delete(id : Long)
-PUT           /rest/stock/:id                  controllers.rest.StockRestController.update(id : Long)
+GET           /rest/stock                          controllers.rest.StockRestController.getAll
+GET           /rest/stock/:id                      controllers.rest.StockRestController.findOne(id : Long)
+POST          /rest/stock                          controllers.rest.StockRestController.create
+DELETE        /rest/stock/:id                      controllers.rest.StockRestController.delete(id : Long)
+PUT           /rest/stock/:id                      controllers.rest.StockRestController.update(id : Long)
 
 # Stock VIEW routes
-GET           /stock                         controllers.view.StockViewController.getAll
-GET           /stock/details/:id             controllers.view.StockViewController.findOne(id : Long)
-GET           /stock/add                     controllers.view.StockViewController.add
-POST          /stock/addhandle               controllers.view.StockViewController.addHandle
-GET           /stock/delete/:id              controllers.view.StockViewController.delete(id : Long)
-GET           /stock/update/:id              controllers.view.StockViewController.update(id : Long)
-POST          /stock/updatehandle            controllers.view.StockViewController.updateHandle
+GET           /stock                               controllers.view.StockViewController.getAll
+GET           /stock/details/:id                   controllers.view.StockViewController.findOne(id : Long)
+GET           /stock/add                           controllers.view.StockViewController.add
+POST          /stock/addhandle                     controllers.view.StockViewController.addHandle
+GET           /stock/delete/:id                    controllers.view.StockViewController.delete(id : Long)
+GET           /stock/update/:id                    controllers.view.StockViewController.update(id : Long)
+POST          /stock/updatehandle                  controllers.view.StockViewController.updateHandle
 
 # Cart REST routes
-GET           /rest/cart                       controllers.rest.CartRestController.getAll
-GET           /rest/cart/:id                   controllers.rest.CartRestController.findOne(id : Long)
-POST          /rest/cart                       controllers.rest.CartRestController.create
-DELETE        /rest/cart/:id                   controllers.rest.CartRestController.delete(id : Long)
-PUT           /rest/cart/:id                   controllers.rest.CartRestController.update(id : Long)
+GET           /rest/cart                           controllers.rest.CartRestController.getAll
+GET           /rest/cart/:id                       controllers.rest.CartRestController.findOne(id : Long)
+POST          /rest/cart                           controllers.rest.CartRestController.create
+DELETE        /rest/cart/:id                       controllers.rest.CartRestController.delete(id : Long)
+PUT           /rest/cart/:id                       controllers.rest.CartRestController.update(id : Long)
 
 # Cart VIEW routes
-GET           /cart                         controllers.view.CartViewController.getAll
-GET           /cart/details/:id             controllers.view.CartViewController.findOne(id : Long)
-GET           /cart/add                     controllers.view.CartViewController.add
-POST          /cart/addhandle               controllers.view.CartViewController.addHandle
-GET           /cart/delete/:id              controllers.view.CartViewController.delete(id : Long)
-GET           /cart/update/:id              controllers.view.CartViewController.update(id : Long)
-POST          /cart/updatehandle            controllers.view.CartViewController.updateHandle
+GET           /cart                                controllers.view.CartViewController.getAll
+GET           /cart/details/:id                    controllers.view.CartViewController.findOne(id : Long)
+GET           /cart/add                            controllers.view.CartViewController.add
+POST          /cart/addhandle                      controllers.view.CartViewController.addHandle
+GET           /cart/delete/:id                     controllers.view.CartViewController.delete(id : Long)
+GET           /cart/update/:id                     controllers.view.CartViewController.update(id : Long)
+POST          /cart/updatehandle                   controllers.view.CartViewController.updateHandle
 
 # Cart item REST routes
-GET           /rest/cartitem                   controllers.rest.CartItemRestController.getAll
-GET           /rest/cartitem/:id               controllers.rest.CartItemRestController.findOne(id : Long)
-POST          /rest/cartitem                   controllers.rest.CartItemRestController.create
-DELETE        /rest/cartitem/:id               controllers.rest.CartItemRestController.delete(id : Long)
-PUT           /rest/cartitem/:id               controllers.rest.CartItemRestController.update(id : Long)
+GET           /rest/cartitem                       controllers.rest.CartItemRestController.getAll
+GET           /rest/cartitem/:id                   controllers.rest.CartItemRestController.findOne(id : Long)
+POST          /rest/cartitem                       controllers.rest.CartItemRestController.create
+DELETE        /rest/cartitem/:id                   controllers.rest.CartItemRestController.delete(id : Long)
+PUT           /rest/cartitem/:id                   controllers.rest.CartItemRestController.update(id : Long)
 
 # Cart item VIEW routes
-GET           /cartitem                         controllers.view.CartItemViewController.getAll
-GET           /cartitem/details/:id             controllers.view.CartItemViewController.findOne(id : Long)
-GET           /cartitem/add                     controllers.view.CartItemViewController.add
-POST          /cartitem/addhandle               controllers.view.CartItemViewController.addHandle
-GET           /cartitem/delete/:id              controllers.view.CartItemViewController.delete(id : Long)
-GET           /cartitem/update/:id              controllers.view.CartItemViewController.update(id : Long)
-POST          /cartitem/updatehandle            controllers.view.CartItemViewController.updateHandle
+GET           /cartitem                            controllers.view.CartItemViewController.getAll
+GET           /cartitem/details/:id                controllers.view.CartItemViewController.findOne(id : Long)
+GET           /cartitem/add                        controllers.view.CartItemViewController.add
+POST          /cartitem/addhandle                  controllers.view.CartItemViewController.addHandle
+GET           /cartitem/delete/:id                 controllers.view.CartItemViewController.delete(id : Long)
+GET           /cartitem/update/:id                 controllers.view.CartItemViewController.update(id : Long)
+POST          /cartitem/updatehandle               controllers.view.CartItemViewController.updateHandle
 
 # Delivery REST routes
-GET           /rest/delivery                   controllers.rest.DeliveryRestController.getAll
-GET           /rest/delivery/:id               controllers.rest.DeliveryRestController.findOne(id : Long)
-POST          /rest/delivery                   controllers.rest.DeliveryRestController.create
-DELETE        /rest/delivery/:id               controllers.rest.DeliveryRestController.delete(id : Long)
-PUT           /rest/delivery/:id               controllers.rest.DeliveryRestController.update(id : Long)
+GET           /rest/delivery                       controllers.rest.DeliveryRestController.getAll
+GET           /rest/delivery/:id                   controllers.rest.DeliveryRestController.findOne(id : Long)
+POST          /rest/delivery                       controllers.rest.DeliveryRestController.create
+DELETE        /rest/delivery/:id                   controllers.rest.DeliveryRestController.delete(id : Long)
+PUT           /rest/delivery/:id                   controllers.rest.DeliveryRestController.update(id : Long)
 
 # Delivery VIEW routes
-GET           /delivery                         controllers.view.DeliveryViewController.getAll
-GET           /delivery/details/:id             controllers.view.DeliveryViewController.findOne(id : Long)
-GET           /delivery/add                     controllers.view.DeliveryViewController.add
-POST          /delivery/addhandle               controllers.view.DeliveryViewController.addHandle
-GET           /delivery/delete/:id              controllers.view.DeliveryViewController.delete(id : Long)
-GET           /delivery/update/:id              controllers.view.DeliveryViewController.update(id : Long)
-POST          /delivery/updatehandle            controllers.view.DeliveryViewController.updateHandle
+GET           /delivery                            controllers.view.DeliveryViewController.getAll
+GET           /delivery/details/:id                controllers.view.DeliveryViewController.findOne(id : Long)
+GET           /delivery/add                        controllers.view.DeliveryViewController.add
+POST          /delivery/addhandle                  controllers.view.DeliveryViewController.addHandle
+GET           /delivery/delete/:id                 controllers.view.DeliveryViewController.delete(id : Long)
+GET           /delivery/update/:id                 controllers.view.DeliveryViewController.update(id : Long)
+POST          /delivery/updatehandle               controllers.view.DeliveryViewController.updateHandle
 
 # Payment method REST routes
-GET           /rest/paymentmethod              controllers.rest.PaymentMethodRestController.getAll
-GET           /rest/paymentmethod/:id          controllers.rest.PaymentMethodRestController.findOne(id : Long)
-POST          /rest/paymentmethod              controllers.rest.PaymentMethodRestController.create
-DELETE        /rest/paymentmethod/:id          controllers.rest.PaymentMethodRestController.delete(id : Long)
-PUT           /rest/paymentmethod/:id          controllers.rest.PaymentMethodRestController.update(id : Long)
+GET           /rest/paymentmethod                  controllers.rest.PaymentMethodRestController.getAll
+GET           /rest/paymentmethod/:id              controllers.rest.PaymentMethodRestController.findOne(id : Long)
+POST          /rest/paymentmethod                  controllers.rest.PaymentMethodRestController.create
+DELETE        /rest/paymentmethod/:id              controllers.rest.PaymentMethodRestController.delete(id : Long)
+PUT           /rest/paymentmethod/:id              controllers.rest.PaymentMethodRestController.update(id : Long)
 
 # Payment method VIEW routes
-GET           /paymentmethod                         controllers.view.PaymentMethodViewController.getAll
-GET           /paymentmethod/details/:id             controllers.view.PaymentMethodViewController.findOne(id : Long)
-GET           /paymentmethod/add                     controllers.view.PaymentMethodViewController.add
-POST          /paymentmethod/addhandle               controllers.view.PaymentMethodViewController.addHandle
-GET           /paymentmethod/delete/:id              controllers.view.PaymentMethodViewController.delete(id : Long)
-GET           /paymentmethod/update/:id              controllers.view.PaymentMethodViewController.update(id : Long)
-POST          /paymentmethod/updatehandle            controllers.view.PaymentMethodViewController.updateHandle
+GET           /paymentmethod                       controllers.view.PaymentMethodViewController.getAll
+GET           /paymentmethod/details/:id           controllers.view.PaymentMethodViewController.findOne(id : Long)
+GET           /paymentmethod/add                   controllers.view.PaymentMethodViewController.add
+POST          /paymentmethod/addhandle             controllers.view.PaymentMethodViewController.addHandle
+GET           /paymentmethod/delete/:id            controllers.view.PaymentMethodViewController.delete(id : Long)
+GET           /paymentmethod/update/:id            controllers.view.PaymentMethodViewController.update(id : Long)
+POST          /paymentmethod/updatehandle          controllers.view.PaymentMethodViewController.updateHandle
 
 # Purchase history REST routes
-GET           /rest/purchasehistory            controllers.rest.PurchaseHistoryRestController.getAll
-GET           /rest/purchasehistory/:id        controllers.rest.PurchaseHistoryRestController.findOne(id : Long)
-POST          /rest/purchasehistory            controllers.rest.PurchaseHistoryRestController.create
-DELETE        /rest/purchasehistory/:id        controllers.rest.PurchaseHistoryRestController.delete(id : Long)
-PUT           /rest/purchasehistory/:id        controllers.rest.PurchaseHistoryRestController.update(id : Long)
+GET           /rest/purchasehistory                controllers.rest.PurchaseHistoryRestController.getAll
+GET           /rest/purchasehistory/:id            controllers.rest.PurchaseHistoryRestController.findOne(id : Long)
+POST          /rest/purchasehistory                controllers.rest.PurchaseHistoryRestController.create
+DELETE        /rest/purchasehistory/:id            controllers.rest.PurchaseHistoryRestController.delete(id : Long)
+PUT           /rest/purchasehistory/:id            controllers.rest.PurchaseHistoryRestController.update(id : Long)
+
+# Purchase history VIEW routes
+GET           /purchasehistory                     controllers.view.PurchaseHistoryViewController.getAll
+GET           /purchasehistory/details/:id         controllers.view.PurchaseHistoryViewController.findOne(id : Long)
+GET           /purchasehistory/add                 controllers.view.PurchaseHistoryViewController.add
+POST          /purchasehistory/addhandle           controllers.view.PurchaseHistoryViewController.addHandle
+GET           /purchasehistory/delete/:id          controllers.view.PurchaseHistoryViewController.delete(id : Long)
+GET           /purchasehistory/update/:id          controllers.view.PurchaseHistoryViewController.update(id : Long)
+POST          /purchasehistory/updatehandle        controllers.view.PurchaseHistoryViewController.updateHandle

@@ -1,6 +1,6 @@
 @(method: PaymentMethod)
 
-<table style="width:100%">
+<table style="width: 100%">
     <tr>
         <th>User</th>
         <th>Name</th>
@@ -8,12 +8,12 @@
         <th>Delete</th>
     </tr>
     <tr>
-    <td>@method.user</td>
-    <td>@method.name</td>
+        <td>@method.user</td>
+        <td>@method.name</td>
         <td><a href="@controllers.view.routes.PaymentMethodViewController.update(method.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.PaymentMethodViewController.delete(method.id)">Delete</a></td>
     </tr>
-</table><br>
+</table> <br>
 
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a> <br>
 <a href="@controllers.view.routes.PaymentMethodViewController.getAll">Payment methods</a>

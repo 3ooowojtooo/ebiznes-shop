@@ -1,0 +1,30 @@
+@import controllers.view.UpdatePurchaseHistoryForm
+@(history: Form[UpdatePurchaseHistoryForm], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.PurchaseHistoryViewController.updateHandle) {
+    @helper.CSRF.formField
+    <input name="id" id="id" value="@history("id").value" type="hidden" />
+    @inputText(history("totalPrice"))
+    @inputDate(history("purchaseTimestamp"))
+
+    <select name="cart" id="cart">
+    @for(cart <- carts) {
+        @if(cart.id.toString == history("cart").value.getOrElse(0)) {
+            <option value="@cart.id" selected>@cart.id</option>
+        } else {
+            <option value="@cart.id">@cart.id</option>
+        }
+    }
+    </select>
+    <br>
+
+    <div class="buttons">
+        <input type="submit" value="Update Purchase History"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.PurchaseHistoryViewController.getAll">Purchase histories</a>

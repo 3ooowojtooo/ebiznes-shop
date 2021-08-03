@@ -1,6 +1,6 @@
 @(item: CartItem)
 
-<table style="width:100%">
+<table style="width: 100%">
     <tr>
         <th>Cart</th>
         <th>Product</th>
@@ -9,13 +9,13 @@
         <th>Delete</th>
     </tr>
     <tr>
-    <td>@item.cart</td>
-    <td>@item.product</td>
-    <td>@item.amount</td>
+        <td>@item.cart</td>
+        <td>@item.product</td>
+        <td>@item.amount</td>
         <td><a href="@controllers.view.routes.CartItemViewController.update(item.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.CartItemViewController.delete(item.id)">Delete</a></td>
     </tr>
-</table><br>
+</table> <br>
 
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a> <br>
 <a href="@controllers.view.routes.CartItemViewController.getAll">Products</a>

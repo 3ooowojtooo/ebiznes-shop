@@ -1,6 +1,6 @@
 @(methods: Seq[PaymentMethod])
 
-<table style="width:100%">
+<table style="width: 100%">
     <tr>
         <th>User</th>
         <th>Name</th>
@@ -8,15 +8,15 @@
         <th>Edit</th>
         <th>Delete</th>
     </tr>
-@for(method <- methods) {
-    <tr>
-    <td>@method.user</td>
-    <td>@method.name</td>
-        <td><a href="@controllers.view.routes.PaymentMethodViewController.findOne(method.id)">Details</a></td>
-        <td><a href="@controllers.view.routes.PaymentMethodViewController.update(method.id)">Edit</a></td>
-        <td><a href="@controllers.view.routes.PaymentMethodViewController.delete(method.id)">Delete</a></td>
-    </tr>
-}
-</table><br>
-<a href="@controllers.view.routes.PaymentMethodViewController.add">Add new payment method</a><br>
-    <a href="@controllers.view.routes.IndexViewController.index">Index</a>
+    @for(method <- methods) {
+        <tr>
+            <td>@method.user</td>
+            <td>@method.name</td>
+            <td><a href="@controllers.view.routes.PaymentMethodViewController.findOne(method.id)">Details</a></td>
+            <td><a href="@controllers.view.routes.PaymentMethodViewController.update(method.id)">Edit</a></td>
+            <td><a href="@controllers.view.routes.PaymentMethodViewController.delete(method.id)">Delete</a></td>
+        </tr>
+    }
+    </table> <br>
+<a href="@controllers.view.routes.PaymentMethodViewController.add">Add new payment method</a> <br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a>

@@ -6,7 +6,7 @@ import play.api.mvc.{MessagesControllerComponents, _}
 @Singleton
 class IndexViewController @Inject()(cc: MessagesControllerComponents) extends MessagesAbstractController(cc) {
 
-  def index : Action[AnyContent] = Action {
+  def index: Action[AnyContent] = Action {
     Ok(views.html.index())
   }
 

@@ -1,5 +1,5 @@
 @import controllers.view.UpdateDeliveryForm
-@(delivery: Form[UpdateDeliveryForm],carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+@(delivery: Form[UpdateDeliveryForm], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 
@@ -11,14 +11,15 @@
     @inputDate(delivery("deliveryTimestamp"))
 
     <select name="cart" id="cart">
-    @for(cart <- carts){
-        @if(cart.id.toString==delivery("cart").value.getOrElse(0)) {
+    @for(cart <- carts) {
+        @if(cart.id.toString == delivery("cart").value.getOrElse(0)) {
             <option value="@cart.id" selected>@cart.id</option>
-        }else{
+        } else {
             <option value="@cart.id">@cart.id</option>
         }
     }
-    </select><br>
+    </select>
+    <br>
 
     <select name="isDelivered" id="isDelivered">
     @for(p <- Seq[Boolean](true, false)) {
@@ -35,4 +36,4 @@
     </div>
 }<br>
 <a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
-    <a href="@controllers.view.routes.DeliveryViewController.getAll">Deliveries</a>
+<a href="@controllers.view.routes.DeliveryViewController.getAll">Deliveries</a>

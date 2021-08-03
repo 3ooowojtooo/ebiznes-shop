@@ -1,6 +1,6 @@
 @(stocks: Seq[Stock])
 
-<table style="width:100%">
+<table style="width: 100%">
     <tr>
         <th>Product</th>
         <th>Amount</th>
@@ -8,15 +8,15 @@
         <th>Edit</th>
         <th>Delete</th>
     </tr>
-@for(stock <- stocks) {
-    <tr>
-    <td>@stock.product</td>
-    <td>@stock.amount</td>
-        <td><a href="@controllers.view.routes.StockViewController.findOne(stock.id)">Details</a></td>
-        <td><a href="@controllers.view.routes.StockViewController.update(stock.id)">Edit</a></td>
-        <td><a href="@controllers.view.routes.StockViewController.delete(stock.id)">Delete</a></td>
-    </tr>
-}
-</table><br>
-<a href="@controllers.view.routes.StockViewController.add">Add new stock</a><br>
-    <a href="@controllers.view.routes.IndexViewController.index">Index</a>
+    @for(stock <- stocks) {
+        <tr>
+            <td>@stock.product</td>
+            <td>@stock.amount</td>
+            <td><a href="@controllers.view.routes.StockViewController.findOne(stock.id)">Details</a></td>
+            <td><a href="@controllers.view.routes.StockViewController.update(stock.id)">Edit</a></td>
+            <td><a href="@controllers.view.routes.StockViewController.delete(stock.id)">Delete</a></td>
+        </tr>
+    }
+    </table> <br>
+<a href="@controllers.view.routes.StockViewController.add">Add new stock</a> <br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a>

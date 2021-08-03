@@ -1,30 +1,31 @@
 @import controllers.view.UpdateProductForm
-@(product: Form[UpdateProductForm],category: Seq[Category])(implicit request: MessagesRequestHeader, flash: Flash)
+@(product: Form[UpdateProductForm], category: Seq[Category])(implicit request: MessagesRequestHeader, flash: Flash)
 
-@import helper._
+    @import helper._
 
-@flash.get("success").getOrElse("")
+    @flash.get("success").getOrElse("")
 
-@form(controllers.view.routes.ProductViewController.updateHandle) {
-    @helper.CSRF.formField
-    <input name="id" id="id" value="@product("id").value" type="hidden" />
-    @inputText(product("name"))
-    @inputText(product("description"))
-    @inputText(product("price"))
+    @form(controllers.view.routes.ProductViewController.updateHandle) {
+        @helper.CSRF.formField
+        <input name="id" id="id" value="@product("id").value" type="hidden" />
+        @inputText(product("name"))
+        @inputText(product("description"))
+        @inputText(product("price"))
 
-    <select name="category" id="category">
-    @for(cat <- category){
-        @if(cat.id.toString==product("category").value.getOrElse(0)) {
-            <option value="@cat.id" selected>@cat.name</option>
-        }else{
-            <option value="@cat.id">@cat.name</option>
+        <select name="category" id="category">
+        @for(cat <- category) {
+            @if(cat.id.toString == product("category").value.getOrElse(0)) {
+                <option value="@cat.id" selected>@cat.name</option>
+            } else {
+                <option value="@cat.id">@cat.name</option>
+            }
         }
-    }
-    </select>
+        </select>
 
-    <div class="buttons">
-        <input type="submit" value="Update Product"/>
-    </div>
-}<br>
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+        <div class="buttons">
+            <input type="submit" value="Update Product"/>
+        </div>
+    } <br>
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>
+    <br>
     <a href="@controllers.view.routes.ProductViewController.getAll">Products</a>

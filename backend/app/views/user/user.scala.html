@@ -1,6 +1,6 @@
 @(user: User)
 
-<table style="width:100%">
+<table style="width: 100%">
     <tr>
         <th>Name</th>
         <th>Age</th>
@@ -8,12 +8,12 @@
         <th>Delete</th>
     </tr>
     <tr>
-    <td>@user.name</td>
+        <td>@user.name</td>
         <td>@user.age</td>
         <td><a href="@controllers.view.routes.UserViewController.update(user.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.UserViewController.delete(user.id)">Delete</a></td>
     </tr>
-</table><br>
+</table> <br>
 
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a> <br>
 <a href="@controllers.view.routes.UserViewController.getAll">Users</a>

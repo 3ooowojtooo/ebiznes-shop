@@ -1,17 +1,17 @@
 @(category: Category)
 
-<table style="width:100%">
+<table style="width: 100%">
     <tr>
         <th>Name</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     <tr>
-    <td>@category.name</td>
+        <td>@category.name</td>
         <td><a href="@controllers.view.routes.CategoryViewController.update(category.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.CategoryViewController.delete(category.id)">Delete</a></td>
     </tr>
-</table><br>
+</table> <br>
 
-<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a> <br>
 <a href="@controllers.view.routes.CategoryViewController.getAll">Categories</a>

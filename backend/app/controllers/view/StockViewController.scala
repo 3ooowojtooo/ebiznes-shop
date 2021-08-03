@@ -1,18 +1,16 @@
 package controllers.view
 
 import javax.inject.{Inject, Singleton}
-import models.Product
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.mvc._
-import play.api.mvc.{AnyContent, MessagesControllerComponents}
-import repository.{CategoryRepository, ProductRepository, StockRepository}
+import play.api.mvc.{AnyContent, MessagesControllerComponents, _}
+import repository.{ProductRepository, StockRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class StockViewController @Inject()(cc: MessagesControllerComponents, stockRepository: StockRepository, productRepository: ProductRepository)
-                                     (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
+                                   (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   val stockForm: Form[CreateStockForm] = Form {
     mapping(
@@ -34,7 +32,7 @@ class StockViewController @Inject()(cc: MessagesControllerComponents, stockRepos
     stocks.map(p => Ok(views.html.stock.stocks(p)))
   }
 
-  def findOne(id : Long) : Action[AnyContent] = Action.async {implicit request =>
+  def findOne(id: Long): Action[AnyContent] = Action.async { implicit request =>
     stockRepository.getByIdOption(id)
       .map {
         case Some(value) => Ok(views.html.stock.stock(value))
@@ -42,7 +40,7 @@ class StockViewController @Inject()(cc: MessagesControllerComponents, stockRepos
       }
   }
 
-  def add : Action[AnyContent] = Action.async {implicit request : MessagesRequest[AnyContent] =>
+  def add: Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     productRepository.list.map(products =>
       Ok(views.html.stock.stockadd(stockForm, products))
     )
@@ -58,12 +56,12 @@ class StockViewController @Inject()(cc: MessagesControllerComponents, stockRepos
     })
   }
 
-  def delete(id : Long) : Action[AnyContent] = Action.async {
+  def delete(id: Long): Action[AnyContent] = Action.async {
     stockRepository.delete(id)
       .map(_ => Redirect(controllers.view.routes.StockViewController.getAll))
   }
 
-  def update(id: Long) : Action[AnyContent] = Action.async {implicit request: MessagesRequest[AnyContent] =>
+  def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     productRepository.list.flatMap(products => {
       stockRepository.getById(id).map(stock => {
         val stockForm = updateStockForm.fill(UpdateStockForm(id, stock.product, stock.amount))
@@ -72,7 +70,7 @@ class StockViewController @Inject()(cc: MessagesControllerComponents, stockRepos
     })
   }
 
-  def updateHandle = Action.async {implicit request =>
+  def updateHandle = Action.async { implicit request =>
     productRepository.list.flatMap(products => {
       updateStockForm.bindFromRequest.fold(
         errorForm => Future.successful(BadRequest(views.html.stock.stockupdate(errorForm, products))),
@@ -84,5 +82,6 @@ class StockViewController @Inject()(cc: MessagesControllerComponents, stockRepos
 
 }
 
-case class CreateStockForm(product : Long, amount : Long)
-case class UpdateStockForm(id: Long, product : Long, amount : Long)
+case class CreateStockForm(product: Long, amount: Long)
+
+case class UpdateStockForm(id: Long, product: Long, amount: Long)

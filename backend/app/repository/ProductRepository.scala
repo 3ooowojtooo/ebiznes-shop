@@ -8,32 +8,21 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ProductRepository @Inject() (val dbConfigProvider: DatabaseConfigProvider, val categoryRepository: CategoryRepository)(implicit ec: ExecutionContext) {
+class ProductRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val categoryRepository: CategoryRepository)(implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
   import profile.api._
-
-  class ProductTable(tag: Tag) extends Table[Product](tag, "product") {
-    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def name = column[String]("name")
-    def description = column[String]("description")
-    def category = column[Long]("category")
-    def price = column[Double]("price")
-    def category_fk = foreignKey("cat_fk",category, cat)(_.id)
-    def * = (id, name, description, category, price) <> ((Product.apply _).tupled, Product.unapply)
-  }
+  private val product = TableQuery[ProductTable]
 
   import categoryRepository.CategoryTable
-
-  private val product = TableQuery[ProductTable]
   private val cat = TableQuery[CategoryTable]
 
-  def create(name: String, description: String, category: Long, price : Double): Future[Product] = db.run {
-    (product.map(p => (p.name, p.description,p.category,p.price))
+  def create(name: String, description: String, category: Long, price: Double): Future[Product] = db.run {
+    (product.map(p => (p.name, p.description, p.category, p.price))
       returning product.map(_.id)
-      into {case ((name,description,category, price),id) => Product(id,name, description,category, price)}
-      ) += (name, description,category, price)
+      into { case ((name, description, category, price), id) => Product(id, name, description, category, price) }
+      ) += (name, description, category, price)
   }
 
   def list: Future[Seq[Product]] = db.run {
@@ -58,9 +47,25 @@ class ProductRepository @Inject() (val dbConfigProvider: DatabaseConfigProvider,
 
   def delete(id: Long): Future[Unit] = db.run(product.filter(_.id === id).delete).map(_ => ())
 
-  def update(id: Long, name: String, description: String, category: Long, price : Double): Future[Unit] = {
+  def update(id: Long, name: String, description: String, category: Long, price: Double): Future[Unit] = {
     val productToUpdate: Product = Product(id, name, description, category, price)
     db.run(product.filter(_.id === id).update(productToUpdate)).map(_ => ())
+  }
+
+  class ProductTable(tag: Tag) extends Table[Product](tag, "product") {
+    def category_fk = foreignKey("cat_fk", category, cat)(_.id)
+
+    def category = column[Long]("category")
+
+    def * = (id, name, description, category, price) <> ((Product.apply _).tupled, Product.unapply)
+
+    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+
+    def name = column[String]("name")
+
+    def description = column[String]("description")
+
+    def price = column[Double]("price")
   }
 
 }

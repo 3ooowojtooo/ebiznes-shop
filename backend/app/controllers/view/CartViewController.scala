@@ -13,7 +13,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CartViewController @Inject()(cc: MessagesControllerComponents, cartRepository: CartRepository, userRepository: UserRepository)
-                                     (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
+                                  (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   val cartForm: Form[CreateCartForm] = Form {
     mapping(
@@ -39,7 +39,7 @@ class CartViewController @Inject()(cc: MessagesControllerComponents, cartReposit
     carts.map(p => Ok(views.html.cart.carts(p)))
   }
 
-  def findOne(id : Long) : Action[AnyContent] = Action.async {implicit request =>
+  def findOne(id: Long): Action[AnyContent] = Action.async { implicit request =>
     cartRepository.getByIdOption(id)
       .map {
         case Some(value) => Ok(views.html.cart.cart(value))
@@ -47,7 +47,7 @@ class CartViewController @Inject()(cc: MessagesControllerComponents, cartReposit
       }
   }
 
-  def add : Action[AnyContent] = Action.async {implicit request : MessagesRequest[AnyContent] =>
+  def add: Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.map(users =>
       Ok(views.html.cart.cartadd(cartForm, users))
     )
@@ -63,12 +63,12 @@ class CartViewController @Inject()(cc: MessagesControllerComponents, cartReposit
     })
   }
 
-  def delete(id : Long) : Action[AnyContent] = Action.async {
+  def delete(id: Long): Action[AnyContent] = Action.async {
     cartRepository.delete(id)
       .map(_ => Redirect(controllers.view.routes.CartViewController.getAll))
   }
 
-  def update(id: Long) : Action[AnyContent] = Action.async {implicit request: MessagesRequest[AnyContent] =>
+  def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.flatMap(users => {
       cartRepository.getById(id).map(cart => {
         val cartForm = updateCartForm.fill(UpdateCartForm(id, dateFormat.parse(cart.createdTime), cart.user, cart.purchased))
@@ -77,7 +77,7 @@ class CartViewController @Inject()(cc: MessagesControllerComponents, cartReposit
     })
   }
 
-  def updateHandle = Action.async {implicit request =>
+  def updateHandle = Action.async { implicit request =>
     userRepository.list.flatMap(users => {
       updateCartForm.bindFromRequest.fold(
         errorForm => Future.successful(BadRequest(views.html.cart.cartupdate(errorForm, users))),
@@ -89,5 +89,6 @@ class CartViewController @Inject()(cc: MessagesControllerComponents, cartReposit
 
 }
 
-case class CreateCartForm(createdTime : Date, user : Long, purchased : Boolean)
-case class UpdateCartForm(id: Long, createdTime : Date, user : Long, purchased : Boolean)
+case class CreateCartForm(createdTime: Date, user: Long, purchased: Boolean)
+
+case class UpdateCartForm(id: Long, createdTime: Date, user: Long, purchased: Boolean)

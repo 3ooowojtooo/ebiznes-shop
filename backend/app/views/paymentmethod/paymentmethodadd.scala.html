@@ -1,5 +1,5 @@
 @import controllers.view.CreatePaymentMethodForm
-@(method: Form[CreatePaymentMethodForm],users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+@(method: Form[CreatePaymentMethodForm], users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 
@@ -10,10 +10,11 @@
     @inputText(method("name"))
 
     <select name="user" id="user">
-    @for(user <- users){
+    @for(user <- users) {
         <option value="@user.id">@user.name</option>
     }
-    </select><br>
+    </select>
+    <br>
 
     <div class="buttons">
         <input type="submit" value="Add Payment Method"/>

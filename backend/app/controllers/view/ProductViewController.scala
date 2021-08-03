@@ -1,11 +1,9 @@
 package controllers.view
 
 import javax.inject.{Inject, Singleton}
-import models.Product
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.mvc._
-import play.api.mvc.{AnyContent, MessagesControllerComponents}
+import play.api.mvc.{AnyContent, MessagesControllerComponents, _}
 import repository.{CategoryRepository, ProductRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,7 +36,7 @@ class ProductViewController @Inject()(cc: MessagesControllerComponents, productR
     products.map(p => Ok(views.html.product.products(p)))
   }
 
-  def findOne(id : Long) : Action[AnyContent] = Action.async {implicit request =>
+  def findOne(id: Long): Action[AnyContent] = Action.async { implicit request =>
     productRepository.getByIdOption(id)
       .map {
         case Some(value) => Ok(views.html.product.product(value))
@@ -46,7 +44,7 @@ class ProductViewController @Inject()(cc: MessagesControllerComponents, productR
       }
   }
 
-  def add : Action[AnyContent] = Action.async {implicit request : MessagesRequest[AnyContent] =>
+  def add: Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     categoryRepository.list().map(categories =>
       Ok(views.html.product.productadd(productForm, categories))
     )
@@ -62,12 +60,12 @@ class ProductViewController @Inject()(cc: MessagesControllerComponents, productR
     })
   }
 
-  def delete(id : Long) : Action[AnyContent] = Action.async {
+  def delete(id: Long): Action[AnyContent] = Action.async {
     productRepository.delete(id)
       .map(_ => Redirect(controllers.view.routes.ProductViewController.getAll))
   }
 
-  def update(id: Long) : Action[AnyContent] = Action.async {implicit request: MessagesRequest[AnyContent] =>
+  def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     categoryRepository.list().flatMap(categories => {
       productRepository.getById(id).map(product => {
         val productForm = updateProductForm.fill(UpdateProductForm(id, product.name, product.description, product.category, BigDecimal(product.price)))
@@ -76,7 +74,7 @@ class ProductViewController @Inject()(cc: MessagesControllerComponents, productR
     })
   }
 
-  def updateHandle = Action.async {implicit request =>
+  def updateHandle = Action.async { implicit request =>
     categoryRepository.list().flatMap(categories => {
       updateProductForm.bindFromRequest.fold(
         errorForm => Future.successful(BadRequest(views.html.product.productupdate(errorForm, categories))),
@@ -88,5 +86,6 @@ class ProductViewController @Inject()(cc: MessagesControllerComponents, productR
 
 }
 
-case class CreateProductForm(name: String, description: String, category: Long, price : BigDecimal)
-case class UpdateProductForm(id: Long, name: String, description: String, category: Long, price : BigDecimal)
+case class CreateProductForm(name: String, description: String, category: Long, price: BigDecimal)
+
+case class UpdateProductForm(id: Long, name: String, description: String, category: Long, price: BigDecimal)

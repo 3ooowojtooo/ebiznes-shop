@@ -1,18 +1,16 @@
 package controllers.view
 
 import javax.inject.{Inject, Singleton}
-import models.Product
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.mvc._
-import play.api.mvc.{AnyContent, MessagesControllerComponents}
-import repository.{CategoryRepository, PaymentMethodRepository, ProductRepository, UserRepository}
+import play.api.mvc.{AnyContent, MessagesControllerComponents, _}
+import repository.{PaymentMethodRepository, UserRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PaymentMethodViewController @Inject()(cc: MessagesControllerComponents, paymentMethodRepository: PaymentMethodRepository, userRepository: UserRepository)
-                                     (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
+                                           (implicit val ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   val paymentMethodForm: Form[CreatePaymentMethodForm] = Form {
     mapping(
@@ -34,7 +32,7 @@ class PaymentMethodViewController @Inject()(cc: MessagesControllerComponents, pa
     methods.map(p => Ok(views.html.paymentmethod.paymentmethods(p)))
   }
 
-  def findOne(id : Long) : Action[AnyContent] = Action.async {implicit request =>
+  def findOne(id: Long): Action[AnyContent] = Action.async { implicit request =>
     paymentMethodRepository.getByIdOption(id)
       .map {
         case Some(value) => Ok(views.html.paymentmethod.paymentmethod(value))
@@ -42,7 +40,7 @@ class PaymentMethodViewController @Inject()(cc: MessagesControllerComponents, pa
       }
   }
 
-  def add : Action[AnyContent] = Action.async {implicit request : MessagesRequest[AnyContent] =>
+  def add: Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.map(users =>
       Ok(views.html.paymentmethod.paymentmethodadd(paymentMethodForm, users))
     )
@@ -58,12 +56,12 @@ class PaymentMethodViewController @Inject()(cc: MessagesControllerComponents, pa
     })
   }
 
-  def delete(id : Long) : Action[AnyContent] = Action.async {
+  def delete(id: Long): Action[AnyContent] = Action.async {
     paymentMethodRepository.delete(id)
       .map(_ => Redirect(controllers.view.routes.PaymentMethodViewController.getAll))
   }
 
-  def update(id: Long) : Action[AnyContent] = Action.async {implicit request: MessagesRequest[AnyContent] =>
+  def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.flatMap(users => {
       paymentMethodRepository.getById(id).map(method => {
         val paymentMethodForm = updatePaymentMethodForm.fill(UpdatePaymentMethodForm(id, method.user, method.name))
@@ -72,7 +70,7 @@ class PaymentMethodViewController @Inject()(cc: MessagesControllerComponents, pa
     })
   }
 
-  def updateHandle = Action.async {implicit request =>
+  def updateHandle = Action.async { implicit request =>
     userRepository.list.flatMap(users => {
       updatePaymentMethodForm.bindFromRequest.fold(
         errorForm => Future.successful(BadRequest(views.html.paymentmethod.paymentmethodupdate(errorForm, users))),
@@ -84,5 +82,6 @@ class PaymentMethodViewController @Inject()(cc: MessagesControllerComponents, pa
 
 }
 
-case class CreatePaymentMethodForm(user : Long, name : String)
-case class UpdatePaymentMethodForm(id: Long, user : Long, name : String)
+case class CreatePaymentMethodForm(user: Long, name: String)
+
+case class UpdatePaymentMethodForm(id: Long, user: Long, name: String)

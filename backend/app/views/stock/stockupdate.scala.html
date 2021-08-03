@@ -1,5 +1,5 @@
 @import controllers.view.UpdateStockForm
-@(stock: Form[UpdateStockForm],products: Seq[Product])(implicit request: MessagesRequestHeader, flash: Flash)
+@(stock: Form[UpdateStockForm], products: Seq[Product])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 
@@ -11,10 +11,10 @@
     @inputText(stock("amount"))
 
     <select name="product" id="product">
-    @for(product <- products){
-        @if(product.id.toString==stock("product").value.getOrElse(0)) {
+    @for(product <- products) {
+        @if(product.id.toString == stock("product").value.getOrElse(0)) {
             <option value="@product.id" selected>@product.name</option>
-        }else{
+        } else {
             <option value="@product.id">@product.name</option>
         }
     }
@@ -25,4 +25,4 @@
     </div>
 }<br>
 <a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
-    <a href="@controllers.view.routes.StockViewController.getAll">Stocks</a>
+<a href="@controllers.view.routes.StockViewController.getAll">Stocks</a>
