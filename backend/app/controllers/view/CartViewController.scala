@@ -4,13 +4,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import javax.inject.{Inject, Singleton}
-import models.Product
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.mvc.Results.Ok
-import play.api.mvc._
-import play.api.mvc.{AnyContent, MessagesControllerComponents}
-import repository.{CartRepository, CategoryRepository, ProductRepository, UserAddressRepository, UserRepository}
+import play.api.mvc.{AnyContent, MessagesControllerComponents, _}
+import repository.{CartRepository, UserRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
 

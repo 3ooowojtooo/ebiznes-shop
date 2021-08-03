@@ -39,6 +39,10 @@ class DeliveryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
     deliveryTable.result
   }
 
+  def getById(id : Long) : Future[Delivery] = db.run {
+    deliveryTable.filter(_.id === id).result.head
+  }
+
   def getByIdOption(id : Long) : Future[Option[Delivery]] = db.run {
     deliveryTable.filter(_.id === id).result.headOption
   }

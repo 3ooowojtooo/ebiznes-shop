@@ -1,0 +1,24 @@
+@(deliveries: Seq[Delivery])
+
+<table style="width:100%">
+    <tr>
+        <th>Cart</th>
+        <th>Delivered On</th>
+        <th>Is delivered</th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+@for(delivery <- deliveries) {
+    <tr>
+    <td>@delivery.cart</td>
+    <td>@delivery.deliveryTimestamp</td>
+    <td>@delivery.isDelivered</td>
+        <td><a href="@controllers.view.routes.DeliveryViewController.findOne(delivery.id)">Details</a></td>
+        <td><a href="@controllers.view.routes.DeliveryViewController.update(delivery.id)">Edit</a></td>
+        <td><a href="@controllers.view.routes.DeliveryViewController.delete(delivery.id)">Delete</a></td>
+    </tr>
+}
+</table><br>
+<a href="@controllers.view.routes.DeliveryViewController.add">Add new delivery</a><br>
+    <a href="@controllers.view.routes.IndexViewController.index">Index</a>

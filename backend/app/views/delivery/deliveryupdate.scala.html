@@ -1,0 +1,38 @@
+@import controllers.view.UpdateDeliveryForm
+@(delivery: Form[UpdateDeliveryForm],carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.DeliveryViewController.updateHandle) {
+    @helper.CSRF.formField
+    <input name="id" id="id" value="@delivery("id").value" type="hidden" />
+    @inputDate(delivery("deliveryTimestamp"))
+
+    <select name="cart" id="cart">
+    @for(cart <- carts){
+        @if(cart.id.toString==delivery("cart").value.getOrElse(0)) {
+            <option value="@cart.id" selected>@cart.id</option>
+        }else{
+            <option value="@cart.id">@cart.id</option>
+        }
+    }
+    </select><br>
+
+    <select name="isDelivered" id="isDelivered">
+    @for(p <- Seq[Boolean](true, false)) {
+        @if(p == delivery("isDelivered").value.forall(_.toBoolean)) {
+            <option value="@p.toString" selected>@p.toString</option>
+        } else {
+            <option value="@p.toString">@p.toString</option>
+        }
+    }
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Update Delivery"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+    <a href="@controllers.view.routes.DeliveryViewController.getAll">Deliveries</a>

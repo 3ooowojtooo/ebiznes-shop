@@ -1,0 +1,28 @@
+@import controllers.view.CreateDeliveryForm
+@(delivery: Form[CreateDeliveryForm],carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.DeliveryViewController.addHandle) {
+    @helper.CSRF.formField
+    @inputDate(delivery("deliveryTimestamp"))
+
+    <select name="cart" id="cart">
+    @for(cart <- carts){
+        <option value="@cart.id">@cart.id</option>
+    }
+    </select><br>
+
+    <select name="isDelivered" id="isDelivered">
+        <option value="true">true</option>
+        <option value="false">false</option>
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Add Delivery"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.DeliveryViewController.getAll">Deliveries</a>

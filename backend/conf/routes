@@ -121,6 +121,15 @@ POST          /rest/delivery                   controllers.rest.DeliveryRestCont
 DELETE        /rest/delivery/:id               controllers.rest.DeliveryRestController.delete(id : Long)
 PUT           /rest/delivery/:id               controllers.rest.DeliveryRestController.update(id : Long)
 
+# Delivery VIEW routes
+GET           /delivery                         controllers.view.DeliveryViewController.getAll
+GET           /delivery/details/:id             controllers.view.DeliveryViewController.findOne(id : Long)
+GET           /delivery/add                     controllers.view.DeliveryViewController.add
+POST          /delivery/addhandle               controllers.view.DeliveryViewController.addHandle
+GET           /delivery/delete/:id              controllers.view.DeliveryViewController.delete(id : Long)
+GET           /delivery/update/:id              controllers.view.DeliveryViewController.update(id : Long)
+POST          /delivery/updatehandle            controllers.view.DeliveryViewController.updateHandle
+
 # Payment method REST routes
 GET           /rest/paymentmethod              controllers.rest.PaymentMethodRestController.getAll
 GET           /rest/paymentmethod/:id          controllers.rest.PaymentMethodRestController.findOne(id : Long)
