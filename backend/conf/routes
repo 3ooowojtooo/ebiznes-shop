@@ -105,7 +105,7 @@ POST          /rest/cartitem                   controllers.rest.CartItemRestCont
 DELETE        /rest/cartitem/:id               controllers.rest.CartItemRestController.delete(id : Long)
 PUT           /rest/cartitem/:id               controllers.rest.CartItemRestController.update(id : Long)
 
-# Cart VIEW routes
+# Cart item VIEW routes
 GET           /cartitem                         controllers.view.CartItemViewController.getAll
 GET           /cartitem/details/:id             controllers.view.CartItemViewController.findOne(id : Long)
 GET           /cartitem/add                     controllers.view.CartItemViewController.add
