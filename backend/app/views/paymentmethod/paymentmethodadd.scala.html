@@ -1,0 +1,23 @@
+@import controllers.view.CreatePaymentMethodForm
+@(method: Form[CreatePaymentMethodForm],users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.view.routes.PaymentMethodViewController.addHandle) {
+    @helper.CSRF.formField
+    @inputText(method("name"))
+
+    <select name="user" id="user">
+    @for(user <- users){
+        <option value="@user.id">@user.name</option>
+    }
+    </select><br>
+
+    <div class="buttons">
+        <input type="submit" value="Add Payment Method"/>
+    </div>
+}<br>
+<a href="@controllers.view.routes.IndexViewController.index">Index</a><br>
+<a href="@controllers.view.routes.PaymentMethodViewController.getAll">Payment methods</a>

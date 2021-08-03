@@ -137,6 +137,15 @@ POST          /rest/paymentmethod              controllers.rest.PaymentMethodRes
 DELETE        /rest/paymentmethod/:id          controllers.rest.PaymentMethodRestController.delete(id : Long)
 PUT           /rest/paymentmethod/:id          controllers.rest.PaymentMethodRestController.update(id : Long)
 
+# Payment method VIEW routes
+GET           /paymentmethod                         controllers.view.PaymentMethodViewController.getAll
+GET           /paymentmethod/details/:id             controllers.view.PaymentMethodViewController.findOne(id : Long)
+GET           /paymentmethod/add                     controllers.view.PaymentMethodViewController.add
+POST          /paymentmethod/addhandle               controllers.view.PaymentMethodViewController.addHandle
+GET           /paymentmethod/delete/:id              controllers.view.PaymentMethodViewController.delete(id : Long)
+GET           /paymentmethod/update/:id              controllers.view.PaymentMethodViewController.update(id : Long)
+POST          /paymentmethod/updatehandle            controllers.view.PaymentMethodViewController.updateHandle
+
 # Purchase history REST routes
 GET           /rest/purchasehistory            controllers.rest.PurchaseHistoryRestController.getAll
 GET           /rest/purchasehistory/:id        controllers.rest.PurchaseHistoryRestController.findOne(id : Long)
