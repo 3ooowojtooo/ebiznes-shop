@@ -1,8 +1,11 @@
-@(items: Seq[CartItem])
+@import controllers.dto.CartItemDto
+@(items: Seq[CartItemDto])
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Cart</th>
+        <th>Cart owner</th>
         <th>Product</th>
         <th>Amount</th>
         <th>Details</th>
@@ -11,8 +14,10 @@
     </tr>
     @for(item <- items) {
         <tr>
-            <td>@item.cart</td>
-            <td>@item.product</td>
+            <td>@item.id</td>
+            <td>@item.cart.id</td>
+            <td>@item.cart.user.name</td>
+            <td>@item.product.name</td>
             <td>@item.amount</td>
             <td><a href="@controllers.view.routes.CartItemViewController.findOne(item.id)">Details</a></td>
             <td><a href="@controllers.view.routes.CartItemViewController.update(item.id)">Edit</a></td>

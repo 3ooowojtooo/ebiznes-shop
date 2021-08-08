@@ -69,7 +69,7 @@ class CartItemViewController @Inject()(cc: MessagesControllerComponents, product
     productRepository.list.flatMap(products =>
       cartRepository.list.flatMap(carts =>
         cartItemRepository.getById(id).map(cartItem => {
-          val cartItemForm = updateCartItemForm.fill(UpdateCartItemForm(id, cartItem.cart, cartItem.product, cartItem.amount))
+          val cartItemForm = updateCartItemForm.fill(UpdateCartItemForm(id, cartItem.cart.id, cartItem.product.id, cartItem.amount))
           Ok(views.html.cartitem.cartitemupdate(cartItemForm, products, carts))
         })
       )

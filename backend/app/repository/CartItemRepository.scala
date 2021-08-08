@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.CartItemDto
 import javax.inject.{Inject, Singleton}
 import models.CartItem
 import play.api.db.slick.DatabaseConfigProvider
@@ -8,7 +9,8 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val productRepository: ProductRepository, val cartRepository: CartRepository)
+class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val productRepository: ProductRepository, val cartRepository: CartRepository,
+                                   val userRepository: UserRepository, val categoryRepository: CategoryRepository)
                                   (implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
@@ -18,8 +20,12 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
 
   import cartRepository.CartTable
   import productRepository.ProductTable
+  import userRepository.UserTable
+  import categoryRepository.CategoryTable
   private val productTable = TableQuery[ProductTable]
   private val cartTable = TableQuery[CartTable]
+  private val userTable = TableQuery[UserTable]
+  private val categoryTable = TableQuery[CategoryTable]
 
   def create(product: Long, amount: Long, cart: Long): Future[CartItem] = db.run {
     (cartItemTable.map(c => (c.product, c.amount, c.cart))
@@ -28,16 +34,45 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
       ) += (product, amount, cart)
   }
 
-  def list: Future[Seq[CartItem]] = db.run {
-    cartItemTable.result
+  def list: Future[Seq[CartItemDto]] = db.run {
+    val joinQuery = for {
+      ((((item, prod), cat), cart), user) <- cartItemTable join
+        productTable on (_.product === _.id) join
+        categoryTable on (_._2.category === _.id) join
+        cartTable on (_._1._1.cart === _.id) join
+        userTable on (_._2.user === _.id)
+    } yield (item, prod, cat, cart, user)
+    joinQuery.result
+      .map(_.toStream
+      .map(data => CartItemDto(data._1, data._2, data._4, data._5, data._3))
+      .toList)
   }
 
-  def getById(id: Long): Future[CartItem] = db.run {
-    cartItemTable.filter(_.id === id).result.head
+  def getById(id: Long): Future[CartItemDto] = db.run {
+    val joinQuery = for {
+      ((((item, prod), cat), cart), user) <- cartItemTable join
+        productTable on (_.product === _.id) join
+        categoryTable on (_._2.category === _.id) join
+        cartTable on (_._1._1.cart === _.id) join
+        userTable on (_._2.user === _.id)
+    } yield (item, prod, cat, cart, user)
+    joinQuery.filter(_._1.id === id).result.head
+      .map(data => CartItemDto(data._1, data._2, data._4, data._5, data._3))
   }
 
-  def getByIdOption(id: Long): Future[Option[CartItem]] = db.run {
-    cartItemTable.filter(_.id === id).result.headOption
+  def getByIdOption(id: Long): Future[Option[CartItemDto]] = db.run {
+    val joinQuery = for {
+      ((((item, prod), cat), cart), user) <- cartItemTable join
+        productTable on (_.product === _.id) join
+        categoryTable on (_._2.category === _.id) join
+        cartTable on (_._1._1.cart === _.id) join
+        userTable on (_._2.user === _.id)
+    } yield (item, prod, cat, cart, user)
+    joinQuery.filter(_._1.id === id).result.headOption
+      .map {
+        case Some(value) => Some(CartItemDto(value._1, value._2, value._4, value._5, value._3))
+        case None => None
+      }
   }
 
   def delete(id: Long): Future[Unit] = db.run(cartItemTable.filter(_.id === id).delete.map(_ => ()))
