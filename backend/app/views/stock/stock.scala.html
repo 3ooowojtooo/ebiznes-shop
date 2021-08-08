@@ -1,14 +1,19 @@
-@(stock: Stock)
+@import controllers.dto.StockDto
+@(stock: StockDto)
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Product</th>
+        <th>Product Category</th>
         <th>Amount</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     <tr>
-        <td>@stock.product</td>
+        <td>@stock.id</td>
+        <td>@stock.product.name</td>
+        <td>@stock.product.category.name</td>
         <td>@stock.amount</td>
         <td><a href="@controllers.view.routes.StockViewController.update(stock.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.StockViewController.delete(stock.id)">Delete</a></td>

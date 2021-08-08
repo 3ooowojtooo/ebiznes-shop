@@ -64,7 +64,7 @@ class StockViewController @Inject()(cc: MessagesControllerComponents, stockRepos
   def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     productRepository.list.flatMap(products => {
       stockRepository.getById(id).map(stock => {
-        val stockForm = updateStockForm.fill(UpdateStockForm(id, stock.product, stock.amount))
+        val stockForm = updateStockForm.fill(UpdateStockForm(id, stock.product.id, stock.amount))
         Ok(views.html.stock.stockupdate(stockForm, products))
       })
     })

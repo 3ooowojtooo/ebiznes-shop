@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.StockDto
 import javax.inject.{Inject, Singleton}
 import models.Stock
 import play.api.db.slick.DatabaseConfigProvider
@@ -8,7 +9,8 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val productRepository: ProductRepository)(implicit ec: ExecutionContext) {
+class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val productRepository: ProductRepository, val categoryRepository: CategoryRepository)
+                               (implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -17,6 +19,8 @@ class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
 
   import productRepository.ProductTable
   private val productTable = TableQuery[ProductTable]
+  import categoryRepository.CategoryTable
+  private val categoryTable = TableQuery[CategoryTable]
 
   def create(product: Long, amount: Long): Future[Stock] = db.run {
     (stockTable.map(c => (c.product, c.amount))
@@ -25,16 +29,32 @@ class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
       ) += (product, amount)
   }
 
-  def list: Future[Seq[Stock]] = db.run {
-    stockTable.result
+  def list: Future[List[StockDto]] = db.run {
+    val joinQuery = for {
+      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on(_._2.category === _.id)
+    } yield (s, p, c)
+    joinQuery.result
+      .map(_.toStream
+      .map(data => StockDto(data._1, data._2, data._3))
+      .toList)
   }
 
-  def getById(id: Long): Future[Stock] = db.run {
-    stockTable.filter(_.id === id).result.head
+  def getById(id: Long): Future[StockDto] = db.run {
+    val joinQuery = for {
+      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on(_._2.category === _.id)
+    } yield (s, p, c)
+    joinQuery.filter(_._1.id === id).result.head
+      .map(data => StockDto(data._1, data._2, data._3))
   }
 
-  def getByIdOption(id: Long): Future[Option[Stock]] = db.run {
-    stockTable.filter(_.id === id).result.headOption
+  def getByIdOption(id: Long): Future[Option[StockDto]] = db.run {
+    val joinQuery = for {
+      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on(_._2.category === _.id)
+    } yield (s, p, c)
+    joinQuery.filter(_._1.id === id).result.headOption
+      .map {
+        case Some(value) => Some(StockDto(value._1, value._2, value._3))
+      }
   }
 
   def delete(id: Long): Future[Unit] = db.run(stockTable.filter(_.id === id).delete.map(_ => ()))
