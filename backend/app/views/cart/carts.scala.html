@@ -1,7 +1,9 @@
-@(carts: Seq[Cart])
+@import controllers.dto.CartDto
+@(carts: List[CartDto])
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Created at</th>
         <th>User</th>
         <th>Purchased</th>
@@ -11,8 +13,9 @@
     </tr>
     @for(cart <- carts) {
         <tr>
+            <td>@cart.id</td>
             <td>@cart.createdTime</td>
-            <td>@cart.user</td>
+            <td>@cart.user.name</td>
             <td>@cart.purchased</td>
             <td><a href="@controllers.view.routes.CartViewController.findOne(cart.id)">Details</a></td>
             <td><a href="@controllers.view.routes.CartViewController.update(cart.id)">Edit</a></td>

@@ -1,5 +1,6 @@
 @import controllers.view.CreatePurchaseHistoryForm
-@(history: Form[CreatePurchaseHistoryForm], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.CartDto
+@(history: Form[CreatePurchaseHistoryForm], carts: List[CartDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 

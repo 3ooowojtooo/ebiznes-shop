@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.CartDto
 import javax.inject.{Inject, Singleton}
 import models.Cart
 import play.api.db.slick.DatabaseConfigProvider
@@ -25,16 +26,33 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
       ) += (created_time, user, purchased)
   }
 
-  def list: Future[Seq[Cart]] = db.run {
-    cartTable.result
+  def list: Future[List[CartDto]] = db.run {
+    val joinQuery = for {
+      (c, u) <- cartTable join userTable on (_.user === _.id)
+    } yield (c, u)
+    joinQuery.result
+      .map(_.toStream
+      .map(data => CartDto(data._1, data._2))
+      .toList)
   }
 
-  def getById(id: Long): Future[Cart] = db.run {
-    cartTable.filter(_.id === id).result.head
+  def getById(id: Long): Future[CartDto] = db.run {
+    val joinQuery = for {
+      (c, u) <- cartTable join userTable on (_.user === _.id)
+    } yield (c, u)
+    joinQuery.filter(_._1.id === id).result.head
+      .map(data => CartDto(data._1, data._2))
   }
 
-  def getByIdOption(id: Long): Future[Option[Cart]] = db.run {
-    cartTable.filter(_.id === id).result.headOption
+  def getByIdOption(id: Long): Future[Option[CartDto]] = db.run {
+    val joinQuery = for {
+      (c, u) <- cartTable join userTable on (_.user === _.id)
+    } yield (c, u)
+    joinQuery.filter(_._1.id === id).result.headOption
+      .map {
+        case Some(value) => Some(CartDto(value._1, value._2))
+        case None => None
+      }
   }
 
   def delete(id: Long): Future[Unit] = db.run(cartTable.filter(_.id === id).delete.map(_ => ()))

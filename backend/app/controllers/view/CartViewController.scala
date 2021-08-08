@@ -71,7 +71,7 @@ class CartViewController @Inject()(cc: MessagesControllerComponents, cartReposit
   def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.flatMap(users => {
       cartRepository.getById(id).map(cart => {
-        val cartForm = updateCartForm.fill(UpdateCartForm(id, dateFormat.parse(cart.createdTime), cart.user, cart.purchased))
+        val cartForm = updateCartForm.fill(UpdateCartForm(id, dateFormat.parse(cart.createdTime), cart.user.id, cart.purchased))
         Ok(views.html.cart.cartupdate(cartForm, users))
       })
     })

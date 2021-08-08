@@ -1,5 +1,6 @@
 @import controllers.view.CreateDeliveryForm
-@(delivery: Form[CreateDeliveryForm], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.CartDto
+@(delivery: Form[CreateDeliveryForm], carts: List[CartDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 

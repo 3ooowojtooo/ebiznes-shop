@@ -1,7 +1,9 @@
-@(cart: Cart)
+@import controllers.dto.CartDto
+@(cart: CartDto)
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Created at</th>
         <th>User</th>
         <th>Purchased</th>
@@ -9,8 +11,9 @@
         <th>Delete</th>
     </tr>
     <tr>
+        <td>@cart.id</td>
         <td>@cart.createdTime</td>
-        <td>@cart.user</td>
+        <td>@cart.user.name</td>
         <td>@cart.purchased</td>
         <td><a href="@controllers.view.routes.CartViewController.update(cart.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.CartViewController.delete(cart.id)">Delete</a></td>
