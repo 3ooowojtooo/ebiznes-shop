@@ -1,12 +1,15 @@
-@(category: Category)
+@import controllers.dto.CategoryDto
+@(category: CategoryDto)
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Name</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     <tr>
+        <td>@category.id</td>
         <td>@category.name</td>
         <td><a href="@controllers.view.routes.CategoryViewController.update(category.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.CategoryViewController.delete(category.id)">Delete</a></td>

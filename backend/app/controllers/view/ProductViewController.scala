@@ -68,7 +68,7 @@ class ProductViewController @Inject()(cc: MessagesControllerComponents, productR
   def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     categoryRepository.list().flatMap(categories => {
       productRepository.getById(id).map(product => {
-        val productForm = updateProductForm.fill(UpdateProductForm(id, product.name, product.description, product.category, BigDecimal(product.price)))
+        val productForm = updateProductForm.fill(UpdateProductForm(id, product.name, product.description, product.category.id, BigDecimal(product.price)))
         Ok(views.html.product.productupdate(productForm, categories))
       })
     })

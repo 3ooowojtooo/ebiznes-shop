@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.CategoryDto
 import javax.inject.{Inject, Singleton}
 import models.Category
 import play.api.db.slick.DatabaseConfigProvider
@@ -16,22 +17,27 @@ class CategoryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)
   val category = TableQuery[CategoryTable]
 
   def create(name: String): Future[Category] = db.run {
-    (category.map(c => (c.name))
+    (category.map(c => c.name)
       returning category.map(_.id)
       into ((name, id) => Category(id, name))
-      ) += (name)
+      ) += name
   }
 
-  def list(): Future[Seq[Category]] = db.run {
-    category.result
+  def list(): Future[List[CategoryDto]] = db.run {
+    category.result.map(_.toStream
+    .map(CategoryDto.apply)
+    .toList)
   }
 
-  def getById(id: Long): Future[Category] = db.run {
-    category.filter(_.id === id).result.head
+  def getById(id: Long): Future[CategoryDto] = db.run {
+    category.filter(_.id === id).result.head.map(CategoryDto.apply)
   }
 
-  def getByIdOption(id: Long): Future[Option[Category]] = db.run {
-    category.filter(_.id === id).result.headOption
+  def getByIdOption(id: Long): Future[Option[CategoryDto]] = db.run {
+    category.filter(_.id === id).result.headOption.map {
+      case Some(value) => Some(CategoryDto(value))
+      case None => None
+    }
   }
 
   def delete(id: Long): Future[Unit] = db.run(category.filter(_.id === id).delete.map(_ => ()))

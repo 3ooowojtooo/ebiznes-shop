@@ -1,5 +1,6 @@
 @import controllers.view.UpdateCartItemForm
-@(item: Form[UpdateCartItemForm], products: Seq[Product], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.ProductDto
+@(item: Form[UpdateCartItemForm], products: List[ProductDto], carts: Seq[Cart])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 

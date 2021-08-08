@@ -1,7 +1,9 @@
-@(categories: Seq[Category])
+@import controllers.dto.CategoryDto
+@(categories: List[CategoryDto])
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Name</th>
         <th>Details</th>
         <th>Edit</th>
@@ -9,6 +11,7 @@
     </tr>
     @for(category <- categories) {
         <tr>
+            <td>@category.id</td>
             <td>@category.name</td>
             <td><a href="@controllers.view.routes.CategoryViewController.findOne(category.id)">Details</a></td>
             <td><a href="@controllers.view.routes.CategoryViewController.update(category.id)">Edit</a></td>

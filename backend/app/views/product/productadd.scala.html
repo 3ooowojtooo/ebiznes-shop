@@ -1,5 +1,6 @@
 @import controllers.view.CreateProductForm
-@(product: Form[CreateProductForm], category: Seq[Category])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.CategoryDto
+@(product: Form[CreateProductForm], category: List[CategoryDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
     @import helper._
 

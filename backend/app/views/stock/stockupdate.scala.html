@@ -1,5 +1,6 @@
 @import controllers.view.UpdateStockForm
-@(stock: Form[UpdateStockForm], products: Seq[Product])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.ProductDto
+@(stock: Form[UpdateStockForm], products: List[ProductDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 

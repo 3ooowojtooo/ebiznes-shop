@@ -1,7 +1,9 @@
-@(products: Seq[Product])
+@import controllers.dto.ProductDto
+@(products: List[ProductDto])
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Name</th>
         <th>Description</th>
         <th>Category</th>
@@ -12,9 +14,10 @@
     </tr>
     @for(product <- products) {
         <tr>
+            <td>@product.id</td>
             <td>@product.name</td>
             <td>@product.description</td>
-            <td>@product.category</td>
+            <td>@product.category.name</td>
             <td>@product.price</td>
             <td><a href="@controllers.view.routes.ProductViewController.findOne(product.id)">Details</a></td>
             <td><a href="@controllers.view.routes.ProductViewController.update(product.id)">Edit</a></td>

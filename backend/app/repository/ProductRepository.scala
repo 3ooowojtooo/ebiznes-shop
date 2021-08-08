@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.ProductDto
 import javax.inject.{Inject, Singleton}
 import models.Product
 import play.api.db.slick.DatabaseConfigProvider
@@ -13,9 +14,11 @@ class ProductRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, 
 
   import dbConfig._
   import profile.api._
+
   private val product = TableQuery[ProductTable]
 
   import categoryRepository.CategoryTable
+
   private val cat = TableQuery[CategoryTable]
 
   def create(name: String, description: String, category: Long, price: Double): Future[Product] = db.run {
@@ -25,24 +28,33 @@ class ProductRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, 
       ) += (name, description, category, price)
   }
 
-  def list: Future[Seq[Product]] = db.run {
-    product.result
+  def list: Future[List[ProductDto]] = db.run {
+    val joinQuery = for {
+      (p, c) <- product join cat on (_.category === _.id)
+    } yield (p, c)
+    joinQuery.result
+      .map(_.toStream
+        .map(data => ProductDto(data._1, data._2))
+        .toList)
   }
 
-  def getByCategory(category_id: Long): Future[Seq[Product]] = db.run {
-    product.filter(_.category === category_id).result
+  def getById(id: Long): Future[ProductDto] = db.run {
+    val joinQuery = for {
+      (p, c) <- product join cat on (_.category === _.id)
+    } yield (p, c)
+    joinQuery.filter(_._1.id === id).result.head
+        .map(data => ProductDto(data._1, data._2))
   }
 
-  def getById(id: Long): Future[Product] = db.run {
-    product.filter(_.id === id).result.head
-  }
-
-  def getByIdOption(id: Long): Future[Option[Product]] = db.run {
-    product.filter(_.id === id).result.headOption
-  }
-
-  def getByCategories(category_ids: List[Long]): Future[Seq[Product]] = db.run {
-    product.filter(_.category inSet category_ids).result
+  def getByIdOption(id: Long): Future[Option[ProductDto]] = db.run {
+    val joinQuery = for {
+      (p, c) <- product join cat on (_.category === _.id)
+    } yield (p, c)
+    joinQuery.filter(_._1.id === id).result.headOption
+      .map {
+        case Some(value) => Some(ProductDto(value._1, value._2))
+        case None => None
+      }
   }
 
   def delete(id: Long): Future[Unit] = db.run(product.filter(_.id === id).delete).map(_ => ())

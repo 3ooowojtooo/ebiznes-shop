@@ -13,7 +13,7 @@ class CategoryRestController @Inject()(cc: ControllerComponents, categoryReposit
 
   // GET /category
   def getAll = Action.async { implicit request =>
-    val categories = categoryRepository.list
+    val categories = categoryRepository.list()
     categories.map(p => Ok(Json.toJson(p)))
   }
 
