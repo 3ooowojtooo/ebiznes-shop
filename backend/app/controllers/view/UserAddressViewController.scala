@@ -68,7 +68,7 @@ class UserAddressViewController @Inject()(cc: MessagesControllerComponents, user
   def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.flatMap(users => {
       userAddressRepository.getById(id).map(userAddress => {
-        val userAddressForm = updateUserAddressForm.fill(UpdateUserAddressForm(id, userAddress.street, userAddress.city, userAddress.zipcode, userAddress.user))
+        val userAddressForm = updateUserAddressForm.fill(UpdateUserAddressForm(id, userAddress.street, userAddress.city, userAddress.zipcode, userAddress.user.id))
         Ok(views.html.useraddress.useraddressupdate(userAddressForm, users))
       })
     })

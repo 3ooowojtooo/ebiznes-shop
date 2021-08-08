@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.UserAddressDto
 import javax.inject.{Inject, Singleton}
 import models.UserAddress
 import play.api.db.slick.DatabaseConfigProvider
@@ -16,6 +17,7 @@ class UserAddressRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
   private val userAddressTable = TableQuery[UserAddressTable]
 
   import userRepository.UserTable
+
   private val userTable = TableQuery[UserTable]
 
   def create(street: String, city: String, zipcode: String, user: Long): Future[UserAddress] = db.run {
@@ -25,16 +27,33 @@ class UserAddressRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
       ) += (street, city, zipcode, user)
   }
 
-  def list: Future[Seq[UserAddress]] = db.run {
-    userAddressTable.result
+  def list: Future[List[UserAddressDto]] = db.run {
+    val joinQuery = for {
+      (a, u) <- userAddressTable join userTable on (_.user === _.id)
+    } yield (a, u)
+    joinQuery.result
+      .map(_.toStream
+        .map(data => UserAddressDto(data._1, data._2))
+        .toList)
   }
 
-  def getById(id: Long): Future[UserAddress] = db.run {
-    userAddressTable.filter(_.id === id).result.head
+  def getById(id: Long): Future[UserAddressDto] = db.run {
+    val joinQuery = for {
+      (a, u) <- userAddressTable join userTable on (_.user === _.id)
+    } yield (a, u)
+    joinQuery.filter(_._1.id === id).result.head
+      .map(data => UserAddressDto(data._1, data._2))
   }
 
-  def getByIdOption(id: Long): Future[Option[UserAddress]] = db.run {
-    userAddressTable.filter(_.id === id).result.headOption
+  def getByIdOption(id: Long): Future[Option[UserAddressDto]] = db.run {
+    val joinQuery = for {
+      (a, u) <- userAddressTable join userTable on (_.user === _.id)
+    } yield (a, u)
+    joinQuery.filter(_._1.id === id).result.headOption
+      .map {
+        case Some(value) => Some(UserAddressDto(value._1, value._2))
+        case None => None
+      }
   }
 
   def delete(id: Long): Future[Unit] = db.run(userAddressTable.filter(_.id === id).delete.map(_ => ()))

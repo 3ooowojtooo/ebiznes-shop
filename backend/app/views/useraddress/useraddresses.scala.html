@@ -1,7 +1,9 @@
-@(userAddresses: Seq[UserAddress])
+@import controllers.dto.UserAddressDto
+@(userAddresses: List[UserAddressDto])
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Street</th>
         <th>City</th>
         <th>Zip code</th>
@@ -12,10 +14,11 @@
     </tr>
     @for(userAddress <- userAddresses) {
         <tr>
+            <td>@userAddress.id</td>
             <td>@userAddress.street</td>
             <td>@userAddress.city</td>
             <td>@userAddress.zipcode</td>
-            <td>@userAddress.user</td>
+            <td>@userAddress.user.name</td>
             <td><a href="@controllers.view.routes.UserAddressViewController.findOne(userAddress.id)">Details</a></td>
             <td><a href="@controllers.view.routes.UserAddressViewController.update(userAddress.id)">Edit</a></td>
             <td><a href="@controllers.view.routes.UserAddressViewController.delete(userAddress.id)">Delete</a></td>
