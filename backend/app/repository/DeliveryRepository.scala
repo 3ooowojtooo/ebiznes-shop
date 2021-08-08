@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.DeliveryDto
 import javax.inject.Inject
 import models.Delivery
 import play.api.db.slick.DatabaseConfigProvider
@@ -8,7 +9,8 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Inject
-class DeliveryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val cartRepository: CartRepository)(implicit ec: ExecutionContext) {
+class DeliveryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val cartRepository: CartRepository, val userRepository: UserRepository)
+                                  (implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -18,6 +20,9 @@ class DeliveryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
   import cartRepository.CartTable
   private val cartTable = TableQuery[CartTable]
 
+  import userRepository.UserTable
+  private val userTable = TableQuery[UserTable]
+
   def create(cart: Long, deliveryTimestamp: String, delivered: Boolean): Future[Delivery] = db.run {
     (deliveryTable.map(c => (c.cart, c.deliveryTimestamp, c.delivered))
       returning deliveryTable.map(_.id)
@@ -25,16 +30,33 @@ class DeliveryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
       ) += (cart, deliveryTimestamp, delivered)
   }
 
-  def list: Future[Seq[Delivery]] = db.run {
-    deliveryTable.result
+  def list: Future[List[DeliveryDto]] = db.run {
+    val joinQuery = for {
+      ((d, c), u) <- deliveryTable join cartTable on (_.cart === _.id) join userTable on (_._2.user === _.id)
+    } yield(d, c, u)
+    joinQuery.result
+      .map(_.toStream
+      .map(data => DeliveryDto(data._1, data._2, data._3))
+      .toList)
   }
 
-  def getById(id: Long): Future[Delivery] = db.run {
-    deliveryTable.filter(_.id === id).result.head
+  def getById(id: Long): Future[DeliveryDto] = db.run {
+    val joinQuery = for {
+      ((d, c), u) <- deliveryTable join cartTable on (_.cart === _.id) join userTable on (_._2.user === _.id)
+    } yield(d, c, u)
+    joinQuery.filter(_._1.id === id).result.head
+      .map(data => DeliveryDto(data._1, data._2, data._3))
   }
 
-  def getByIdOption(id: Long): Future[Option[Delivery]] = db.run {
-    deliveryTable.filter(_.id === id).result.headOption
+  def getByIdOption(id: Long): Future[Option[DeliveryDto]] = db.run {
+    val joinQuery = for {
+      ((d, c), u) <- deliveryTable join cartTable on (_.cart === _.id) join userTable on (_._2.user === _.id)
+    } yield(d, c, u)
+    joinQuery.filter(_._1.id === id).result.headOption
+      .map {
+        case Some(value) => Some(DeliveryDto(value._1, value._2, value._3))
+        case None => None
+      }
   }
 
   def delete(id: Long): Future[Unit] = db.run(deliveryTable.filter(_.id === id).delete.map(_ => ()))

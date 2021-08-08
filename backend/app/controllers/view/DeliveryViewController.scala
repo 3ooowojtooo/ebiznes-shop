@@ -71,7 +71,7 @@ class DeliveryViewController @Inject()(cc: MessagesControllerComponents, deliver
   def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     cartRepository.list.flatMap(carts => {
       deliveryRepository.getById(id).map(delivery => {
-        val deliveryForm = updateDeliveryForm.fill(UpdateDeliveryForm(id, delivery.cart, dateFormat.parse(delivery.deliveryTimestamp), delivery.isDelivered))
+        val deliveryForm = updateDeliveryForm.fill(UpdateDeliveryForm(id, delivery.cart.id, dateFormat.parse(delivery.deliveryTimestamp), delivery.isDelivered))
         Ok(views.html.delivery.deliveryupdate(deliveryForm, carts))
       })
     })

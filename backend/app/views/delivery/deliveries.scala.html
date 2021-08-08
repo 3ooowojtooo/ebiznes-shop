@@ -1,8 +1,11 @@
-@(deliveries: Seq[Delivery])
+@import controllers.dto.DeliveryDto
+@(deliveries: List[DeliveryDto])
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Cart</th>
+        <th>Cart owner</th>
         <th>Delivered On</th>
         <th>Is delivered</th>
         <th>Details</th>
@@ -11,7 +14,9 @@
     </tr>
     @for(delivery <- deliveries) {
         <tr>
-            <td>@delivery.cart</td>
+            <td>@delivery.id</td>
+            <td>@delivery.cart.id</td>
+            <td>@delivery.cart.user.name</td>
             <td>@delivery.deliveryTimestamp</td>
             <td>@delivery.isDelivered</td>
             <td><a href="@controllers.view.routes.DeliveryViewController.findOne(delivery.id)">Details</a></td>
