@@ -71,7 +71,7 @@ class PurchaseHistoryViewController @Inject()(cc: MessagesControllerComponents, 
   def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     cartRepository.list.flatMap(carts => {
       purchaseHistoryRepository.getById(id).map(history => {
-        val purchaseHistoryForm = updatePurchaseHistoryForm.fill(UpdatePurchaseHistoryForm(id, history.cart, BigDecimal(history.totalPrice), dateFormat.parse(history.purchaseTimestamp)))
+        val purchaseHistoryForm = updatePurchaseHistoryForm.fill(UpdatePurchaseHistoryForm(id, history.cart.id, BigDecimal(history.totalPrice), dateFormat.parse(history.purchaseTimestamp)))
         Ok(views.html.purchasehistory.purchasehistoryupdate(purchaseHistoryForm, carts))
       })
     })

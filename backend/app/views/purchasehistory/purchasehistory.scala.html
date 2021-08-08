@@ -1,15 +1,20 @@
-@(history: PurchaseHistory)
+@import controllers.dto.PurchaseHistoryDto
+@(history: PurchaseHistoryDto)
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Cart</th>
+        <th>Cart owner</th>
         <th>Total price</th>
         <th>Purchased On</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     <tr>
-        <td>@history.cart</td>
+        <td>@history.id</td>
+        <td>@history.cart.id</td>
+        <td>@history.cart.user.name</td>
         <td>@history.totalPrice</td>
         <td>@history.purchaseTimestamp</td>
         <td><a href="@controllers.view.routes.PurchaseHistoryViewController.update(history.id)">Edit</a></td>
