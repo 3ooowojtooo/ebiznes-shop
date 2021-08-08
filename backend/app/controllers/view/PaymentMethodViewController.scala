@@ -64,7 +64,7 @@ class PaymentMethodViewController @Inject()(cc: MessagesControllerComponents, pa
   def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.list.flatMap(users => {
       paymentMethodRepository.getById(id).map(method => {
-        val paymentMethodForm = updatePaymentMethodForm.fill(UpdatePaymentMethodForm(id, method.user, method.name))
+        val paymentMethodForm = updatePaymentMethodForm.fill(UpdatePaymentMethodForm(id, method.user.id, method.name))
         Ok(views.html.paymentmethod.paymentmethodupdate(paymentMethodForm, users))
       })
     })

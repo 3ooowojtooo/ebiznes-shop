@@ -1,13 +1,16 @@
-@(method: PaymentMethod)
+@import controllers.dto.PaymentMethodDto
+@(method: PaymentMethodDto)
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>User</th>
         <th>Name</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     <tr>
+        <td>@method.id</td>
         <td>@method.user</td>
         <td>@method.name</td>
         <td><a href="@controllers.view.routes.PaymentMethodViewController.update(method.id)">Edit</a></td>

@@ -1,7 +1,9 @@
-@(methods: Seq[PaymentMethod])
+@import controllers.dto.PaymentMethodDto
+@(methods: List[PaymentMethodDto])
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>User</th>
         <th>Name</th>
         <th>Details</th>
@@ -10,7 +12,8 @@
     </tr>
     @for(method <- methods) {
         <tr>
-            <td>@method.user</td>
+            <td>@method.id</td>
+            <td>@method.user.name</td>
             <td>@method.name</td>
             <td><a href="@controllers.view.routes.PaymentMethodViewController.findOne(method.id)">Details</a></td>
             <td><a href="@controllers.view.routes.PaymentMethodViewController.update(method.id)">Edit</a></td>

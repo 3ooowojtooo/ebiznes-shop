@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.PaymentMethodDto
 import javax.inject.Inject
 import models.PaymentMethod
 import play.api.db.slick.DatabaseConfigProvider
@@ -25,16 +26,33 @@ class PaymentMethodRepository @Inject()(val dbConfigProvider: DatabaseConfigProv
       ) += (user, name)
   }
 
-  def list: Future[Seq[PaymentMethod]] = db.run {
-    paymentMethodTable.result
+  def list: Future[List[PaymentMethodDto]] = db.run {
+    val joinQuery = for {
+      (p, u) <- paymentMethodTable join userTable on (_.user === _.id)
+    } yield (p, u)
+    joinQuery.result
+      .map(_.toStream
+        .map(data => PaymentMethodDto(data._1, data._2))
+        .toList)
   }
 
-  def getById(id: Long): Future[PaymentMethod] = db.run {
-    paymentMethodTable.filter(_.id === id).result.head
+  def getById(id: Long): Future[PaymentMethodDto] = db.run {
+    val joinQuery = for {
+      (p, u) <- paymentMethodTable join userTable on (_.user === _.id)
+    } yield (p, u)
+    joinQuery.filter(_._1.id === id).result.head
+      .map(data => PaymentMethodDto(data._1, data._2))
   }
 
-  def getByIdOption(id: Long): Future[Option[PaymentMethod]] = db.run {
-    paymentMethodTable.filter(_.id === id).result.headOption
+  def getByIdOption(id: Long): Future[Option[PaymentMethodDto]] = db.run {
+    val joinQuery = for {
+      (p, u) <- paymentMethodTable join userTable on (_.user === _.id)
+    } yield (p, u)
+    joinQuery.filter(_._1.id === id).result.headOption
+      .map {
+        case Some(value) => Some(PaymentMethodDto(value._1, value._2))
+        case None => None
+      }
   }
 
   def delete(id: Long): Future[Unit] = db.run(paymentMethodTable.filter(_.id === id).delete.map(_ => ()))
