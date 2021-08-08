@@ -1,7 +1,9 @@
-@(users: Seq[User])
+@import controllers.dto.UserDto
+@(users: List[UserDto])
 
 <table style="width: 100%">
     <tr>
+        <th>Id</th>
         <th>Name</th>
         <th>Age</th>
         <th>Details</th>
@@ -10,6 +12,7 @@
     </tr>
     @for(user <- users) {
         <tr>
+            <td>@user.id</td>
             <td>@user.name</td>
             <td>@user.age</td>
             <td><a href="@controllers.view.routes.UserViewController.findOne(user.id)">Details</a></td>

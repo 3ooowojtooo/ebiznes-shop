@@ -1,5 +1,6 @@
-@import controllers.view.CreatePaymentMethodForm
-@(method: Form[CreatePaymentMethodForm], users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.UserDto
+import controllers.view.CreatePaymentMethodForm
+@(method: Form[CreatePaymentMethodForm], users: List[UserDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 

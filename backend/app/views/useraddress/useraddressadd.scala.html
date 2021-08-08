@@ -1,15 +1,16 @@
-@import controllers.view.CreateUserAddressForm
-@(userAddress: Form[CreateUserAddressForm], users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.UserDto
+import controllers.view.CreateUserAddressForm
+@(userAddress: Form[CreateUserAddressForm], users: List[UserDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
-    @import helper._
+@import helper._
 
-    @flash.get("success").getOrElse("")
+@flash.get("success").getOrElse("")
 
-    @form(controllers.view.routes.UserAddressViewController.addHandle) {
-        @helper.CSRF.formField
-        @inputText(userAddress("street"))
-        @inputText(userAddress("city"))
-        @inputText(userAddress("zipcode"))
+@form(controllers.view.routes.UserAddressViewController.addHandle) {
+    @helper.CSRF.formField
+    @inputText(userAddress("street"))
+    @inputText(userAddress("city"))
+    @inputText(userAddress("zipcode"))
 
         <select name="user" id="user">
         @for(user <- users) {

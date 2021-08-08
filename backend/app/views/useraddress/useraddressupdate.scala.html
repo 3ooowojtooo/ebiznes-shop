@@ -1,15 +1,16 @@
-@import controllers.view.UpdateUserAddressForm
-@(userAddress: Form[UpdateUserAddressForm], users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.UserDto
+import controllers.view.UpdateUserAddressForm
+@(userAddress: Form[UpdateUserAddressForm], users: List[UserDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
-    @import helper._
+@import helper._
 
-    @flash.get("success").getOrElse("")
+@flash.get("success").getOrElse("")
 
-    @form(controllers.view.routes.UserAddressViewController.updateHandle) {
-        @helper.CSRF.formField
-        <input name="id" id="id" value="@userAddress("id").value" type="hidden" />
-        @inputText(userAddress("street"))
-        @inputText(userAddress("city"))
+@form(controllers.view.routes.UserAddressViewController.updateHandle) {
+    @helper.CSRF.formField
+    <input name="id" id="id" value="@userAddress("id").value" type="hidden" />
+    @inputText(userAddress("street"))
+    @inputText(userAddress("city"))
         @inputText(userAddress("zipcode"))
 
         <select name="user" id="user">

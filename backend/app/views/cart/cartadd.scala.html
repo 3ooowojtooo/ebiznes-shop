@@ -1,15 +1,16 @@
-@import controllers.view.CreateCartForm
-@(cart: Form[CreateCartForm], users: Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.UserDto
+import controllers.view.CreateCartForm
+@(cart: Form[CreateCartForm], users: List[UserDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
-    @import helper._
+@import helper._
 
-    @flash.get("success").getOrElse("")
+@flash.get("success").getOrElse("")
 
-    @form(controllers.view.routes.CartViewController.addHandle) {
-        @helper.CSRF.formField
-        @inputDate(cart("createdTime"))
+@form(controllers.view.routes.CartViewController.addHandle) {
+    @helper.CSRF.formField
+    @inputDate(cart("createdTime"))
 
-        <select name="user" id="user">
+    <select name="user" id="user">
         @for(user <- users) {
             <option value="@user.id">@user.name</option>
         }

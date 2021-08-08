@@ -1,5 +1,6 @@
 package repository
 
+import controllers.dto.UserDto
 import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.db.slick.DatabaseConfigProvider
@@ -22,16 +23,24 @@ class UserRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)(imp
       ) += (name, age)
   }
 
-  def list: Future[Seq[User]] = db.run {
+  def list: Future[List[UserDto]] = db.run {
     user.result
+      .map(_.toStream
+        .map(UserDto.apply)
+        .toList)
   }
 
-  def getById(id: Long): Future[User] = db.run {
+  def getById(id: Long): Future[UserDto] = db.run {
     user.filter(_.id === id).result.head
+      .map(UserDto.apply)
   }
 
-  def getByIdOption(id: Long): Future[Option[User]] = db.run {
+  def getByIdOption(id: Long): Future[Option[UserDto]] = db.run {
     user.filter(_.id === id).result.headOption
+      .map {
+        case Some(value) => Some(UserDto(value))
+        case None => None
+      }
   }
 
   def delete(id: Long): Future[Unit] = db.run {
