@@ -1,11 +1,18 @@
 version: '3'
 services:
-  ebiznes:
+  backend:
     build: .
     ports:
       - 12345:9000
-      - 12346:3000
     volumes:
       - .:/home/quary/shop/
     working_dir: /home/quary/shop/backend
     command: bash -c "source /home/quary/.sdkman/bin/sdkman-init.sh && sbt run"
+  frontend:
+    build: .
+    ports:
+      - 12346:3000
+    volumes:
+      - .:/home/quary/shop
+    working_dir: /home/quary/shop/frontend
+    command: bash -c "npm start"
