@@ -5,7 +5,7 @@ services:
     ports:
       - 12345:9000
     volumes:
-      - .:/home/quary/shop/
+      - ./backend:/home/quary/shop/backend
     working_dir: /home/quary/shop/backend
     command: bash -c "source /home/quary/.sdkman/bin/sdkman-init.sh && sbt run"
   frontend:
@@ -13,6 +13,6 @@ services:
     ports:
       - 12346:3000
     volumes:
-      - .:/home/quary/shop
+      - ./frontend:/home/quary/shop/frontend
     working_dir: /home/quary/shop/frontend
-    command: bash -c "npm start"
+    command: bash -c "npm install --save && npm start"
