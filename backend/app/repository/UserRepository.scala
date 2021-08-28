@@ -1,64 +1,74 @@
 package repository
 
+import com.mohiva.play.silhouette.api.LoginInfo
+import com.mohiva.play.silhouette.api.services.IdentityService
+import com.mohiva.play.silhouette.api.util.PasswordInfo
 import controllers.dto.UserDto
+
 import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.reflect.ClassTag
 
 @Singleton
-class UserRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+class UserRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext, implicit val classTag: ClassTag[PasswordInfo])
+extends IdentityService[User] {
+
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
   import profile.api._
   private val user = TableQuery[UserTable]
 
-  def create(name: String, age: Long): Future[User] = db.run {
-    (user.map(u => (u.name, u.age))
+  override def retrieve(loginInfo: LoginInfo): Future[Option[User]] = db.run {
+    user.filter(_.providerId === loginInfo.providerID)
+      .filter(_.providerKey === loginInfo.providerKey)
+      .result
+      .headOption
+  }.map(_.map(User.apply))
+
+  def create(email: String, providerId : String, providerKey : String): Future[UserDto] = db.run {
+    (user.map(u => (u.email, u.providerId, u.providerKey))
       returning user.map(_.id)
-      into { case ((name, age), id) => User(id, name, age) }
-      ) += (name, age)
+      into { case ((email, providerId, providerKey), id) => UserDto(id, email, providerId, providerKey) }
+      ) += (email, providerId, providerKey)
   }
 
   def list: Future[List[UserDto]] = db.run {
     user.result
       .map(_.toStream
-        .map(UserDto.apply)
         .toList)
   }
 
   def getById(id: Long): Future[UserDto] = db.run {
     user.filter(_.id === id).result.head
-      .map(UserDto.apply)
   }
 
   def getByIdOption(id: Long): Future[Option[UserDto]] = db.run {
     user.filter(_.id === id).result.headOption
-      .map {
-        case Some(value) => Some(UserDto(value))
-        case None => None
-      }
   }
 
   def delete(id: Long): Future[Unit] = db.run {
     user.filter(_.id === id).delete.map(_ => ())
   }
 
-  def update(id: Long, name: String, age: Long): Future[Unit] = {
-    val updatedUser = User(id, name, age)
+  def update(id: Long, email: String, providerId : String, providerKey : String): Future[Unit] = {
+    val updatedUser = UserDto(id, email, providerId, providerKey)
     db.run(user.filter(_.id === id).update(updatedUser).map(_ => ()))
   }
 
-  class UserTable(tag: Tag) extends Table[User](tag, "user") {
-    override def * = (id, name, age) <> ((User.apply _).tupled, User.unapply)
-
+  class UserTable(tag: Tag) extends Table[UserDto](tag, "user") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    def name = column[String]("name")
+    def email = column[String]("email")
 
-    def age = column[Long]("age")
+    def providerId = column[String]("providerId")
+
+    def providerKey = column[String]("providerKey")
+
+    def * = (id, email, providerId, providerKey) <> (data => UserDto.apply(data._1, data._2, data._3, data._4), UserDto.unapply)
   }
 }

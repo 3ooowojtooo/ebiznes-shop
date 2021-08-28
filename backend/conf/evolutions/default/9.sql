@@ -9,7 +9,7 @@ CREATE TABLE "delivery"
 );
 
 INSERT INTO delivery(cart, delivery_timestamp, delivered)
-VALUES ((SELECT ID from cart WHERE user = (SELECT ID FROM user WHERE name = 'Anthony Rach')),
+VALUES ((SELECT ID from cart WHERE user = (SELECT ID FROM user WHERE email = 'raskony@gmail.com')),
         CURRENT_TIMESTAMP, true);
 
 # --- !Downs

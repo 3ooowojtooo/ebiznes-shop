@@ -11,7 +11,7 @@ CREATE TABLE "user_address"
 
 INSERT INTO user_address(street, city, zipcode, user)
 VALUES ('ul. Zamkowa 3', 'Kraków', '11-920',
-        (SELECT ID FROM user WHERE name = 'Anthony Rach'));
+        (SELECT ID FROM user WHERE email = 'raskony@gmail.com'));
 
 # --- !Downs
 DROP TABLE "user_address";

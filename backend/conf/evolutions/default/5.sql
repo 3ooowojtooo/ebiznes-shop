@@ -9,7 +9,7 @@ CREATE TABLE "cart"
 );
 
 INSERT INTO cart(created_time, user, purchased)
-VALUES (CURRENT_TIMESTAMP, (SELECT ID FROM user WHERE name = 'Anthony Rach'), false);
+VALUES (CURRENT_TIMESTAMP, (SELECT ID FROM user WHERE email = 'raskony@gmail.com'), false);
 
 # --- !Downs
 DROP TABLE "cart";

@@ -4,15 +4,17 @@
 <table style="width: 100%">
     <tr>
         <th>Id</th>
-        <th>Name</th>
-        <th>Age</th>
+        <th>Email</th>
+        <th>Provider id</th>
+        <th>Provider key</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     <tr>
         <td>@user.id</td>
-        <td>@user.name</td>
-        <td>@user.age</td>
+        <td>@user.email</td>
+        <td>@user.providerId</td>
+        <td>@user.providerKey</td>
         <td><a href="@controllers.view.routes.UserViewController.update(user.id)">Edit</a></td>
         <td><a href="@controllers.view.routes.UserViewController.delete(user.id)">Delete</a></td>
     </tr>

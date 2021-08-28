@@ -8,8 +8,9 @@
     @form(controllers.view.routes.UserViewController.updateHandle) {
         @helper.CSRF.formField
         <input name="id" id="id" value="@user("id").value" type="hidden" />
-        @inputText(user("name"))
-        @inputText(user("age"))
+        @inputText(user("email"))
+        @inputText(user("providerId"))
+        @inputText(user("providerKey"))
 
         <div class="buttons">
             <input type="submit" value="Update User"/>

@@ -14,16 +14,18 @@ class UserViewController @Inject()(cc: MessagesControllerComponents, userReposit
 
   val userForm: Form[CreateUserForm] = Form {
     mapping(
-      "name" -> nonEmptyText,
-      "age" -> longNumber(min = 1)
+      "email" -> email,
+      "providerId" -> nonEmptyText,
+      "providerKey" -> nonEmptyText
     )(CreateUserForm.apply)(CreateUserForm.unapply)
   }
 
   val updateUserForm: Form[UpdateUserForm] = Form {
     mapping(
       "id" -> longNumber,
-      "name" -> nonEmptyText,
-      "age" -> longNumber(min = 0),
+      "email" -> email,
+      "providerId" -> nonEmptyText,
+      "providerKey" -> nonEmptyText
     )(UpdateUserForm.apply)(UpdateUserForm.unapply)
   }
 
@@ -47,7 +49,7 @@ class UserViewController @Inject()(cc: MessagesControllerComponents, userReposit
   def addHandle = Action.async { implicit request =>
     userForm.bindFromRequest.fold(
       errorForm => Future.successful(BadRequest(views.html.user.useradd(errorForm))),
-      user => userRepository.create(user.name, user.age)
+      user => userRepository.create(user.email, user.providerId, user.providerKey)
         .map(_ => Redirect(routes.UserViewController.add).flashing("success" -> "user created"))
     )
   }
@@ -59,7 +61,7 @@ class UserViewController @Inject()(cc: MessagesControllerComponents, userReposit
 
   def update(id: Long): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     userRepository.getById(id).map(user => {
-      val userForm = updateUserForm.fill(UpdateUserForm(id, user.name, user.age))
+      val userForm = updateUserForm.fill(UpdateUserForm(id, user.email, user.providerId, user.providerKey))
       Ok(views.html.user.userupdate(userForm))
     })
   }
@@ -67,13 +69,13 @@ class UserViewController @Inject()(cc: MessagesControllerComponents, userReposit
   def updateHandle = Action.async { implicit request =>
     updateUserForm.bindFromRequest.fold(
       errorForm => Future.successful(BadRequest(views.html.user.userupdate(errorForm))),
-      user => userRepository.update(user.id, user.name, user.age)
+      user => userRepository.update(user.id, user.email, user.providerId, user.providerKey)
         .map(_ => Redirect(routes.UserViewController.update(user.id)).flashing("success" -> "user updated"))
     )
   }
 
 }
 
-case class CreateUserForm(name: String, age: Long)
+case class CreateUserForm(email: String, providerId: String, providerKey : String)
 
-case class UpdateUserForm(id: Long, name: String, age: Long)
+case class UpdateUserForm(id: Long, email: String, providerId: String, providerKey : String)

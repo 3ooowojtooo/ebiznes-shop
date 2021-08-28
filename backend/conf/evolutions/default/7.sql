@@ -9,7 +9,7 @@ CREATE TABLE "purchase_history"
 );
 
 INSERT INTO purchase_history(cart, totalPrice, purchase_timestamp)
-VALUES ((SELECT ID from cart where user = (SELECT ID FROM user WHERE name = 'Anthony Rach')),
+VALUES ((SELECT ID from cart where user = (SELECT ID FROM user WHERE email = 'raskony@gmail.com')),
         1000.00, CURRENT_TIMESTAMP);
 
 # --- !Downs

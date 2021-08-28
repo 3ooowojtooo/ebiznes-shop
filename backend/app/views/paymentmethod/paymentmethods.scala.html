@@ -13,7 +13,7 @@
     @for(method <- methods) {
         <tr>
             <td>@method.id</td>
-            <td>@method.user.name</td>
+            <td>@method.user.email</td>
             <td>@method.name</td>
             <td><a href="@controllers.view.routes.PaymentMethodViewController.findOne(method.id)">Details</a></td>
             <td><a href="@controllers.view.routes.PaymentMethodViewController.update(method.id)">Edit</a></td>

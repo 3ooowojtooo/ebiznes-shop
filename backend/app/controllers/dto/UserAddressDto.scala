@@ -8,6 +8,6 @@ case class UserAddressDto(id: Long, street: String, city: String, zipcode: Strin
 object UserAddressDto {
   implicit val userAddressDtoFormat: OFormat[UserAddressDto] = Json.format[UserAddressDto]
 
-  def apply(userAddress : UserAddress, user : User) : UserAddressDto =
-    UserAddressDto(userAddress.id, userAddress.street, userAddress.city, userAddress.zipcode, UserDto(user))
+  def apply(userAddress : UserAddress, user : UserDto) : UserAddressDto =
+    UserAddressDto(userAddress.id, userAddress.street, userAddress.city, userAddress.zipcode, user)
 }

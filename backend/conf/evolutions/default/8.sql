@@ -8,7 +8,7 @@ CREATE TABLE "payment_method"
 );
 
 INSERT INTO payment_method(user, name)
-VALUES ((SELECT ID FROM user WHERE name = 'Anthony Rach'), 'Credit Card');
+VALUES ((SELECT ID FROM user WHERE email = 'raskony@gmail.com'), 'Credit Card');
 
 # --- !Downs
 DROP TABLE "payment_method";

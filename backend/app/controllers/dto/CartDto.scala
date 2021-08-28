@@ -8,6 +8,6 @@ case class CartDto(id: Long, createdTime: String, user: UserDto, purchased: Bool
 object CartDto {
   implicit val cartDtoFormat: OFormat[CartDto] = Json.format[CartDto]
 
-  def apply(cart : Cart, user : User) : CartDto =
-    CartDto(cart.id, cart.createdTime, UserDto(user), cart.purchased)
+  def apply(cart : Cart, user : UserDto) : CartDto =
+    CartDto(cart.id, cart.createdTime, user, cart.purchased)
 }

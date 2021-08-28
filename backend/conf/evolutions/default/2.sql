@@ -34,14 +34,14 @@ INSERT INTO "product"(name, description, category, price)
 VALUES ('Subnautica: Below Zero', 'Brand new addition to Subnautica',
         (SELECT id FROM category WHERE name = 'games'), 199.99);
 
-INSERT INTO "user"(name, age)
-VALUES ('Anthony Rach', 32);
+INSERT INTO "user"(email, providerId, providerKey)
+VALUES ('raskony@gmail.com', 'providerId', 'providerKey');
 
 # --- !Downs
 
 DELETE
 FROM user
-WHERE name = 'Anthony Rach';
+WHERE email = 'raskony@gmail.com';
 
 DELETE
 FROM product

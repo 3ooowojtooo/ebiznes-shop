@@ -11,7 +11,7 @@ CREATE TABLE "cart_item"
 
 INSERT INTO cart_item(product, amount, cart)
 VALUES ((SELECT ID from product where name = 'grill'), 1,
-        (SELECT ID from cart where user = (SELECT ID FROM user WHERE name = 'Anthony Rach')));
+        (SELECT ID from cart where user = (SELECT ID FROM user WHERE email = 'raskony@gmail.com')));
 
 # --- !Downs
 DROP TABLE "cart_item";

@@ -8,6 +8,6 @@ case class DeliveryDto(id: Long, cart: CartDto, deliveryTimestamp: String, isDel
 object DeliveryDto {
   implicit val deliveryDtoFormat: OFormat[DeliveryDto] = Json.format[DeliveryDto]
 
-  def apply(delivery : Delivery, cart : Cart, user : User) : DeliveryDto =
+  def apply(delivery : Delivery, cart : Cart, user : UserDto) : DeliveryDto =
     DeliveryDto(delivery.id, CartDto(cart, user), delivery.deliveryTimestamp, delivery.isDelivered)
 }

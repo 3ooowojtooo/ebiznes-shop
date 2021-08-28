@@ -34,7 +34,7 @@ class UserRestController @Inject()(cc: ControllerComponents, userRepository: Use
     val requestBody = requestBodyJson.flatMap(Json.fromJson[CreateUser](_).asOpt)
     requestBody match {
       case Some(newItem) =>
-        userRepository.create(newItem.name, newItem.age)
+        userRepository.create(newItem.email, newItem.providerId, newItem.providerKey)
           .map(p => Created(Json.toJson(p)))
       case None =>
         Future(BadRequest)
@@ -55,13 +55,13 @@ class UserRestController @Inject()(cc: ControllerComponents, userRepository: Use
     val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdateUser](_).asOpt)
     requestBody match {
       case Some(itemToUpdate) =>
-        userRepository.update(id, itemToUpdate.name, itemToUpdate.age)
+        userRepository.update(id, itemToUpdate.email, itemToUpdate.providerId, itemToUpdate.providerKey)
           .map(_ => Ok)
       case None => Future(BadRequest)
     }
   }
 }
 
-case class CreateUser(name: String, age: Long)
+case class CreateUser(email: String, providerId : String, providerKey : String)
 
-case class UpdateUser(name: String, age: Long)
+case class UpdateUser(email: String, providerId : String, providerKey : String)

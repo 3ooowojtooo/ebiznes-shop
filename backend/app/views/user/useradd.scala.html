@@ -7,8 +7,9 @@
 
     @form(controllers.view.routes.UserViewController.addHandle) {
         @helper.CSRF.formField
-        @inputText(user("name"))
-        @inputText(user("age"))
+        @inputText(user("email"))
+        @inputText(user("providerId"))
+        @inputText(user("providerKey"))
 
         <div class="buttons">
             <input type="submit" value="Add User"/>

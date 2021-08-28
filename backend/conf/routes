@@ -161,3 +161,9 @@ POST          /purchasehistory/addhandle           controllers.view.PurchaseHist
 GET           /purchasehistory/delete/:id          controllers.view.PurchaseHistoryViewController.delete(id : Long)
 GET           /purchasehistory/update/:id          controllers.view.PurchaseHistoryViewController.update(id : Long)
 POST          /purchasehistory/updatehandle        controllers.view.PurchaseHistoryViewController.updateHandle
+
+# Authentication
+POST        /signUp                                   controllers.auth.SignUpController.signUp
+POST        /signIn                                   controllers.auth.SignInController.signIn
+POST        /signOut                                  controllers.auth.SignInController.signOut
+GET         /authenticate/:provider        controllers.auth.SocialAuthController.authenticate(provider: String)

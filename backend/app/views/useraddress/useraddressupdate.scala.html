@@ -16,9 +16,9 @@
         <select name="user" id="user">
         @for(user <- users) {
             @if(user.id.toString == userAddress("user").value.getOrElse(0)) {
-                <option value="@user.id" selected>@user.name</option>
+                <option value="@user.id" selected>@user.email</option>
             } else {
-                <option value="@user.id">@user.name</option>
+                <option value="@user.id">@user.email</option>
             }
         }
         </select>

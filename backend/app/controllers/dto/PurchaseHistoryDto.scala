@@ -8,6 +8,6 @@ case class PurchaseHistoryDto(id: Long, cart: CartDto, totalPrice: Double, purch
 object PurchaseHistoryDto {
   implicit val purchaseHistoryDtoFormat: OFormat[PurchaseHistoryDto] = Json.format[PurchaseHistoryDto]
 
-  def apply(purchaseHistory : PurchaseHistory, cart : Cart, user : User) : PurchaseHistoryDto =
+  def apply(purchaseHistory : PurchaseHistory, cart : Cart, user : UserDto) : PurchaseHistoryDto =
     PurchaseHistoryDto(purchaseHistory.id, CartDto(cart, user), purchaseHistory.totalPrice, purchaseHistory.purchaseTimestamp)
 }

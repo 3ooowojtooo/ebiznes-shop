@@ -15,7 +15,7 @@
         <tr>
             <td>@cart.id</td>
             <td>@cart.createdTime</td>
-            <td>@cart.user.name</td>
+            <td>@cart.user.email</td>
             <td>@cart.purchased</td>
             <td><a href="@controllers.view.routes.CartViewController.findOne(cart.id)">Details</a></td>
             <td><a href="@controllers.view.routes.CartViewController.update(cart.id)">Edit</a></td>
