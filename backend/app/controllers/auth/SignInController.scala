@@ -35,7 +35,8 @@ class SignInController @Inject()(scc: DefaultSilhouetteControllerComponents, add
     }
   })
 
-  def signOut: Action[AnyContent] = securedAction.async { implicit request: SecuredRequest[EnvType, AnyContent] =>
+  def signOut: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+    System.out.println(request.authenticator.loginInfo)
     authenticatorService.discard(request.authenticator, Ok("Logged out"))
       .map(_.discardingCookies(
         DiscardingCookie(name = "csrfToken"),
