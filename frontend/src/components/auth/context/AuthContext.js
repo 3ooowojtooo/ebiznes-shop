@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
-import {ENDPOINT} from "../../../const";
+import {BACKEND_BASE_URL, FRONTEND_BASE_URL} from "../../../const";
+import {signOut} from "../../../service/api/Api";
 
 export const AuthContext = React.createContext();
 export const useAuth = () => React.useContext(AuthContext);
@@ -9,8 +10,12 @@ export const AuthContextProvider = ({children}) => {
   const [token, setToken] = useState("");
 
   const redirectToGoogleLogin = () => {
-    window.location.href = ENDPOINT + "/authenticate/google";
+    window.location.href = BACKEND_BASE_URL + "/authenticate/google";
   };
+
+  const logOut = () => {
+      signOut().then(_ => window.location.href = FRONTEND_BASE_URL)
+  }
 
   function refreshLoggedInfo() {
     const tokenValue = Cookies.get("authenticator")
@@ -33,7 +38,8 @@ export const AuthContextProvider = ({children}) => {
     <AuthContext.Provider value={{
       isLogged,
       getToken,
-      redirectToGoogleLogin
+      redirectToGoogleLogin,
+        logOut
     }}>
       {children}
     </AuthContext.Provider>

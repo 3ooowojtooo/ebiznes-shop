@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(ehcache, ws, specs2 % Test, guice)
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "5.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
-  "org.xerial" % "sqlite-jdbc" % "3.36.0.1",
+  "org.xerial" % "sqlite-jdbc" % "3.36.0.2",
   "com.mohiva" %% "play-silhouette" % "7.0.0",
   "com.mohiva" %% "play-silhouette-password-bcrypt" % "7.0.0",
   "com.mohiva" %% "play-silhouette-persistence" % "7.0.0",

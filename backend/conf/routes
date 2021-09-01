@@ -165,6 +165,5 @@ POST          /purchasehistory/updatehandle        controllers.view.PurchaseHist
 # Authentication
 POST        /signUp                                   controllers.auth.SignUpController.signUp
 POST        /signIn                                   controllers.auth.SignInController.signIn
-GET        /signOut                                  controllers.auth.SignInController.signOut
 POST        /signOut                                  controllers.auth.SignInController.signOut
 GET         /authenticate/:provider        controllers.auth.SocialAuthController.authenticate(provider: String)
