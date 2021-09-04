@@ -13,17 +13,16 @@ scalaVersion := "2.12.2"
 
 libraryDependencies ++= Seq(ehcache, ws, specs2 % Test, guice)
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-slick" % "4.0.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "4.0.0",
-  "org.xerial" % "sqlite-jdbc" % "3.30.1",
-  "com.mohiva" %% "play-silhouette" % "6.1.1",
-  "com.mohiva" %% "play-silhouette-password-bcrypt" % "6.1.1",
-  "com.mohiva" %% "play-silhouette-persistence" % "6.1.1",
-  "com.mohiva" %% "play-silhouette-crypto-jca" % "6.1.1",
-  "com.mohiva" %% "play-silhouette-totp" % "6.1.1",
-  "net.codingwell" %% "scala-guice" % "4.2.6",
-  "com.iheart" %% "ficus" % "1.4.7",
-  "net.codingwell" %% "scala-guice" % "4.2.6"
+  "com.typesafe.play" %% "play-slick" % "5.0.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
+  "org.xerial" % "sqlite-jdbc" % "3.36.0.2",
+  "com.mohiva" %% "play-silhouette" % "7.0.0",
+  "com.mohiva" %% "play-silhouette-password-bcrypt" % "7.0.0",
+  "com.mohiva" %% "play-silhouette-persistence" % "7.0.0",
+  "com.mohiva" %% "play-silhouette-crypto-jca" % "7.0.0",
+  "com.mohiva" %% "play-silhouette-totp" % "7.0.0",
+  "net.codingwell" %% "scala-guice" % "5.0.1",
+  "com.iheart" %% "ficus" % "1.5.0"
 )
 
 unmanagedResourceDirectories in Test += baseDirectory.value / "target" / "web" / "public" / "test"

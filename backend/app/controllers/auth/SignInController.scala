@@ -1,15 +1,14 @@
 package controllers.auth
 
-import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.util.Credentials
 import com.mohiva.play.silhouette.impl.exceptions.IdentityNotFoundException
 import controllers.auth.request.SignInRequest
-import javax.inject.{Inject, Singleton}
 import play.api.mvc._
 import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRF, CSRFAddToken}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -35,7 +34,7 @@ class SignInController @Inject()(scc: DefaultSilhouetteControllerComponents, add
     }
   })
 
-  def signOut: Action[AnyContent] = securedAction.async { implicit request: SecuredRequest[EnvType, AnyContent] =>
+  def signOut: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     authenticatorService.discard(request.authenticator, Ok("Logged out"))
       .map(_.discardingCookies(
         DiscardingCookie(name = "csrfToken"),

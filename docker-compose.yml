@@ -7,6 +7,9 @@ services:
     volumes:
       - ./backend:/home/quary/shop/backend
     working_dir: /home/quary/shop/backend
+    environment:
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_CLIENT_SECRET
     command: bash -c "source /home/quary/.sdkman/bin/sdkman-init.sh && sbt run"
   frontend:
     build: .
