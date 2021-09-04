@@ -1,16 +1,16 @@
 import React from 'react';
 import {useAuth} from "./context/AuthContext";
+import {Link} from "react-router-dom";
 
 function Auth() {
-        const {redirectToGoogleLogin,isLogged,getToken,logOut} = useAuth()
+        const {isLogged,logOut} = useAuth()
         return (
             isLogged() ?
                 <div>
-                    <center><p>Jesteś zalogowany. Token to: {getToken()}</p></center><br/>
-                    <center><button onClick={logOut}>Wyloguj</button></center>
+                    <center>You are signed in. <button onClick={logOut}>Sign out</button></center>
                 </div> :
                 <div>
-                    <center><button onClick={redirectToGoogleLogin}>Zaloguj się przez Google</button></center>
+                    <center>You are not signed in. <Link to="/signIn">Sign in</Link> <Link to="/signUp">Sign up</Link></center>
                 </div>
         );
 }
