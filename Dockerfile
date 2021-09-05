@@ -16,22 +16,10 @@ RUN adduser quary sudo
 USER quary
 WORKDIR /home/quary/
 
-#RUN apt-get remove scala-library scala
-#
-#RUN wget https://downloads.lightbend.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.deb
-#
-#RUN dpkg -i scala-$SCALA_VERSION.deb
-
 RUN curl -s "https://get.sdkman.io" | bash
 RUN chmod a+x "/home/quary/.sdkman/bin/sdkman-init.sh"
 RUN bash -c "source /home/quary/.sdkman/bin/sdkman-init.sh && sdk install sbt $SBT_VERSION"
 RUN bash -c "source /home/quary/.sdkman/bin/sdkman-init.sh && sdk install scala $SCALA_VERSION"
-
-#RUN wget http://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb
-#
-#RUN dpkg -i sbt-$SBT_VERSION.deb
-#
-#RUN sbt -version
 
 RUN mkdir shop
 WORKDIR /home/quary/shop/
