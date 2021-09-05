@@ -16,8 +16,10 @@ WORKDIR /home/quary/frontend/
 
 ADD . /home/quary/frontend/
 
+RUN npm install --save && npm run build
+
 EXPOSE 3000
 
-CMD bash -c "npm install --save && npm start"
+CMD bash -c "npm start"
 
 # docker build . -t ebiznes-frontend:latest
