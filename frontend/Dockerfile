@@ -16,7 +16,8 @@ WORKDIR /home/quary/frontend/
 
 ADD . /home/quary/frontend/
 
-RUN npm install --save && npm run build
+RUN npm install --save
+RUN npm run build
 
 EXPOSE 3000
 
