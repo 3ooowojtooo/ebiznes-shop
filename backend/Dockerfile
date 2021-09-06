@@ -26,6 +26,8 @@ RUN mkdir backend
 ADD . /backend/
 WORKDIR /backend/
 
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && sbt clean compile
+
 EXPOSE 9000
 
 CMD source "$HOME/.sdkman/bin/sdkman-init.sh" && sbt -Dsbt.rootdir=true run
