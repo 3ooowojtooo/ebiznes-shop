@@ -1,2 +1,2 @@
-export const BACKEND_BASE_URL = "http://localhost:12345"
-export const FRONTEND_BASE_URL = "http://localhost:12346"
+export const BACKEND_BASE_URL = "https://quary-ebiznes-backend.azurewebsites.net"
+export const FRONTEND_BASE_URL = "https://quary-ebiznes-frontend.azurewebsites.net"
