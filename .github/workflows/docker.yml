@@ -1,0 +1,45 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: Docker login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD quary.azurecr.io
+      
+      - name: Build backend image
+        env:
+          GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+          GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}}
+          GOOGLE_REDIRECT_URL: ${{secrets.GOOGLE_REDIRECT_URL}}
+        run: docker build ./backend -t quary.azurecr.io/ebiznes-backend:latest --build-arg google_redirect_url=$GOOGLE_REDIRECT_URL --build-arg google_client_id=$GOOGLE_CLIENT_ID --build-arg google_client_secret=$GOOGLE_CLIENT_SECRET
+        
+      - name: Push backend image
+        run: docker push quary.azurecr.io/ebiznes-backend:latest
+
+      - name: Build frontend image
+        run: docker build ./frontend -t quary.azurecr.io/ebiznes-frontend:latest
+      
+      - name: Push frontend image
+        run: docker push quary.azurecr.io/ebiznes-frontend:latest
