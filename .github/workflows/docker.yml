@@ -27,6 +27,16 @@ jobs:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD quary.azurecr.io
+      
+      - name: Build backend image
+        env:
+          GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+          GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}}
+          GOOGLE_REDIRECT_URL: ${{secrets.GOOGLE_REDIRECT_URL}}
+        run: docker build ./backend -t quary.azurecr.io/ebiznes-backend:latest --build-arg google_redirect_url=$GOOGLE_REDIRECT_URL --build-arg google_client_id=$GOOGLE_CLIENT_ID --build-arg google_client_secret=$GOOGLE_CLIENT_SECRET
+        
+      - name: Push backend image
+        run: docker push quary.azurecr.io/ebiznes-backend:latest
 
       - name: Build frontend image
         run: docker build ./frontend -t quary.azurecr.io/ebiznes-frontend:latest
