@@ -30,3 +30,6 @@ jobs:
 
       - name: Build frontend image
         run: docker build ./frontend -t quary.azurecr.io/ebiznes-frontend:latest
+      
+      - name: Push frontend image
+        run: docker push quary.azurecr.io/ebiznes-frontend:latest
