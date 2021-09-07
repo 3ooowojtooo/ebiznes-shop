@@ -11,6 +11,7 @@ services:
       - GOOGLE_CLIENT_ID
       - GOOGLE_CLIENT_SECRET
       - GOOGLE_REDIRECT_URL
+      - APP_COOKIES_DOMAIN
     command: bash -c "source /home/quary/.sdkman/bin/sdkman-init.sh && sbt run"
   frontend:
     build: .
