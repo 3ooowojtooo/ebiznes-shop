@@ -26,7 +26,7 @@ class SocialAuthController @Inject()(scc: DefaultSilhouetteControllerComponents,
             result <- authenticatorService.embed(value, Redirect("http://frontend.quary.one"))
           } yield {
             val Token(name, value) = CSRF.getToken.get
-            result.withCookies(Cookie(name, value, httpOnly = false))
+            result.withCookies(Cookie(name, value, httpOnly = false, domain = Some(System.getenv("APP_COOKIES_DOMAIN")), sameSite = Some(Cookie.SameSite.Lax)))
           }
         }
       case _ => Future.failed(new ProviderException(s"Cannot authenticate with unexpected social provider $provider"))
