@@ -33,6 +33,10 @@ export const getStockItems = () => {
     return get("/rest/stock")
 }
 
+export const getUserDetails = () => {
+    return get("/rest/currentuser")
+}
+
 function get(url, headers = {}) {
     const fullUrl = buildUrl(url)
     const allHeaders = buildHeadersWithCsrfToken(headers)

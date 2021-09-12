@@ -7,7 +7,8 @@ function Menu() {
     return (
         isLogged() ?
             <center>
-                <Link to="/">Index</Link>
+                <Link to="/">Index</Link><br/>
+                <Link to="/user">Account details</Link>
             </center>
             :
             <center>

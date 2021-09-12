@@ -4,6 +4,8 @@ import SignIn from "../auth/signIn/SignIn";
 import SignUp from "../auth/signUp/SignUp";
 import "./Content.css"
 import Main from "../main/Main";
+import PrivateRoute from "../auth/privateRoute/PrivateRoute";
+import UserDetails from "../user/UserDetails";
 
 function Content() {
     return (
@@ -15,6 +17,9 @@ function Content() {
                 <Route path="/signUp">
                     <SignUp/>
                 </Route>
+                <PrivateRoute path="/user">
+                    <UserDetails/>
+                </PrivateRoute>
                 <Route path="/">
                     <Main />
                 </Route>

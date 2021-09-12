@@ -40,6 +40,7 @@ GET           /rest/user/:id                       controllers.rest.UserRestCont
 POST          /rest/user                           controllers.rest.UserRestController.create
 DELETE        /rest/user/:id                       controllers.rest.UserRestController.delete(id : Long)
 PUT           /rest/user/:id                       controllers.rest.UserRestController.update(id : Long)
+GET           /rest/currentuser                    controllers.rest.UserRestController.getCurrentUser
 
 # User VIEW routes
 GET           /user                                controllers.view.UserViewController.getAll
@@ -163,7 +164,7 @@ GET           /purchasehistory/update/:id          controllers.view.PurchaseHist
 POST          /purchasehistory/updatehandle        controllers.view.PurchaseHistoryViewController.updateHandle
 
 # Authentication
-POST        /signUp                                   controllers.auth.SignUpController.signUp
-POST        /signIn                                   controllers.auth.SignInController.signIn
-POST        /signOut                                  controllers.auth.SignInController.signOut
-GET         /authenticate/:provider        controllers.auth.SocialAuthController.authenticate(provider: String)
+POST          /signUp                              controllers.auth.SignUpController.signUp
+POST          /signIn                              controllers.auth.SignInController.signIn
+POST          /signOut                             controllers.auth.SignInController.signOut
+GET           /authenticate/:provider              controllers.auth.SocialAuthController.authenticate(provider: String)

@@ -1,5 +1,8 @@
 package controllers.rest
 
+import controllers.auth.{AbstractAuthController, DefaultSilhouetteControllerComponents}
+import controllers.dto.UserDto
+
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.{Json, OFormat}
 import play.api.mvc._
@@ -8,8 +11,8 @@ import repository.UserRepository
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UserRestController @Inject()(cc: ControllerComponents, userRepository: UserRepository)(implicit val executionContext: ExecutionContext)
-  extends AbstractController(cc) {
+class UserRestController @Inject()(cc: DefaultSilhouetteControllerComponents, userRepository: UserRepository)(implicit val executionContext: ExecutionContext)
+  extends AbstractAuthController(cc) {
 
   // GET /user
   def getAll = Action.async { implicit request =>
@@ -59,6 +62,13 @@ class UserRestController @Inject()(cc: ControllerComponents, userRepository: Use
           .map(_ => Ok)
       case None => Future(BadRequest)
     }
+  }
+
+  // GET /currentuser
+  def getCurrentUser : Action[AnyContent] = silhouette.SecuredAction.async {implicit request =>
+    Future.successful(
+      Ok(Json.toJson(UserDto(request.identity)))
+    )
   }
 }
 
