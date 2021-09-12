@@ -16,6 +16,7 @@ export const AuthContextProvider = ({children}) => {
   const logOut = async () => {
       await signOut()
           .then(_ => window.location.href = "/")
+          .catch(_ => window.location.href = "/")
   }
 
   function refreshLoggedInfo() {

@@ -29,6 +29,10 @@ export const signUp = (email, password) => {
     return post("/signUp", body, JSON_HEADERS)
 }
 
+export const getStockItems = () => {
+    return get("/rest/stock")
+}
+
 function get(url, headers = {}) {
     const fullUrl = buildUrl(url)
     const allHeaders = buildHeadersWithCsrfToken(headers)
