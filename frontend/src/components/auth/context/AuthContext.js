@@ -13,8 +13,9 @@ export const AuthContextProvider = ({children}) => {
     window.location.href = BACKEND_BASE_URL + "/authenticate/google";
   };
 
-  const logOut = () => {
-      signOut().then(_ => window.location.href = FRONTEND_BASE_URL)
+  const logOut = async () => {
+      await signOut()
+          .then(_ => window.location.href = FRONTEND_BASE_URL)
   }
 
   function refreshLoggedInfo() {

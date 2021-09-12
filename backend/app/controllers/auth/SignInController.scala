@@ -24,22 +24,22 @@ class SignInController @Inject()(scc: DefaultSilhouetteControllerComponents, add
       userRepository.retrieve(loginInfo).flatMap {
         case Some(user) =>
           authenticateUser(user)
-            .map(_.withCookies(Cookie(name, value, httpOnly = false)))
+            .map(_.withCookies(Cookie(name, value, httpOnly = false, domain = Some(System.getenv("APP_COOKIES_DOMAIN")), sameSite = Some(Cookie.SameSite.Lax))))
         case None => Future.failed(new IdentityNotFoundException("Couldn't find user"))
       }
     }.recover {
       case _: ProviderException =>
         Forbidden("Wrong credentials")
-          .discardingCookies(DiscardingCookie(name = "PLAY_SESSION"))
+          .discardingCookies(DiscardingCookie(name = "PLAY_SESSION", domain = Some(System.getenv("APP_COOKIES_DOMAIN"))))
     }
   })
 
   def signOut: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     authenticatorService.discard(request.authenticator, Ok("Logged out"))
       .map(_.discardingCookies(
-        DiscardingCookie(name = "csrfToken"),
-        DiscardingCookie(name = "PLAY_SESSION"),
-        DiscardingCookie(name = "OAuth2State")
+        DiscardingCookie(name = "csrfToken", domain = Some(System.getenv("APP_COOKIES_DOMAIN"))),
+        DiscardingCookie(name = "PLAY_SESSION", domain = Some(System.getenv("APP_COOKIES_DOMAIN"))),
+        DiscardingCookie(name = "OAuth2State", domain = Some(System.getenv("APP_COOKIES_DOMAIN")))
       ))
   }
 }

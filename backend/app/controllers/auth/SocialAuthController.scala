@@ -31,8 +31,7 @@ class SocialAuthController @Inject()(scc: DefaultSilhouetteControllerComponents,
         }
       case _ => Future.failed(new ProviderException(s"Cannot authenticate with unexpected social provider $provider"))
     }).recover {
-      case x: ProviderException =>
-        System.out.println(x.getMessage)
+      case _: ProviderException =>
         Forbidden("Forbidden")
     }
   })
