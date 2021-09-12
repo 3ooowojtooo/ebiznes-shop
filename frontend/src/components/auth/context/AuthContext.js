@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
-import {BACKEND_BASE_URL, FRONTEND_BASE_URL} from "../../../const";
+import {BACKEND_BASE_URL} from "../../../const";
 import {signOut} from "../../../service/api/Api";
 
 export const AuthContext = React.createContext();
@@ -15,7 +15,7 @@ export const AuthContextProvider = ({children}) => {
 
   const logOut = async () => {
       await signOut()
-          .then(_ => window.location.href = FRONTEND_BASE_URL)
+          .then(_ => window.location.href = "/")
   }
 
   function refreshLoggedInfo() {

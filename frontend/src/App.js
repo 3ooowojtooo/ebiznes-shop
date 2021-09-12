@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './App.css';
 import Auth from "./components/auth/Auth";
 import Title from "./components/title/Title";
 import {AuthContextProvider} from "./components/auth/context/AuthContext";

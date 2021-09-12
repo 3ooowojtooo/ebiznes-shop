@@ -31,21 +31,42 @@ extends IdentityService[User] {
       .headOption
   }.map(_.map(User.apply))
 
-  def create(email: String, providerId : String, providerKey : String): Future[UserDto] = db.run {
-    user.filter(_.providerId === providerId)
-      .filter(_.providerKey === providerKey)
-      .filter(_.email === email)
-      .result
-      .headOption
-      .flatMap {
-        case Some(x) => DBIOAction.successful(x)
-        case None =>
-          (user.map(u => (u.email, u.providerId, u.providerKey))
-            returning user.map(_.id)
-            into { case ((email, providerId, providerKey), id) => UserDto(id, email, providerId, providerKey) }
-            ) += (email, providerId, providerKey)
-      }
+  def create(email: String, providerId : String, providerKey : String): Future[UserDto] = {
+    db.run(
+      user.filter(_.providerId === providerId)
+        .filter(_.providerKey === providerKey)
+        .filter(_.email === email)
+        .result
+        .headOption
+    ).flatMap {
+      case Some(usr) => Future.successful(usr)
+      case None => db.run(
+        (user.map(u => (u.email, u.providerId, u.providerKey))
+          returning user.map(_.id)
+          into { case ((email, providerId, providerKey), id) => UserDto(id, email, providerId, providerKey) }
+          ) += (email, providerId, providerKey)
+      )
+    }
   }
+
+
+  /*
+    def create(email: String, providerId : String, providerKey : String): Future[UserDto] = db.run {
+      user.filter(_.providerId === providerId)
+        .filter(_.providerKey === providerKey)
+        .filter(_.email === email)
+        .result
+        .headOption
+        .flatMap {
+          case Some(x) => DBIOAction.successful(x)
+          case None =>
+            (user.map(u => (u.email, u.providerId, u.providerKey))
+              returning user.map(_.id)
+              into { case ((email, providerId, providerKey), id) => UserDto(id, email, providerId, providerKey) }
+              ) += (email, providerId, providerKey)
+        }
+    }
+  */
 
   def list: Future[List[UserDto]] = db.run {
     user.result

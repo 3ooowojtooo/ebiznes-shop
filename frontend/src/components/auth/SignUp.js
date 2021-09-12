@@ -15,10 +15,24 @@ function SignUp() {
 
     const handleSubmit = async event => {
         event.preventDefault()
-        alert('Email: ' + email + ", password: " + password)
+        if (email === '' || password === '') {
+            alert("Email and password must not be empty")
+            return;
+        }
         await signUp(email, password)
-            .then(_ => alert("Success"))
-            .catch(err => alert(err))
+            .then(_ => {
+                alert("User created")
+                window.location.href = "/";
+            })
+            .catch(err => {
+                switch (err.response.status) {
+                    case 403:
+                        alert("User already exists")
+                        break;
+                    default:
+                        alert(err)
+                }
+            })
     }
 
     return (
@@ -26,12 +40,12 @@ function SignUp() {
             <form onSubmit={handleSubmit}>
                 <label>
                     Email:
-                    <input type="email" onChange={handleEmailChange} value={email} />
-                </label>
+                    <input type="email" onChange={handleEmailChange} value={email}/>
+                </label><br/>
                 <label>
                     Password:
-                    <input type="password" onChange={handlePasswordChange} value={password} />
-                </label>
+                    <input type="password" onChange={handlePasswordChange} value={password}/>
+                </label><br/>
                 <input type="submit" value="Sign up"/>
             </form>
         </center>
