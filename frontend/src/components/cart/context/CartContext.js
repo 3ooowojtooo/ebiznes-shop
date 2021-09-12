@@ -1,18 +1,29 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {getUserCart} from "../../../service/api/Api";
 
 export const CartContext = React.createContext();
 export const useCart = () => React.useContext(CartContext);
 
 export const CartContextProvider = ({children}) => {
-    const [items, setItems] = useState([])
+    const [cart, setCart] = useState()
+
+    useEffect(async () => {
+        await getUserCart()
+            .then(response => setCart(response.data))
+    }, [])
 
     const getCartSize = () => {
-        return items.length
+        return cart === undefined ? 0 : cart.items.length
+    }
+
+    const getCart = () => {
+        return cart
     }
 
     return (
         <CartContext.Provider value={{
-            getCartSize
+            getCartSize,
+            getCart
         }}>
             {children}
         </CartContext.Provider>

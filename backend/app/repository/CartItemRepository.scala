@@ -1,11 +1,11 @@
 package repository
 
 import controllers.dto.CartItemDto
-import javax.inject.{Inject, Singleton}
 import models.CartItem
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -16,12 +16,14 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
 
   import dbConfig._
   import profile.api._
+
   private val cartItemTable = TableQuery[CartItemTable]
 
   import cartRepository.CartTable
+  import categoryRepository.CategoryTable
   import productRepository.ProductTable
   import userRepository.UserTable
-  import categoryRepository.CategoryTable
+
   private val productTable = TableQuery[ProductTable]
   private val cartTable = TableQuery[CartTable]
   private val userTable = TableQuery[UserTable]
@@ -44,8 +46,24 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
     } yield (item, prod, cat, cart, user)
     joinQuery.result
       .map(_.toStream
-      .map(data => CartItemDto(data._1, data._2, data._4, data._5, data._3))
-      .toList)
+        .map(data => CartItemDto(data._1, data._2, data._4, data._5, data._3))
+        .toList)
+  }
+
+  def listByCartId(cartId: Long): Future[Seq[CartItemDto]] = db.run {
+    val joinQuery = for {
+      ((((item, prod), cat), cart), user) <- cartItemTable join
+        productTable on (_.product === _.id) join
+        categoryTable on (_._2.category === _.id) join
+        cartTable on (_._1._1.cart === _.id) join
+        userTable on (_._2.user === _.id)
+    } yield (item, prod, cat, cart, user)
+    joinQuery
+      .filter(_._4.id === cartId)
+      .result
+      .map(_.toStream
+        .map(data => CartItemDto(data._1, data._2, data._4, data._5, data._3))
+        .toList)
   }
 
   def getById(id: Long): Future[CartItemDto] = db.run {

@@ -89,6 +89,7 @@ GET           /rest/cart/:id                       controllers.rest.CartRestCont
 POST          /rest/cart                           controllers.rest.CartRestController.create
 DELETE        /rest/cart/:id                       controllers.rest.CartRestController.delete(id : Long)
 PUT           /rest/cart/:id                       controllers.rest.CartRestController.update(id : Long)
+GET           /rest/currentcart                    controllers.rest.CartRestController.getOrCreateUserCart
 
 # Cart VIEW routes
 GET           /cart                                controllers.view.CartViewController.getAll

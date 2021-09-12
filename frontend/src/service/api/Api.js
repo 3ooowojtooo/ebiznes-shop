@@ -37,6 +37,10 @@ export const getUserDetails = () => {
     return get("/rest/currentuser")
 }
 
+export const getUserCart = () => {
+    return get("/rest/currentcart")
+}
+
 function get(url, headers = {}) {
     const fullUrl = buildUrl(url)
     const allHeaders = buildHeadersWithCsrfToken(headers)

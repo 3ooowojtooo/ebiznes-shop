@@ -1,11 +1,13 @@
 package repository
 
 import controllers.dto.CartDto
-import javax.inject.{Inject, Singleton}
 import models.Cart
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -14,10 +16,13 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
 
   import dbConfig._
   import profile.api._
+
   private val cartTable = TableQuery[CartTable]
 
   import userRepository.UserTable
+
   private val userTable = TableQuery[UserTable]
+  private val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
 
   def create(created_time: String, user: Long, purchased: Boolean): Future[Cart] = db.run {
     (cartTable.map(c => (c.created_time, c.user, c.purchased))
@@ -32,8 +37,8 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
     } yield (c, u)
     joinQuery.result
       .map(_.toStream
-      .map(data => CartDto(data._1, data._2))
-      .toList)
+        .map(data => CartDto(data._1, data._2))
+        .toList)
   }
 
   def getById(id: Long): Future[CartDto] = db.run {
@@ -60,6 +65,22 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
   def update(id: Long, created_time: String, user: Long, purchased: Boolean): Future[Unit] = {
     val newCart = Cart(id, created_time, user, purchased)
     db.run(cartTable.filter(_.id === id).update(newCart).map(_ => ()))
+  }
+
+  def getOrCreateUserCart(userId: Long): Future[Cart] = {
+    db.run {
+      val joinQuery = for {
+        (c, u) <- cartTable join userTable on (_.user === _.id)
+      } yield (c, u)
+      joinQuery
+        .filter(_._2.id === userId)
+        .filter(_._1.purchased === false)
+        .result
+        .headOption
+    }.flatMap {
+      case Some((optCart, _)) => Future.successful(optCart)
+      case None => create(dateFormat.format(new Date()), userId, purchased = false)
+    }
   }
 
   class CartTable(tag: Tag) extends Table[Cart](tag, "cart") {

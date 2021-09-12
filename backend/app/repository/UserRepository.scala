@@ -3,7 +3,7 @@ package repository
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.services.IdentityService
 import com.mohiva.play.silhouette.api.util.PasswordInfo
-import controllers.dto.UserDto
+import controllers.dto.{CartDetailsDto, UserDto}
 
 import javax.inject.{Inject, Singleton}
 import models.User
@@ -48,25 +48,6 @@ extends IdentityService[User] {
       )
     }
   }
-
-
-  /*
-    def create(email: String, providerId : String, providerKey : String): Future[UserDto] = db.run {
-      user.filter(_.providerId === providerId)
-        .filter(_.providerKey === providerKey)
-        .filter(_.email === email)
-        .result
-        .headOption
-        .flatMap {
-          case Some(x) => DBIOAction.successful(x)
-          case None =>
-            (user.map(u => (u.email, u.providerId, u.providerKey))
-              returning user.map(_.id)
-              into { case ((email, providerId, providerKey), id) => UserDto(id, email, providerId, providerKey) }
-              ) += (email, providerId, providerKey)
-        }
-    }
-  */
 
   def list: Future[List[UserDto]] = db.run {
     user.result

@@ -1,15 +1,17 @@
 package controllers.rest
 
-import javax.inject.{Inject, Singleton}
+import controllers.auth.{AbstractAuthController, DefaultSilhouetteControllerComponents}
+import controllers.dto.{CartDetailsDto, CartItemDetailsDto}
 import play.api.libs.json.{Json, OFormat}
-import play.api.mvc._
-import repository.CartRepository
+import repository.{CartItemRepository, CartRepository}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CartRestController @Inject()(cc: ControllerComponents, cartRepository: CartRepository)(implicit val executionContext: ExecutionContext)
-  extends AbstractController(cc) {
+class CartRestController @Inject()(cc: DefaultSilhouetteControllerComponents, cartRepository: CartRepository,
+                                   cartItemRepository: CartItemRepository)(implicit val executionContext: ExecutionContext)
+  extends AbstractAuthController(cc) {
 
   // GET /cart
   def getAll = Action.async { implicit request =>
@@ -59,6 +61,15 @@ class CartRestController @Inject()(cc: ControllerComponents, cartRepository: Car
           .map(_ => Ok)
       case None => Future(BadRequest)
     }
+  }
+
+  // GET /currentcart
+  def getOrCreateUserCart = silhouette.SecuredAction.async { implicit request =>
+    cartRepository.getOrCreateUserCart(request.identity.id)
+      .flatMap(cart =>
+        cartItemRepository.listByCartId(cart.id)
+          .map(items => Ok(Json.toJson(CartDetailsDto(cart, items))))
+      )
   }
 }
 
