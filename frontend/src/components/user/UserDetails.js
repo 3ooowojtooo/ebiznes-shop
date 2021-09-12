@@ -5,9 +5,9 @@ function UserDetails() {
     const [user, setUser] = useState();
     useEffect(() => {
         getUserDetails()
-            .then(response => setUser(response))
+            .then(response => setUser(response.data))
             .catch(err => alert(err))
-    })
+    }, [])
 
     return (
         user === undefined ? <center>Loading...</center> :
