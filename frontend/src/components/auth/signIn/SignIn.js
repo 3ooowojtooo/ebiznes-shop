@@ -1,7 +1,9 @@
 import React, {useState} from "react";
-import {signUp} from "../../service/api/Api";
+import {useAuth} from "../context/AuthContext";
+import {signIn} from "../../../service/api/Api";
 
-function SignUp() {
+function SignIn() {
+    const {redirectToGoogleLogin} = useAuth();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -19,22 +21,20 @@ function SignUp() {
             alert("Email and password must not be empty")
             return;
         }
-        await signUp(email, password)
+        await signIn(email, password)
             .then(_ => {
-                alert("User created")
                 window.location.href = "/";
             })
             .catch(err => {
                 switch (err.response.status) {
                     case 403:
-                        alert("User already exists")
+                        alert("Invalid credentials")
                         break;
                     default:
                         alert(err)
                 }
             })
     }
-
     return (
         <center>
             <form onSubmit={handleSubmit}>
@@ -46,10 +46,11 @@ function SignUp() {
                     Password:
                     <input type="password" onChange={handlePasswordChange} value={password}/>
                 </label><br/>
-                <input type="submit" value="Sign up"/>
+                <input type="submit" value="Sign in"/>
             </form>
+            <button onClick={redirectToGoogleLogin}>Sign in with Google</button>
         </center>
     )
 }
 
-export default SignUp;
+export default SignIn;
