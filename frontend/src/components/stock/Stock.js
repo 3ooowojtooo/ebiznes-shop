@@ -11,14 +11,13 @@ function Stock() {
                     let parsedItems = response.data.map(item => <StockItem key={item.id} item={item}/>)
                     setItems(parsedItems)
                 } else {
-                    alert("not ok")
                     alert(response)
                 }
             })
             .catch(err => alert(err))
     }, [])
     return (
-        items === undefined ? <center>"loading"</center> :
+        items === undefined ? <center>loading</center> :
             <center>
                 <table>
                     <thead>

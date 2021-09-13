@@ -95,7 +95,7 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
 
   def getByCartAndProduct(cartId : Long, productId : Long) : Future[Option[CartItem]] = db.run {
     cartItemTable
-      .filter(_.id === cartId)
+      .filter(_.cart === cartId)
       .filter(_.product === productId)
       .result
       .headOption

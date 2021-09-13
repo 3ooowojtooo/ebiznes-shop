@@ -26,6 +26,18 @@ export const CartContextProvider = ({children}) => {
         }
     }
 
+    const getCartPrice = () => {
+        if (cart === undefined) {
+            return 0
+        } else {
+            let price = 0.0
+            for (let i = 0; i < cart.items.length; i++) {
+                price += cart.items[0].amount * cart.items[0].product.price
+            }
+            return price
+        }
+    }
+
     const getCart = () => {
         return cart
     }
@@ -43,6 +55,7 @@ export const CartContextProvider = ({children}) => {
     return (
         <CartContext.Provider value={{
             getCartSize,
+            getCartPrice,
             getCart,
             addProductToCart,
             deleteItemFromCart
