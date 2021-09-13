@@ -83,6 +83,21 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
     }
   }
 
+  def getUserCartId(userId : Long) : Future[Option[Long]] = db.run {
+    val joinQuery = for {
+      (c, u) <- cartTable join userTable on (_.user === _.id)
+    } yield (c, u)
+    joinQuery
+      .filter(_._2.id === userId)
+      .filter(_._1.purchased === false)
+      .result
+      .headOption
+      .map {
+        case Some((cartOpt, _)) => Some(cartOpt.id)
+        case None => None
+      }
+  }
+
   class CartTable(tag: Tag) extends Table[Cart](tag, "cart") {
     def fk_user = foreignKey("fk_user", user, userTable)(_.id)
 

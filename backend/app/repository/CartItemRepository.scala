@@ -93,6 +93,22 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
       }
   }
 
+  def getByCartAndProduct(cartId : Long, productId : Long) : Future[Option[CartItem]] = db.run {
+    cartItemTable
+      .filter(_.id === cartId)
+      .filter(_.product === productId)
+      .result
+      .headOption
+  }
+
+  def deleteByIdAndCartId(cartId : Long, itemId : Long) : Future[Unit] = db.run {
+    cartItemTable
+      .filter(_.id === itemId)
+      .filter(_.cart === cartId)
+      .delete
+      .map(_ => ())
+  }
+
   def delete(id: Long): Future[Unit] = db.run(cartItemTable.filter(_.id === id).delete.map(_ => ()))
 
   def update(id: Long, product: Long, amount: Long, cart: Long): Future[Unit] = db.run {

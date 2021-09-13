@@ -1,7 +1,7 @@
 package controllers.rest
 
 import controllers.auth.{AbstractAuthController, DefaultSilhouetteControllerComponents}
-import controllers.dto.{CartDetailsDto, CartItemDetailsDto}
+import controllers.dto.CartDetailsDto
 import play.api.libs.json.{Json, OFormat}
 import repository.{CartItemRepository, CartRepository}
 
@@ -70,6 +70,33 @@ class CartRestController @Inject()(cc: DefaultSilhouetteControllerComponents, ca
         cartItemRepository.listByCartId(cart.id)
           .map(items => Ok(Json.toJson(CartDetailsDto(cart, items))))
       )
+  }
+
+  // POST /currentcart/product/:productId
+  def addToUserCart(productId: Long) = silhouette.SecuredAction.async { implicit request =>
+    cartRepository.getUserCartId(request.identity.id)
+      .flatMap {
+        case None => Future.successful(Ok)
+        case Some(cartId) =>
+          cartItemRepository.getByCartAndProduct(cartId, productId)
+            .flatMap {
+              case Some(cartItem) => cartItemRepository.update(cartItem.id, cartItem.product, cartItem.amount + 1, cartItem.cart)
+              case None => cartItemRepository.create(productId, 1, cartId).map(_ => ())
+            }
+            .map(_ => Ok)
+      }
+  }
+
+  // DELETE /currentcart/item/:itemId
+  def deleteFromUserCart(itemId: Long) = silhouette.SecuredAction.async { implicit request =>
+    cartRepository.getUserCartId(request.identity.id)
+      .flatMap {
+        case None => Future.successful(Ok)
+        case Some(cartId) =>
+          cartItemRepository.deleteByIdAndCartId(cartId, itemId)
+            .map(_ => Ok
+        )
+      }
   }
 }
 
