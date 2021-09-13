@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {addProductToUserCart, deleteItemFromUserCart, getUserCart} from "../../../service/api/Api";
+import {addProductToUserCart, buyUserCart, deleteItemFromUserCart, getUserCart} from "../../../service/api/Api";
 
 export const CartContext = React.createContext();
 export const useCart = () => React.useContext(CartContext);
@@ -52,13 +52,20 @@ export const CartContextProvider = ({children}) => {
         await reloadCartData()
     }
 
+    const buyCart = async (paymentMethodId, userAddressId) => {
+        await buyUserCart(paymentMethodId, userAddressId)
+            .catch(err => alert(err))
+        await reloadCartData()
+    }
+
     return (
         <CartContext.Provider value={{
             getCartSize,
             getCartPrice,
             getCart,
             addProductToCart,
-            deleteItemFromCart
+            deleteItemFromCart,
+            buyCart
         }}>
             {children}
         </CartContext.Provider>

@@ -1,11 +1,11 @@
 package repository
 
 import controllers.dto.StockDto
-import javax.inject.{Inject, Singleton}
 import models.Stock
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -15,11 +15,15 @@ class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
 
   import dbConfig._
   import profile.api._
+
   private val stockTable = TableQuery[StockTable]
 
   import productRepository.ProductTable
+
   private val productTable = TableQuery[ProductTable]
+
   import categoryRepository.CategoryTable
+
   private val categoryTable = TableQuery[CategoryTable]
 
   def create(product: Long, amount: Long): Future[Stock] = db.run {
@@ -31,17 +35,17 @@ class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
 
   def list: Future[List[StockDto]] = db.run {
     val joinQuery = for {
-      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on(_._2.category === _.id)
+      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on (_._2.category === _.id)
     } yield (s, p, c)
     joinQuery.result
       .map(_.toStream
-      .map(data => StockDto(data._1, data._2, data._3))
-      .toList)
+        .map(data => StockDto(data._1, data._2, data._3))
+        .toList)
   }
 
   def getById(id: Long): Future[StockDto] = db.run {
     val joinQuery = for {
-      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on(_._2.category === _.id)
+      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on (_._2.category === _.id)
     } yield (s, p, c)
     joinQuery.filter(_._1.id === id).result.head
       .map(data => StockDto(data._1, data._2, data._3))
@@ -49,7 +53,7 @@ class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
 
   def getByIdOption(id: Long): Future[Option[StockDto]] = db.run {
     val joinQuery = for {
-      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on(_._2.category === _.id)
+      ((s, p), c) <- stockTable join productTable on (_.product === _.id) join categoryTable on (_._2.category === _.id)
     } yield (s, p, c)
     joinQuery.filter(_._1.id === id).result.headOption
       .map {
@@ -62,6 +66,22 @@ class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
   def update(id: Long, product: Long, amount: Long): Future[Unit] = {
     val newStock = Stock(id, product, amount)
     db.run(stockTable.filter(_.id === id).update(newStock).map(_ => ()))
+  }
+
+  def decreaseStockAmount(productId: Long, decreaseBy: Long): Future[Unit] = {
+    db.run(stockTable
+      .filter(_.product === productId)
+      .result
+      .headOption)
+      .flatMap {
+        case Some(stock) =>
+          var amountAfterDecrease = 0L
+          if (stock.amount > decreaseBy) {
+            amountAfterDecrease = stock.amount - decreaseBy
+          }
+          update(stock.id, stock.product, amountAfterDecrease)
+        case None => Future.successful(())
+      }
   }
 
   class StockTable(tag: Tag) extends Table[Stock](tag, "stock") {

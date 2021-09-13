@@ -49,6 +49,22 @@ export const deleteItemFromUserCart = itemId => {
     return deleteCall("/rest/currentcart/item/" + itemId)
 }
 
+export const getUserPaymentMethods = () => {
+    return getCall("/rest/currentpaymentmethod")
+}
+
+export const getUserAddresses = () => {
+    return getCall("/rest/currentaddress")
+}
+
+export const buyUserCart = (paymentMethodId, userAddressId) => {
+    const body = {
+        paymentMethod : paymentMethodId,
+        userAddress : userAddressId
+    }
+    return postCall("/rest/currentcart", body, JSON_HEADERS)
+}
+
 function getCall(url, headers = {}) {
     const fullUrl = buildUrl(url)
     const allHeaders = buildHeadersWithCsrfToken(headers)

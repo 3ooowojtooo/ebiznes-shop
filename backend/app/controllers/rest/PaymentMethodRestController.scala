@@ -1,28 +1,30 @@
 package controllers.rest
 
 import com.google.inject.Inject
+import controllers.auth.{AbstractAuthController, DefaultSilhouetteControllerComponents}
+
 import javax.inject.Singleton
 import play.api.libs.json.{Json, OFormat}
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import repository.PaymentMethodRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PaymentMethodRestController @Inject()(cc: ControllerComponents, paymentMethodRepository: PaymentMethodRepository)(implicit val executionContext: ExecutionContext)
-  extends AbstractController(cc) {
+class PaymentMethodRestController @Inject()(cc: DefaultSilhouetteControllerComponents, paymentMethodRepository: PaymentMethodRepository)(implicit val executionContext: ExecutionContext)
+  extends AbstractAuthController(cc) {
 
   implicit val createPaymentMethodFormatter: OFormat[CreatePaymentMethod] = Json.format[CreatePaymentMethod]
   implicit val updatePaymentMethodFormatter: OFormat[UpdatePaymentMethod] = Json.format[UpdatePaymentMethod]
 
   // GET /paymentmethod
-  def getAll = Action.async { implicit request =>
+  def getAll: Action[AnyContent] = Action.async { implicit request =>
     val paymentMethods = paymentMethodRepository.list
     paymentMethods.map(c => Ok(Json.toJson(c)))
   }
 
   // GET /paymentmethod/:id
-  def findOne(id: Long) = Action.async { implicit request =>
+  def findOne(id: Long): Action[AnyContent] = Action.async { implicit request =>
     val paymentMethod = paymentMethodRepository.getByIdOption(id)
     paymentMethod.map {
       case Some(item) => Ok(Json.toJson(item))
@@ -31,7 +33,7 @@ class PaymentMethodRestController @Inject()(cc: ControllerComponents, paymentMet
   }
 
   // POST /paymentmethod
-  def create = Action.async { implicit request =>
+  def create: Action[AnyContent] = Action.async { implicit request =>
     val requestBodyJson = request.body.asJson
     val requestBody = requestBodyJson.flatMap(Json.fromJson[CreatePaymentMethod](_).asOpt)
     requestBody match {
@@ -43,13 +45,13 @@ class PaymentMethodRestController @Inject()(cc: ControllerComponents, paymentMet
   }
 
   // DELETE /paymentmethod/:id
-  def delete(id: Long) = Action.async {
+  def delete(id: Long): Action[AnyContent] = Action.async {
     paymentMethodRepository.delete(id)
       .map(_ => Ok)
   }
 
   // PUT /paymentmethod/:id
-  def update(id: Long) = Action.async { implicit request =>
+  def update(id: Long): Action[AnyContent] = Action.async { implicit request =>
     val requestBodyJson = request.body.asJson
     val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdatePaymentMethod](_).asOpt)
     requestBody match {
@@ -58,6 +60,12 @@ class PaymentMethodRestController @Inject()(cc: ControllerComponents, paymentMet
           .map(_ => Ok)
       case None => Future(BadRequest)
     }
+  }
+
+  // GET /currentpaymentmethod
+  def getUserPaymentMethods: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+    paymentMethodRepository.getUserPaymentMethods(request.identity.id)
+      .map(methods => Ok(Json.toJson(methods)))
   }
 
 }

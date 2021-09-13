@@ -1,6 +1,7 @@
 import React from "react";
 import {useCart} from "./context/CartContext";
 import CartItem from "./CartItem";
+import {Link} from "react-router-dom";
 
 function Cart() {
     const {getCart, getCartSize, getCartPrice} = useCart();
@@ -26,7 +27,7 @@ function Cart() {
                 </table><br/>
                 <b>Total amount: </b> {getCartSize()}<br/>
                 <b>Total price: </b> {getCartPrice()}<br/>
-                <button>Purchase</button>
+                <Link to="/cartPurchase">Purchase</Link>
             </center>
     )
 }

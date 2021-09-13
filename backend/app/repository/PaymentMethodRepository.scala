@@ -62,6 +62,12 @@ class PaymentMethodRepository @Inject()(val dbConfigProvider: DatabaseConfigProv
     db.run(paymentMethodTable.filter(_.id === id).update(newPaymentMethod).map(_ => ()))
   }
 
+  def getUserPaymentMethods(userId : Long) : Future[Seq[PaymentMethod]] = db.run {
+    paymentMethodTable
+      .filter(_.user === userId)
+      .result
+  }
+
   class PaymentMethodTable(tag: Tag) extends Table[PaymentMethod](tag, "payment_method") {
     def fk_user = foreignKey("fk_user", user, userTable)(_.id)
 

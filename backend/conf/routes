@@ -57,6 +57,7 @@ GET           /rest/address/:id                           controllers.rest.UserA
 POST          /rest/address                               controllers.rest.UserAddressRestController.create
 DELETE        /rest/address/:id                           controllers.rest.UserAddressRestController.delete(id : Long)
 PUT           /rest/address/:id                           controllers.rest.UserAddressRestController.update(id : Long)
+GET           /rest/currentaddress                        controllers.rest.UserAddressRestController.getUserAddresses
 
 # User addresses VIEW routes
 GET           /address                                    controllers.view.UserAddressViewController.getAll
@@ -90,6 +91,7 @@ POST          /rest/cart                                  controllers.rest.CartR
 DELETE        /rest/cart/:id                              controllers.rest.CartRestController.delete(id : Long)
 PUT           /rest/cart/:id                              controllers.rest.CartRestController.update(id : Long)
 GET           /rest/currentcart                           controllers.rest.CartRestController.getOrCreateUserCart
+POST          /rest/currentcart                           controllers.rest.CartRestController.buyUserCart
 POST          /rest/currentcart/product/:productId        controllers.rest.CartRestController.addToUserCart(productId : Long)
 DELETE        /rest/currentcart/item/:itemId              controllers.rest.CartRestController.deleteFromUserCart(itemId : Long)
 
@@ -140,6 +142,7 @@ GET           /rest/paymentmethod/:id                     controllers.rest.Payme
 POST          /rest/paymentmethod                         controllers.rest.PaymentMethodRestController.create
 DELETE        /rest/paymentmethod/:id                     controllers.rest.PaymentMethodRestController.delete(id : Long)
 PUT           /rest/paymentmethod/:id                     controllers.rest.PaymentMethodRestController.update(id : Long)
+GET           /rest/currentpaymentmethod                  controllers.rest.PaymentMethodRestController.getUserPaymentMethods
 
 # Payment method VIEW routes
 GET           /paymentmethod                              controllers.view.PaymentMethodViewController.getAll

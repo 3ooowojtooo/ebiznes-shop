@@ -1,11 +1,11 @@
 package repository
 
 import controllers.dto.UserAddressDto
-import javax.inject.{Inject, Singleton}
 import models.UserAddress
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -14,6 +14,7 @@ class UserAddressRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
 
   import dbConfig._
   import profile.api._
+
   private val userAddressTable = TableQuery[UserAddressTable]
 
   import userRepository.UserTable
@@ -61,6 +62,12 @@ class UserAddressRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
   def update(id: Long, street: String, city: String, zipcode: String, user: Long): Future[Unit] = {
     val newAddress = UserAddress(id, street, city, zipcode, user)
     db.run(userAddressTable.filter(_.id === id).update(newAddress).map(_ => ()))
+  }
+
+  def getUserAddresses(userId: Long): Future[Seq[UserAddress]] = db.run {
+    userAddressTable
+      .filter(_.user === userId)
+      .result
   }
 
   class UserAddressTable(tag: Tag) extends Table[UserAddress](tag, "user_address") {
