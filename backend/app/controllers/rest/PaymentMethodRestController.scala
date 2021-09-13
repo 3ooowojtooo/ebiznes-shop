@@ -2,12 +2,11 @@ package controllers.rest
 
 import com.google.inject.Inject
 import controllers.auth.{AbstractAuthController, DefaultSilhouetteControllerComponents}
-
-import javax.inject.Singleton
 import play.api.libs.json.{Json, OFormat}
-import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.api.mvc.{Action, AnyContent}
 import repository.PaymentMethodRepository
 
+import javax.inject.Singleton
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -16,6 +15,7 @@ class PaymentMethodRestController @Inject()(cc: DefaultSilhouetteControllerCompo
 
   implicit val createPaymentMethodFormatter: OFormat[CreatePaymentMethod] = Json.format[CreatePaymentMethod]
   implicit val updatePaymentMethodFormatter: OFormat[UpdatePaymentMethod] = Json.format[UpdatePaymentMethod]
+  implicit val updateUserPaymentMethodFormatter: OFormat[UpdateUserPaymentMethod] = Json.format[UpdateUserPaymentMethod]
 
   // GET /paymentmethod
   def getAll: Action[AnyContent] = Action.async { implicit request =>
@@ -68,8 +68,27 @@ class PaymentMethodRestController @Inject()(cc: DefaultSilhouetteControllerCompo
       .map(methods => Ok(Json.toJson(methods)))
   }
 
+  // PUT /currentpaymentmethod/:id
+  def updateUserPaymentMethod(id: Long): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+    val requestBodyJson = request.body.asJson
+    val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdateUserPaymentMethod](_).asOpt)
+    requestBody match {
+      case Some(itemToUpdate) =>
+        paymentMethodRepository.update(id, request.identity.id, itemToUpdate.name)
+          .map(_ => Ok)
+      case None => Future(BadRequest)
+    }
+  }
+
+  // DELETE /currentpaymentmethod/:id
+  def deleteUserPaymentMethod(id: Long): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+    paymentMethodRepository.delete(id, request.identity.id)
+      .map(_ => Ok)
+  }
 }
 
 case class CreatePaymentMethod(user: Long, name: String)
 
 case class UpdatePaymentMethod(user: Long, name: String)
+
+case class UpdateUserPaymentMethod(name: String)

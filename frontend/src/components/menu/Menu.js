@@ -8,7 +8,8 @@ function Menu() {
         isLogged() ?
             <center>
                 <Link to="/">Index</Link><br/>
-                <Link to="/user">Account details</Link>
+                <Link to="/user">Account details</Link><br/>
+                <Link to="/history">Purchase history</Link>
             </center>
             :
             <center>

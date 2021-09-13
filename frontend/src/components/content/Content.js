@@ -9,6 +9,7 @@ import UserDetails from "../user/UserDetails";
 import PublicRoute from "../auth/publicRoute/PublicRoute";
 import Cart from "../cart/Cart";
 import CartPurchase from "../cart/CartPurchase";
+import PurchaseHistory from "../history/PurchaseHistory";
 
 function Content() {
     return (
@@ -28,6 +29,9 @@ function Content() {
                 </PrivateRoute>
                 <PrivateRoute path="/cartPurchase">
                     <CartPurchase/>
+                </PrivateRoute>
+                <PrivateRoute path="/history">
+                    <PurchaseHistory/>
                 </PrivateRoute>
                 <Route path="/">
                     <Main />

@@ -1,15 +1,18 @@
 package repository
 
-import controllers.dto.PurchaseHistoryDto
+import controllers.dto.{PurchaseHistoryDto, UserDto}
+
 import javax.inject.Inject
-import models.PurchaseHistory
+import models.{Cart, PurchaseHistory}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Inject
-class PurchaseHistoryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val cartRepository: CartRepository, val userRepository: UserRepository)
+class PurchaseHistoryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
+                                          val cartRepository: CartRepository, val userRepository: UserRepository,
+                                          val cartItemRepository: CartItemRepository)
                                          (implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
@@ -22,6 +25,9 @@ class PurchaseHistoryRepository @Inject()(val dbConfigProvider: DatabaseConfigPr
 
   import userRepository.UserTable
   private val userTable = TableQuery[UserTable]
+
+  import cartItemRepository.CartItemTable
+  private val cartItemTable = TableQuery[CartItemTable]
 
   def create(cart: Long, totalPrice: Double, purchaseTimestamp: String): Future[PurchaseHistory] = db.run {
     (purchaseHistoryTable.map(c => (c.cart, c.totalPrice, c.purchaseTimestamp))
@@ -51,12 +57,22 @@ class PurchaseHistoryRepository @Inject()(val dbConfigProvider: DatabaseConfigPr
   def getByIdOption(id: Long): Future[Option[PurchaseHistoryDto]] = db.run {
     val joinQuery = for {
       ((h, c), u) <- purchaseHistoryTable join cartTable on (_.cart === _.id) join userTable on (_._2.user === _.id)
-    } yield(h,c,u)
+    } yield (h,c,u)
     joinQuery.filter(_._1.id === id).result.headOption
       .map {
         case Some(value) => Some(PurchaseHistoryDto(value._1, value._2, value._3))
         case None => None
       }
+  }
+
+  def getUserHistory(userId : Long): Future[Seq[(PurchaseHistory, Cart)]] = db.run {
+    val joinQuery = for {
+      (h, c) <- purchaseHistoryTable join cartTable on (_.cart === _.id)
+    } yield (h,c)
+    joinQuery
+      .filter(_._2.user === userId)
+      .filter(_._2.purchased === true)
+      .result
   }
 
   def delete(id: Long): Future[Unit] = db.run(purchaseHistoryTable.filter(_.id === id).delete.map(_ => ()))

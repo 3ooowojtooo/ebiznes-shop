@@ -1,11 +1,11 @@
 package repository
 
 import controllers.dto.PaymentMethodDto
-import javax.inject.Inject
 import models.PaymentMethod
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 @Inject
@@ -14,9 +14,11 @@ class PaymentMethodRepository @Inject()(val dbConfigProvider: DatabaseConfigProv
 
   import dbConfig._
   import profile.api._
+
   private val paymentMethodTable = TableQuery[PaymentMethodTable]
 
   import userRepository.UserTable
+
   private val userTable = TableQuery[UserTable]
 
   def create(user: Long, name: String): Future[PaymentMethod] = db.run {
@@ -57,12 +59,20 @@ class PaymentMethodRepository @Inject()(val dbConfigProvider: DatabaseConfigProv
 
   def delete(id: Long): Future[Unit] = db.run(paymentMethodTable.filter(_.id === id).delete.map(_ => ()))
 
+  def delete(id: Long, userId: Long): Future[Unit] = db.run {
+    paymentMethodTable
+      .filter(_.id === id)
+      .filter(_.user === userId)
+      .delete
+      .map(_ => ())
+  }
+
   def update(id: Long, user: Long, name: String): Future[Unit] = {
     val newPaymentMethod = PaymentMethod(id, user, name)
     db.run(paymentMethodTable.filter(_.id === id).update(newPaymentMethod).map(_ => ()))
   }
 
-  def getUserPaymentMethods(userId : Long) : Future[Seq[PaymentMethod]] = db.run {
+  def getUserPaymentMethods(userId: Long): Future[Seq[PaymentMethod]] = db.run {
     paymentMethodTable
       .filter(_.user === userId)
       .result

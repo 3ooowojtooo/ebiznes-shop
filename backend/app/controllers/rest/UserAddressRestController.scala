@@ -68,8 +68,30 @@ class UserAddressRestController @Inject()(cc: DefaultSilhouetteControllerCompone
     userAddressRepository.getUserAddresses(request.identity.id)
       .map(addresses => Ok(Json.toJson(addresses)))
   }
+
+  implicit val updateCurrentUserAddressFormatter: OFormat[UpdateCurrentUserAddress] = Json.format[UpdateCurrentUserAddress]
+
+  // PUT /currentaddress/:id
+  def updateCurrentUserAddress(id : Long): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+    val requestBodyJson = request.body.asJson
+    val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdateCurrentUserAddress](_).asOpt)
+    requestBody match {
+      case Some(itemToUpdate) =>
+        userAddressRepository.update(id, itemToUpdate.street, itemToUpdate.city, itemToUpdate.zipcode, request.identity.id)
+          .map(_ => Ok)
+      case None => Future(BadRequest)
+    }
+  }
+
+  // DELETE /currentaddress/:id
+  def deleteUserPaymentMethod(id: Long): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+    userAddressRepository.delete(id, request.identity.id)
+      .map(_ => Ok)
+  }
 }
 
 case class CreateUserAddress(street: String, city: String, zipcode: String, user: Long)
 
 case class UpdateUserAddress(street: String, city: String, zipcode: String, user: Long)
+
+case class UpdateCurrentUserAddress(street: String, city: String, zipcode: String)

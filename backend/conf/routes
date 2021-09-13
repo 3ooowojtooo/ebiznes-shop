@@ -58,6 +58,8 @@ POST          /rest/address                               controllers.rest.UserA
 DELETE        /rest/address/:id                           controllers.rest.UserAddressRestController.delete(id : Long)
 PUT           /rest/address/:id                           controllers.rest.UserAddressRestController.update(id : Long)
 GET           /rest/currentaddress                        controllers.rest.UserAddressRestController.getUserAddresses
+PUT           /rest/currentaddress/:id                    controllers.rest.UserAddressRestController.updateCurrentUserAddress(id : Long)
+DELETE        /rest/currentaddress/:id                    controllers.rest.UserAddressRestController.deleteUserPaymentMethod(id : Long)
 
 # User addresses VIEW routes
 GET           /address                                    controllers.view.UserAddressViewController.getAll
@@ -143,6 +145,8 @@ POST          /rest/paymentmethod                         controllers.rest.Payme
 DELETE        /rest/paymentmethod/:id                     controllers.rest.PaymentMethodRestController.delete(id : Long)
 PUT           /rest/paymentmethod/:id                     controllers.rest.PaymentMethodRestController.update(id : Long)
 GET           /rest/currentpaymentmethod                  controllers.rest.PaymentMethodRestController.getUserPaymentMethods
+PUT           /rest/currentpaymentmethod/:id              controllers.rest.PaymentMethodRestController.updateUserPaymentMethod(id : Long)
+DELETE        /rest/currentpaymentmethod/:id              controllers.rest.PaymentMethodRestController.deleteUserPaymentMethod(id : Long)
 
 # Payment method VIEW routes
 GET           /paymentmethod                              controllers.view.PaymentMethodViewController.getAll
@@ -159,6 +163,7 @@ GET           /rest/purchasehistory/:id                   controllers.rest.Purch
 POST          /rest/purchasehistory                       controllers.rest.PurchaseHistoryRestController.create
 DELETE        /rest/purchasehistory/:id                   controllers.rest.PurchaseHistoryRestController.delete(id : Long)
 PUT           /rest/purchasehistory/:id                   controllers.rest.PurchaseHistoryRestController.update(id : Long)
+GET           /rest/currentpurchasehistory                controllers.rest.PurchaseHistoryRestController.getUserPurchaseHistory
 
 # Purchase history VIEW routes
 GET           /purchasehistory                            controllers.view.PurchaseHistoryViewController.getAll

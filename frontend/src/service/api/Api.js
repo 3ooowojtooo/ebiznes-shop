@@ -65,6 +65,10 @@ export const buyUserCart = (paymentMethodId, userAddressId) => {
     return postCall("/rest/currentcart", body, JSON_HEADERS)
 }
 
+export const getUserPurchaseHistory = () => {
+    return getCall("/rest/currentpurchasehistory")
+}
+
 function getCall(url, headers = {}) {
     const fullUrl = buildUrl(url)
     const allHeaders = buildHeadersWithCsrfToken(headers)
