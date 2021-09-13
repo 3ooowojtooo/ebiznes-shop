@@ -10,7 +10,7 @@ const JSON_HEADERS = {
 axios.defaults.withCredentials = true
 
 export const signOut = () => {
-    return post("/signOut")
+    return postCall("/signOut")
 }
 
 export const signIn = (email, password) => {
@@ -18,7 +18,7 @@ export const signIn = (email, password) => {
         email : email,
         password : password
     }
-    return post("/signIn", body, JSON_HEADERS)
+    return postCall("/signIn", body, JSON_HEADERS)
 }
 
 export const signUp = (email, password) => {
@@ -26,33 +26,48 @@ export const signUp = (email, password) => {
         email : email,
         password : password
     }
-    return post("/signUp", body, JSON_HEADERS)
+    return postCall("/signUp", body, JSON_HEADERS)
 }
 
 export const getStockItems = () => {
-    return get("/rest/stock")
+    return getCall("/rest/stock")
 }
 
 export const getUserDetails = () => {
-    return get("/rest/currentuser")
+    return getCall("/rest/currentuser")
 }
 
 export const getUserCart = () => {
-    return get("/rest/currentcart")
+    return getCall("/rest/currentcart")
 }
 
-function get(url, headers = {}) {
+export const addProductToUserCart = productId => {
+    return postCall("/rest/currentcart/product/" + productId)
+}
+
+export const deleteItemFromUserCart = itemId => {
+    return deleteCall("/rest/currentcart/item/" + itemId)
+}
+
+function getCall(url, headers = {}) {
     const fullUrl = buildUrl(url)
     const allHeaders = buildHeadersWithCsrfToken(headers)
     const config = buildConfigWithHeaders(allHeaders)
     return axios.get(fullUrl, config)
 }
 
-function post(url, data = {}, headers = {}) {
+function postCall(url, data = {}, headers = {}) {
     const fullUrl = buildUrl(url)
     const allHeaders = buildHeadersWithCsrfToken(headers)
     const config = buildConfigWithHeaders(allHeaders)
     return axios.post(fullUrl, data, config)
+}
+
+function deleteCall(url, headers = {}) {
+    const fullUrl = buildUrl(url)
+    const allHeaders = buildHeadersWithCsrfToken(headers)
+    const config = buildConfigWithHeaders(allHeaders)
+    return axios.delete(fullUrl, config)
 }
 
 function buildUrl(url) {
