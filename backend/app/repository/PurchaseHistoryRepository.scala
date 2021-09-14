@@ -87,9 +87,9 @@ class PurchaseHistoryRepository @Inject()(val dbConfigProvider: DatabaseConfigPr
   }
 
   class PurchaseHistoryTable(tag: Tag) extends Table[PurchaseHistory](tag, "purchase_history") {
-    def fk_cart = foreignKey("fk_cart", cart, cartTable)(_.id)
-    def fk_payment_method = foreignKey("fk_payment_method", paymentMethod, paymentMethodTable)(_.id)
-    def fk_address = foreignKey("fk_address", cart, userAddressTable)(_.id)
+    def fkCart = foreignKey("fk_cart", cart, cartTable)(_.id)
+    def fkPaymentMethod = foreignKey("fk_payment_method", paymentMethod, paymentMethodTable)(_.id)
+    def fkAddress = foreignKey("fk_address", cart, userAddressTable)(_.id)
 
     def * = (id, cart, paymentMethod, address, totalPrice, purchaseTimestamp) <> ((PurchaseHistory.apply _).tupled, PurchaseHistory.unapply)
 

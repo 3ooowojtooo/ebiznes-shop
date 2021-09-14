@@ -89,7 +89,7 @@ class UserAddressRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
   }
 
   class UserAddressTable(tag: Tag) extends Table[UserAddress](tag, "user_address") {
-    def fk_user = foreignKey("fk_user", user, userTable)(_.id)
+    def fkUser = foreignKey("fk_user", user, userTable)(_.id)
 
     def * = (id, street, city, zipcode, user) <> ((UserAddress.apply _).tupled, UserAddress.unapply)
 

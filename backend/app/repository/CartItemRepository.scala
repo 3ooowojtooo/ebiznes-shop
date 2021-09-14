@@ -117,11 +117,11 @@ class CartItemRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
   }
 
   class CartItemTable(tag: Tag) extends Table[CartItem](tag, "cart_item") {
-    def fk_product = foreignKey("fk_product", product, productTable)(_.id)
+    def fkProduct = foreignKey("fk_product", product, productTable)(_.id)
 
     def product = column[Long]("product")
 
-    def fk_cart = foreignKey("fk_cart", cart, cartTable)(_.id)
+    def fkCart = foreignKey("fk_cart", cart, cartTable)(_.id)
 
     def cart = column[Long]("cart")
 

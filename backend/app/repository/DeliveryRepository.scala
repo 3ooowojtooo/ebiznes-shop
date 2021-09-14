@@ -67,7 +67,7 @@ class DeliveryRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider,
   }
 
   class DeliveryTable(tag: Tag) extends Table[Delivery](tag, "delivery") {
-    def fk_cart = foreignKey("fk_cart", cart, cartTable)(_.id)
+    def fkCart = foreignKey("fk_cart", cart, cartTable)(_.id)
 
     def cart = column[Long]("cart")
 

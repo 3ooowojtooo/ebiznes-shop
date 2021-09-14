@@ -85,7 +85,7 @@ class StockRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
   }
 
   class StockTable(tag: Tag) extends Table[Stock](tag, "stock") {
-    def fk_product = foreignKey("fk_product", product, productTable)(_.id)
+    def fkProduct = foreignKey("fk_product", product, productTable)(_.id)
 
     def * = (id, product, amount) <> ((Stock.apply _).tupled, Stock.unapply)
 

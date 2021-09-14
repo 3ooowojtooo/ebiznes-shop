@@ -87,7 +87,7 @@ class PaymentMethodRepository @Inject()(val dbConfigProvider: DatabaseConfigProv
   }
 
   class PaymentMethodTable(tag: Tag) extends Table[PaymentMethod](tag, "payment_method") {
-    def fk_user = foreignKey("fk_user", user, userTable)(_.id)
+    def fkUser = foreignKey("fk_user", user, userTable)(_.id)
 
     def user = column[Long]("user")
 

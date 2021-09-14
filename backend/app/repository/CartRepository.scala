@@ -25,7 +25,7 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
   private val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
 
   def create(created_time: String, user: Long, purchased: Boolean): Future[Cart] = db.run {
-    (cartTable.map(c => (c.created_time, c.user, c.purchased))
+    (cartTable.map(c => (c.createdTime, c.user, c.purchased))
       returning cartTable.map(_.id)
       into { case ((created_time, user, purchased), id) => Cart(id, created_time, user, purchased) }
       ) += (created_time, user, purchased)
@@ -99,15 +99,15 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
   }
 
   class CartTable(tag: Tag) extends Table[Cart](tag, "cart") {
-    def fk_user = foreignKey("fk_user", user, userTable)(_.id)
+    def fkUser = foreignKey("fk_user", user, userTable)(_.id)
 
     def user = column[Long]("user")
 
-    def * = (id, created_time, user, purchased) <> ((Cart.apply _).tupled, Cart.unapply)
+    def * = (id, createdTime, user, purchased) <> ((Cart.apply _).tupled, Cart.unapply)
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    def created_time = column[String]("created_time")
+    def createdTime = column[String]("created_time")
 
     def purchased = column[Boolean]("purchased")
   }
