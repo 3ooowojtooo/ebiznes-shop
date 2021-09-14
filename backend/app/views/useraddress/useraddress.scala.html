@@ -2,14 +2,15 @@
 @(userAddress: UserAddressDto)
 
 <table style="width: 100%">
+    <caption>User address details</caption>
     <tr>
-        <th>Id</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>Zip code</th>
-        <th>User</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th scope="col">Id</th>
+        <th scope="col">Street</th>
+        <th scope="col">City</th>
+        <th scope="col">Zip code</th>
+        <th scope="col">User</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     <tr>
         <td>@userAddress.id</td>

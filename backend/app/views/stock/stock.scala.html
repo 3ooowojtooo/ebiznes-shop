@@ -2,13 +2,14 @@
 @(stock: StockDto)
 
 <table style="width: 100%">
+    <caption>Stock details</caption>
     <tr>
-        <th>Id</th>
-        <th>Product</th>
-        <th>Product Category</th>
-        <th>Amount</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th scope="col">Id</th>
+        <th scope="col">Product</th>
+        <th scope="col">Product Category</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     <tr>
         <td>@stock.id</td>

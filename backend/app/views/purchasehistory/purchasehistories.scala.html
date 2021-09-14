@@ -2,17 +2,18 @@
 @(histories: Seq[PurchaseHistoryDto])
 
 <table style="width: 100%">
+    <caption>Purchase histories</caption>
     <tr>
-        <th>Id</th>
-        <th>Cart</th>
-        <th>Cart owner</th>
-        <th>Total price</th>
-        <th>Purchased On</th>
-        <th>Payment method</th>
-        <th>Owner address</th>
-        <th>Details</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th scope="col">Id</th>
+        <th scope="col">Cart</th>
+        <th scope="col">Cart owner</th>
+        <th scope="col">Total price</th>
+        <th scope="col">Purchased On</th>
+        <th scope="col">Payment method</th>
+        <th scope="col">Owner address</th>
+        <th scope="col">Details</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     @for(history <- histories) {
         <tr>

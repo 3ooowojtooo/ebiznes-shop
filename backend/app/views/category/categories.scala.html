@@ -2,12 +2,13 @@
 @(categories: List[CategoryDto])
 
 <table style="width: 100%">
+    <caption>Categories</caption>
     <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Details</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Details</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     @for(category <- categories) {
         <tr>

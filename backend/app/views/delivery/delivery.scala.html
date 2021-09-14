@@ -2,14 +2,15 @@
 @(delivery: DeliveryDto)
 
 <table style="width: 100%">
+    <caption>Delivery details</caption>
     <tr>
-        <th>Id</th>
-        <th>Cart</th>
-        <th>Cart owner</th>
-        <th>Delivered On</th>
-        <th>Is delivered</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th scope="col">Id</th>
+        <th scope="col">Cart</th>
+        <th scope="col">Cart owner</th>
+        <th scope="col">Delivered On</th>
+        <th scope="col">Is delivered</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     <tr>
         <td>@delivery.id</td>

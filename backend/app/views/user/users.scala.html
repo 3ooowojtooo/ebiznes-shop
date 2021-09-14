@@ -2,14 +2,15 @@
 @(users: List[UserDto])
 
 <table style="width: 100%">
+    <caption>Users</caption>
     <tr>
-        <th>Id</th>
-        <th>Email</th>
-        <th>Provider id</th>
-        <th>Provider key</th>
-        <th>Details</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th scope="col">Id</th>
+        <th scope="col">Email</th>
+        <th scope="col">Provider id</th>
+        <th scope="col">Provider key</th>
+        <th scope="col">Details</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     @for(user <- users) {
         <tr>

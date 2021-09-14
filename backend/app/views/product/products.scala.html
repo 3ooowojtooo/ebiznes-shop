@@ -2,15 +2,16 @@
 @(products: List[ProductDto])
 
 <table style="width: 100%">
+    <caption>Products</caption>
     <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Price</th>
-        <th>Details</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Price</th>
+        <th scope="col">Details</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     @for(product <- products) {
         <tr>

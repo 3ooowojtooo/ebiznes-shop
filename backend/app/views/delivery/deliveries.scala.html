@@ -2,15 +2,16 @@
 @(deliveries: List[DeliveryDto])
 
 <table style="width: 100%">
+    <caption>Deliveries</caption>
     <tr>
-        <th>Id</th>
-        <th>Cart</th>
-        <th>Cart owner</th>
-        <th>Delivered On</th>
-        <th>Is delivered</th>
-        <th>Details</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th scope="col">Id</th>
+        <th scope="col">Cart</th>
+        <th scope="col">Cart owner</th>
+        <th scope="col">Delivered On</th>
+        <th scope="col">Is delivered</th>
+        <th scope="col">Details</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     @for(delivery <- deliveries) {
         <tr>
