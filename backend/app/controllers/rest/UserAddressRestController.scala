@@ -1,12 +1,11 @@
 package controllers.rest
 
 import controllers.auth.{AbstractAuthController, DefaultSilhouetteControllerComponents}
-
-import javax.inject.{Inject, Singleton}
 import play.api.libs.json.{Json, OFormat}
 import play.api.mvc._
 import repository.UserAddressRepository
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -72,13 +71,34 @@ class UserAddressRestController @Inject()(cc: DefaultSilhouetteControllerCompone
   implicit val updateCurrentUserAddressFormatter: OFormat[UpdateCurrentUserAddress] = Json.format[UpdateCurrentUserAddress]
 
   // PUT /currentaddress/:id
-  def updateCurrentUserAddress(id : Long): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def updateCurrentUserAddress(id: Long): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     val requestBodyJson = request.body.asJson
     val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdateCurrentUserAddress](_).asOpt)
     requestBody match {
       case Some(itemToUpdate) =>
-        userAddressRepository.update(id, itemToUpdate.street, itemToUpdate.city, itemToUpdate.zipcode, request.identity.id)
-          .map(_ => Ok)
+        userAddressRepository.getByUserStreetCityAndZipcode(request.identity.id, itemToUpdate.street, itemToUpdate.city, itemToUpdate.zipcode)
+          .flatMap {
+            case Some(_) => Future.successful(BadRequest("Specified user address already exists"))
+            case None => userAddressRepository.update(id, itemToUpdate.street, itemToUpdate.city, itemToUpdate.zipcode, request.identity.id)
+              .map(_ => Ok)
+          }
+      case None => Future(BadRequest)
+    }
+  }
+
+  // POST /currentaddress
+  def createUserAddress: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+    val requestBodyJson = request.body.asJson
+    val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdateCurrentUserAddress](_).asOpt)
+    requestBody match {
+      case Some(itemToCreate) =>
+        userAddressRepository.getByUserStreetCityAndZipcode(request.identity.id, itemToCreate.street, itemToCreate.city, itemToCreate.zipcode)
+          .flatMap {
+            case Some(_) => Future.successful(BadRequest("Specified user address already exists"))
+            case None =>
+              userAddressRepository.create(itemToCreate.street, itemToCreate.city, itemToCreate.zipcode, request.identity.id)
+                .map(_ => Ok)
+          }
       case None => Future(BadRequest)
     }
   }

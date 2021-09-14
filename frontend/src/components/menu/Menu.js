@@ -9,7 +9,9 @@ function Menu() {
             <center>
                 <Link to="/">Index</Link><br/>
                 <Link to="/user">Account details</Link><br/>
-                <Link to="/history">Purchase history</Link>
+                <Link to="/history">Purchase history</Link><br/>
+                <Link to="/paymentMethods">Payment methods</Link><br/>
+                <Link to="/addresses">Addresses</Link><br/>
             </center>
             :
             <center>

@@ -72,6 +72,14 @@ class PaymentMethodRepository @Inject()(val dbConfigProvider: DatabaseConfigProv
     db.run(paymentMethodTable.filter(_.id === id).update(newPaymentMethod).map(_ => ()))
   }
 
+  def getByUserAndName(user : Long, name : String) : Future[Option[PaymentMethod]] = db.run {
+    paymentMethodTable
+      .filter(_.user === user)
+      .filter(_.name === name)
+      .result
+      .headOption
+  }
+
   def getUserPaymentMethods(userId: Long): Future[Seq[PaymentMethod]] = db.run {
     paymentMethodTable
       .filter(_.user === userId)

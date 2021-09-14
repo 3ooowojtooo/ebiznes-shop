@@ -74,8 +74,29 @@ class PaymentMethodRestController @Inject()(cc: DefaultSilhouetteControllerCompo
     val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdateUserPaymentMethod](_).asOpt)
     requestBody match {
       case Some(itemToUpdate) =>
-        paymentMethodRepository.update(id, request.identity.id, itemToUpdate.name)
-          .map(_ => Ok)
+        paymentMethodRepository.getByUserAndName(request.identity.id, itemToUpdate.name)
+          .flatMap {
+            case Some(_) => Future.successful(BadRequest("Payment method with specified name already exists"))
+            case None => paymentMethodRepository.update(id, request.identity.id, itemToUpdate.name)
+              .map(_ => Ok)
+          }
+      case None => Future(BadRequest)
+    }
+  }
+
+  // POST /currentpaymentmethod
+  def createUserPaymentMethod: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+    val requestBodyJson = request.body.asJson
+    val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdateUserPaymentMethod](_).asOpt)
+    requestBody match {
+      case Some(itemToCreate) =>
+        paymentMethodRepository.getByUserAndName(request.identity.id, itemToCreate.name)
+          .flatMap {
+            case Some(_) => Future.successful(BadRequest("Payment method with specified name already exists"))
+            case None =>
+              paymentMethodRepository.create(request.identity.id, itemToCreate.name)
+                .map(_ => Ok)
+          }
       case None => Future(BadRequest)
     }
   }

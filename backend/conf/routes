@@ -58,6 +58,7 @@ POST          /rest/address                               controllers.rest.UserA
 DELETE        /rest/address/:id                           controllers.rest.UserAddressRestController.delete(id : Long)
 PUT           /rest/address/:id                           controllers.rest.UserAddressRestController.update(id : Long)
 GET           /rest/currentaddress                        controllers.rest.UserAddressRestController.getUserAddresses
+POST          /rest/currentaddress                        controllers.rest.UserAddressRestController.createUserAddress
 PUT           /rest/currentaddress/:id                    controllers.rest.UserAddressRestController.updateCurrentUserAddress(id : Long)
 DELETE        /rest/currentaddress/:id                    controllers.rest.UserAddressRestController.deleteUserPaymentMethod(id : Long)
 
@@ -145,6 +146,7 @@ POST          /rest/paymentmethod                         controllers.rest.Payme
 DELETE        /rest/paymentmethod/:id                     controllers.rest.PaymentMethodRestController.delete(id : Long)
 PUT           /rest/paymentmethod/:id                     controllers.rest.PaymentMethodRestController.update(id : Long)
 GET           /rest/currentpaymentmethod                  controllers.rest.PaymentMethodRestController.getUserPaymentMethods
+POST          /rest/currentpaymentmethod                  controllers.rest.PaymentMethodRestController.createUserPaymentMethod
 PUT           /rest/currentpaymentmethod/:id              controllers.rest.PaymentMethodRestController.updateUserPaymentMethod(id : Long)
 DELETE        /rest/currentpaymentmethod/:id              controllers.rest.PaymentMethodRestController.deleteUserPaymentMethod(id : Long)
 

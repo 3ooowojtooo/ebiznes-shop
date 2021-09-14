@@ -53,8 +53,48 @@ export const getUserPaymentMethods = () => {
     return getCall("/rest/currentpaymentmethod")
 }
 
+export const updateUserPaymentMethod = (id, name) => {
+    const body = {
+        name : name
+    }
+    return putCall("/rest/currentpaymentmethod/" + id, body, JSON_HEADERS)
+}
+
+export const createUserPaymentMethod = name => {
+    const body = {
+        name : name
+    }
+    return postCall("/rest/currentpaymentmethod", body, JSON_HEADERS)
+}
+
+export const deleteUserPaymentMethod = id => {
+    return deleteCall("/rest/currentpaymentmethod/" + id)
+}
+
 export const getUserAddresses = () => {
     return getCall("/rest/currentaddress")
+}
+
+export const updateUserAddress = (id, street, city, zipcode) => {
+    const body = {
+        street : street,
+        city : city,
+        zipcode : zipcode
+    }
+    return putCall("/rest/currentaddress/" + id, body, JSON_HEADERS)
+}
+
+export const createUserAddress = (street, city, zipcode) => {
+    const body = {
+        street : street,
+        city : city,
+        zipcode : zipcode
+    }
+    return postCall("/rest/currentaddress", body, JSON_HEADERS)
+}
+
+export const deleteUserAddress = id => {
+    return deleteCall("/rest/currentaddress/" + id)
 }
 
 export const buyUserCart = (paymentMethodId, userAddressId) => {
@@ -88,6 +128,13 @@ function deleteCall(url, headers = {}) {
     const allHeaders = buildHeadersWithCsrfToken(headers)
     const config = buildConfigWithHeaders(allHeaders)
     return axios.delete(fullUrl, config)
+}
+
+function putCall(url, data = {}, headers = {}) {
+    const fullUrl = buildUrl(url)
+    const allHeaders = buildHeadersWithCsrfToken(headers)
+    const config = buildConfigWithHeaders(allHeaders)
+    return axios.put(fullUrl, data, config)
 }
 
 function buildUrl(url) {

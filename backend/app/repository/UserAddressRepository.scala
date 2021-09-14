@@ -78,6 +78,16 @@ class UserAddressRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
       .result
   }
 
+  def getByUserStreetCityAndZipcode(userId : Long, street : String, city : String, zipcode : String) : Future[Option[UserAddress]] = db.run {
+    userAddressTable
+      .filter(_.user === userId)
+      .filter(_.street === street)
+      .filter(_.city === city)
+      .filter(_.zipcode === zipcode)
+      .result
+      .headOption
+  }
+
   class UserAddressTable(tag: Tag) extends Table[UserAddress](tag, "user_address") {
     def fk_user = foreignKey("fk_user", user, userTable)(_.id)
 
