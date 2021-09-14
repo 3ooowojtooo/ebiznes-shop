@@ -7,6 +7,8 @@ const PurchaseHistoryEntry = ({entry}) => {
         <div>
             <b>Total price: </b> {entry.purchaseHistory.totalPrice}<br/>
             <b>Purchase time: </b> {entry.purchaseHistory.purchaseTimestamp}<br/>
+            <b>Payment method: </b> {entry.paymentMethod.name}<br/>
+            <b>Address: </b> {entry.address.street + " " + entry.address.city + " " + entry.address.zipcode}
             <table>
                 <thead>
                 <tr>
