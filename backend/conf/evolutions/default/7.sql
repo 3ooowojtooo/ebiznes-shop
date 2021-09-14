@@ -1,16 +1,14 @@
 # --- !Ups
-CREATE TABLE "purchase_history"
+CREATE TABLE "payment_method"
 (
-    "id"                 INTEGER   NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "cart"               INT       NOT NULL,
-    "totalPrice"         DOUBLE    NOT NULL,
-    "purchase_timestamp" TIMESTAMP NOT NULL,
-    constraint fk_cart FOREIGN KEY (cart) REFERENCES cart (id)
+    "id"   INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "user" INT     NOT NULL,
+    "name" TEXT    NOT NULL,
+    constraint fk_user FOREIGN KEY (user) REFERENCES user (id)
 );
 
-INSERT INTO purchase_history(cart, totalPrice, purchase_timestamp)
-VALUES ((SELECT ID from cart where user = (SELECT ID FROM user WHERE email = 'raskony@gmail.com')),
-        1000.00, CURRENT_TIMESTAMP);
+INSERT INTO payment_method(user, name)
+VALUES ((SELECT ID FROM user WHERE email = 'raskony@gmail.com'), 'Credit Card');
 
 # --- !Downs
-DROP TABLE "purchase_history";
+DROP TABLE "payment_method";

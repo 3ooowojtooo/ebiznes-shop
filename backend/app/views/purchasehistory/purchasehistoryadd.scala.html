@@ -1,6 +1,8 @@
 @import controllers.view.CreatePurchaseHistoryForm
 @import controllers.dto.CartDto
-@(history: Form[CreatePurchaseHistoryForm], carts: List[CartDto])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.PaymentMethodDto
+@import controllers.dto.UserAddressDto
+@(history: Form[CreatePurchaseHistoryForm], carts: List[CartDto], paymentMethods: List[PaymentMethodDto], addresses: List[UserAddressDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 
@@ -15,7 +17,19 @@
     @for(cart <- carts) {
         <option value="@cart.id">@cart.id</option>
     }
-    </select>
+    </select><br/>
+
+    <select name="paymentMethod" id="paymentMethod">
+    @for(method <- paymentMethods) {
+        <option value="@method.id">@(method.id + ": " + method.name)</option>
+    }
+    </select><br/>
+
+    <select name="address" id="address">
+    @for(address <- addresses) {
+        <option value="@address.id">@(address.id + ": " + address.street + " " + address.city + " " + address.zipcode)</option>
+    }
+    </select><br/>
 
     <div class="buttons">
         <input type="submit" value="Add Purchase History"/>

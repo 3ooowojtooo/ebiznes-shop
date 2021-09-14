@@ -1,6 +1,8 @@
 @import controllers.view.UpdatePurchaseHistoryForm
 @import controllers.dto.CartDto
-@(history: Form[UpdatePurchaseHistoryForm], carts: List[CartDto])(implicit request: MessagesRequestHeader, flash: Flash)
+@import controllers.dto.PaymentMethodDto
+@import controllers.dto.UserAddressDto
+@(history: Form[UpdatePurchaseHistoryForm], carts: List[CartDto], paymentMethods: List[PaymentMethodDto], addresses: List[UserAddressDto])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 
@@ -18,6 +20,28 @@
             <option value="@cart.id" selected>@cart.id</option>
         } else {
             <option value="@cart.id">@cart.id</option>
+        }
+    }
+    </select>
+    <br>
+
+    <select name="paymentMethod" id="paymentMethod">
+    @for(method <- paymentMethods) {
+        @if(method.id.toString == history("paymentMethod").value.getOrElse(0)) {
+            <option value="@method.id" selected>@(method.id + ": " + method.name)</option>
+        } else {
+            <option value="@method.id">@(method.id + ": " + method.name)</option>
+        }
+    }
+    </select>
+    <br>
+
+    <select name="address" id="address">
+    @for(address <- addresses) {
+        @if(address.id.toString == history("address").value.getOrElse(0)) {
+            <option value="@address.id" selected>@(address.id + ": " + address.street + " " + address.city + " " + address.zipcode)</option>
+        } else {
+            <option value="@address.id">@(address.id + ": " + address.street + " " + address.city + " " + address.zipcode)</option>
         }
     }
     </select>

@@ -129,7 +129,7 @@ class CartRestController @Inject()(cc: DefaultSilhouetteControllerComponents, ca
           .flatMap(_ => {
             cartItemRepository.listByCartId(cartId)
               .flatMap(items => {
-                purchaseHistoryRepository.create(cartId, computeCartItemsTotalPrice(items), dateFormat.format(new Date()))
+                purchaseHistoryRepository.create(cartId, paymentMethodId, userAddressId, computeCartItemsTotalPrice(items), dateFormat.format(new Date()))
                   .flatMap(_ => {
                     deliveryRepository.create(cartId, dateFormat.format(new Date()), delivered = true)
                       .flatMap(_ => {

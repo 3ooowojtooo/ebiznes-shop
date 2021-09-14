@@ -3,7 +3,7 @@ package controllers.rest
 import com.google.inject.Inject
 import controllers.auth.{AbstractAuthController, DefaultSilhouetteControllerComponents}
 import controllers.dto.{CartItemDto, UserPurchaseHistoryDto}
-import models.{Cart, PurchaseHistory}
+import models.{Cart, PaymentMethod, PurchaseHistory, UserAddress}
 import play.api.libs.json.{Json, OFormat}
 import play.api.mvc.{Action, AnyContent}
 import repository.{CartItemRepository, PurchaseHistoryRepository}
@@ -41,7 +41,7 @@ class PurchaseHistoryRestController @Inject()(cc: DefaultSilhouetteControllerCom
     val requestBody = requestBodyJson.flatMap(Json.fromJson[CreatePurchaseHistory](_).asOpt)
     requestBody match {
       case Some(newItem) =>
-        purchaseHistoryRepository.create(newItem.cart, newItem.totalPrice, newItem.purchaseTimestamp)
+        purchaseHistoryRepository.create(newItem.cart, newItem.paymentMethod, newItem.address, newItem.totalPrice, newItem.purchaseTimestamp)
           .map(_ => Ok)
       case None => Future(BadRequest)
     }
@@ -59,7 +59,7 @@ class PurchaseHistoryRestController @Inject()(cc: DefaultSilhouetteControllerCom
     val requestBody = requestBodyJson.flatMap(Json.fromJson[UpdatePurchaseHistory](_).asOpt)
     requestBody match {
       case Some(itemToUpdate) =>
-        purchaseHistoryRepository.update(id, itemToUpdate.cart, itemToUpdate.totalPrice, itemToUpdate.purchaseTimestamp)
+        purchaseHistoryRepository.update(id, itemToUpdate.cart, itemToUpdate.paymentMethod, itemToUpdate.address, itemToUpdate.totalPrice, itemToUpdate.purchaseTimestamp)
           .map(_ => Ok)
       case None => Future(BadRequest)
     }
@@ -69,20 +69,20 @@ class PurchaseHistoryRestController @Inject()(cc: DefaultSilhouetteControllerCom
   def getUserPurchaseHistory: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     purchaseHistoryRepository.getUserHistory(request.identity.id)
       .flatMap(entries => {
-        val futures = ListBuffer[Future[(PurchaseHistory, Cart, Seq[CartItemDto])]]()
+        val futures = ListBuffer[Future[(PurchaseHistory, Cart, PaymentMethod, UserAddress, Seq[CartItemDto])]]()
         entries.foreach(entry => {
           futures += cartItemRepository.listByCartId(entry._2.id)
-            .map(cartItems => (entry._1, entry._2, cartItems))
+            .map(cartItems => (entry._1, entry._2, entry._3, entry._4, cartItems))
         })
         Future.sequence(futures.toList)
       }.map(_.toStream
-        .map(item => UserPurchaseHistoryDto(item._1, item._2, item._3))
+        .map(item => UserPurchaseHistoryDto(item._1, item._2, item._3, item._4, item._5))
         .toList)
         .map(items => Ok(Json.toJson(items)))
       )
   }
 }
 
-case class CreatePurchaseHistory(cart: Long, totalPrice: Double, purchaseTimestamp: String)
+case class CreatePurchaseHistory(cart: Long, paymentMethod: Long, address: Long, totalPrice: Double, purchaseTimestamp: String)
 
-case class UpdatePurchaseHistory(cart: Long, totalPrice: Double, purchaseTimestamp: String)
+case class UpdatePurchaseHistory(cart: Long, paymentMethod: Long, address: Long, totalPrice: Double, purchaseTimestamp: String)
