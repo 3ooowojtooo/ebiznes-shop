@@ -65,7 +65,7 @@ class ProductRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, 
   }
 
   class ProductTable(tag: Tag) extends Table[Product](tag, "product") {
-    def category_fk = foreignKey("cat_fk", category, cat)(_.id)
+    def fkCategory = foreignKey("cat_fk", category, cat)(_.id)
 
     def category = column[Long]("category")
 

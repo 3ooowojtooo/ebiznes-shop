@@ -12,15 +12,17 @@ export const CartContextProvider = ({children}) => {
             .then(response => setCart(response.data))
     }
 
-    useEffect(async () => await reloadCartData(), [])
+    useEffect(() => {
+        reloadCartData().then()
+    }, [])
 
     const getCartSize = () => {
         if (cart === undefined) {
             return 0
         } else {
             let count = 0
-            for (let i = 0; i < cart.items.length; i++) {
-                count += cart.items[i].amount
+            for (let item of cart.items) {
+                count += item.amount
             }
             return count
         }
@@ -31,8 +33,8 @@ export const CartContextProvider = ({children}) => {
             return 0
         } else {
             let price = 0.0
-            for (let i = 0; i < cart.items.length; i++) {
-                price += cart.items[0].amount * cart.items[0].product.price
+            for (let item of cart.items) {
+                price += item.amount * item.product.price
             }
             return price
         }

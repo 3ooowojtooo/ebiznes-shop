@@ -26,12 +26,10 @@ function SignIn() {
                 window.location.href = "/";
             })
             .catch(err => {
-                switch (err.response.status) {
-                    case 403:
-                        alert("Invalid credentials")
-                        break;
-                    default:
-                        alert(err)
+                if (err.response.status === 403) {
+                    alert("Invalid credentials")
+                } else {
+                    alert(err)
                 }
             })
     }

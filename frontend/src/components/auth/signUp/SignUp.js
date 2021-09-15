@@ -25,12 +25,10 @@ function SignUp() {
                 window.location.href = "/";
             })
             .catch(err => {
-                switch (err.response.status) {
-                    case 403:
-                        alert("User already exists")
-                        break;
-                    default:
-                        alert(err)
+                if (err.response.status === 403) {
+                    alert("User already exists")
+                } else {
+                    alert(err)
                 }
             })
     }

@@ -24,11 +24,11 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
   private val userTable = TableQuery[UserTable]
   private val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
 
-  def create(created_time: String, user: Long, purchased: Boolean): Future[Cart] = db.run {
+  def create(createdTime: String, user: Long, purchased: Boolean): Future[Cart] = db.run {
     (cartTable.map(c => (c.createdTime, c.user, c.purchased))
       returning cartTable.map(_.id)
       into { case ((created_time, user, purchased), id) => Cart(id, created_time, user, purchased) }
-      ) += (created_time, user, purchased)
+      ) += (createdTime, user, purchased)
   }
 
   def list: Future[List[CartDto]] = db.run {
@@ -62,8 +62,8 @@ class CartRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
 
   def delete(id: Long): Future[Unit] = db.run(cartTable.filter(_.id === id).delete.map(_ => ()))
 
-  def update(id: Long, created_time: String, user: Long, purchased: Boolean): Future[Unit] = {
-    val newCart = Cart(id, created_time, user, purchased)
+  def update(id: Long, createdTime: String, user: Long, purchased: Boolean): Future[Unit] = {
+    val newCart = Cart(id, createdTime, user, purchased)
     db.run(cartTable.filter(_.id === id).update(newCart).map(_ => ()))
   }
 
